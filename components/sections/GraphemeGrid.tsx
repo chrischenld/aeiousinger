@@ -25,19 +25,19 @@ export default function GraphemeGrid({
 	const [tooltipKey, setTooltipKey] = useState(0);
 	const [colCount, setColCount] = useState(6);
 
-	// useEffect(() => {
-	// 	setColCount(window.innerWidth >= 768 ? 5 : 6);
+	useEffect(() => {
+		const updateColCount = () => {
+			setColCount(window.innerWidth >= 768 ? 5 : 6);
+		};
 
-	// 	const handleResize = () => {
-	// 		setColCount(window.innerWidth >= 768 ? 5 : 6);
-	// 	};
+		updateColCount();
 
-	// 	window.addEventListener("resize", handleResize);
+		window.addEventListener("resize", updateColCount);
 
-	// 	return () => {
-	// 		window.removeEventListener("resize", handleResize);
-	// 	};
-	// }, []);
+		return () => {
+			window.removeEventListener("resize", updateColCount);
+		};
+	}, []);
 
 	const debouncedSelect = useCallback(
 		(grapheme: string | null, section?: number, row?: number) => {
