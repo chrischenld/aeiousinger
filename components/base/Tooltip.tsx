@@ -49,7 +49,6 @@ const contentVariants = {
 };
 
 type TooltipProps = {
-	grapheme: string;
 	content: {
 		title: string;
 		description: string;
@@ -61,7 +60,6 @@ type TooltipProps = {
 };
 
 export default function Tooltip({
-	grapheme,
 	content,
 	onAnimationStart,
 	onAnimationComplete,

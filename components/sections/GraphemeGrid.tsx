@@ -140,7 +140,6 @@ export default function GraphemeGrid({
 								selectedPosition?.row === rowIndex && (
 									<Tooltip
 										key={tooltipKey}
-										grapheme={selected}
 										content={getGraphemeContent(selected, section.title)}
 										onAnimationStart={() => setIsAnimating(true)}
 										onAnimationComplete={() => setIsAnimating(false)}
