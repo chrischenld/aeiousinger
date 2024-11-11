@@ -23,23 +23,22 @@ export default function GraphemeGrid({
 	} | null>(null);
 	const [isAnimating, setIsAnimating] = useState(false);
 	const [tooltipKey, setTooltipKey] = useState(0);
-	const [colCount, setColCount] = useState(window.innerWidth >= 768 ? 5 : 6);
+	const [colCount, setColCount] = useState(6);
 
-	// Add resize listener
-	useEffect(() => {
-		const handleResize = () => {
-			setColCount(window.innerWidth >= 768 ? 5 : 6);
-		};
+	// useEffect(() => {
+	// 	setColCount(window.innerWidth >= 768 ? 5 : 6);
 
-		window.addEventListener("resize", handleResize);
+	// 	const handleResize = () => {
+	// 		setColCount(window.innerWidth >= 768 ? 5 : 6);
+	// 	};
 
-		// Cleanup listener on component unmount
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, []);
+	// 	window.addEventListener("resize", handleResize);
 
-	// Debounced selection handler
+	// 	return () => {
+	// 		window.removeEventListener("resize", handleResize);
+	// 	};
+	// }, []);
+
 	const debouncedSelect = useCallback(
 		(grapheme: string | null, section?: number, row?: number) => {
 			return setTimeout(() => {
@@ -66,10 +65,8 @@ export default function GraphemeGrid({
 			selectedPosition?.row === rowIndex;
 
 		if (isAnimating) {
-			// Cancel current animation
 			setIsAnimating(false);
 
-			// Schedule next state
 			if (isClickingCurrentTooltip) {
 				debouncedSelect(null);
 			} else {
@@ -84,7 +81,6 @@ export default function GraphemeGrid({
 		}
 	};
 
-	// Helper to create rows based on items and current colCount state
 	const createRows = (items: string[]) => {
 		const rows: string[][] = [];
 
@@ -112,15 +108,18 @@ export default function GraphemeGrid({
 		const rows = createRows(section.items);
 
 		return (
-			<>
+			<div key={`section-${sectionIndex}`} className="contents">
 				<div className="grid grid-cols-subgrid col-span-full border-b border-border items-center py-6 px-3">
 					<h3 className="text-2xs font-bold">{section.title}</h3>
 				</div>
 				{rows.map((row, rowIndex) => (
-					<div key={rowIndex} className="grid grid-cols-subgrid col-span-full">
+					<div
+						key={`${section.title}-row-${rowIndex}`}
+						className="grid grid-cols-subgrid col-span-full"
+					>
 						{row.map((grapheme, i) => (
 							<GraphemeBlock
-								key={`${grapheme || "empty"}-${i}`}
+								key={`${section.title}-${grapheme || "empty"}-${i}`}
 								selectable={!!grapheme}
 								onClick={() =>
 									grapheme && handleSelect(grapheme, sectionIndex, rowIndex)
@@ -148,7 +147,7 @@ export default function GraphemeGrid({
 						</AnimatePresence>
 					</div>
 				))}
-			</>
+			</div>
 		);
 	};
 
