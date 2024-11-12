@@ -3,12 +3,21 @@ import { motion } from "framer-motion";
 const containerVariants = {
 	hidden: {
 		scaleY: 0.35,
+		backgroundColor: "var(--bg-xstrong)",
 	},
 	visible: {
 		scaleY: 1,
+		backgroundColor: "var(--bg)",
 		transition: {
-			duration: 0.35,
-			ease: [0.76, 0.06, 0.13, 0.95],
+			scaleY: {
+				duration: 0.35,
+				ease: [0.76, 0.06, 0.13, 0.95],
+			},
+			backgroundColor: {
+				duration: 0.2,
+				delay: 0.35,
+				ease: "easeOut",
+			},
 			delayChildren: 0.1,
 			staggerChildren: 0.1,
 		},
@@ -57,12 +66,14 @@ type TooltipProps = {
 	};
 	onAnimationStart?: () => void;
 	onAnimationComplete?: () => void;
+	onRelatedClick?: (grapheme: string) => void;
 };
 
 export default function Tooltip({
 	content,
 	onAnimationStart,
 	onAnimationComplete,
+	onRelatedClick,
 }: TooltipProps) {
 	return (
 		<motion.div
@@ -92,7 +103,20 @@ export default function Tooltip({
 					</p>
 				)}
 				{content.related && (
-					<p className="text-xs text-fg-light">{content.related.join(", ")}</p>
+					<p className="text-xs text-fg-light">
+						Related:{" "}
+						{content.related.map((item, index) => (
+							<span key={item}>
+								<button
+									onClick={() => onRelatedClick?.(item)}
+									className="underline hover:text-fg-xlight transition-colors"
+								>
+									{item}
+								</button>
+								{index < content.related!.length - 1 ? ", " : ""}
+							</span>
+						))}
+					</p>
 				)}
 			</motion.div>
 		</motion.div>

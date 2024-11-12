@@ -150,6 +150,7 @@ export const graphemeContent: Record<string, GraphemeSection> = {
 				description:
 					"Standard r sound, typically the one used in the beginning of a word",
 				examples: ["red", "run", "rat"],
+				related: ["rx"],
 			},
 			t: {
 				title: "t",
@@ -161,27 +162,31 @@ export const graphemeContent: Record<string, GraphemeSection> = {
 				title: "s",
 				description: "Standard s sound.",
 				examples: ["sit", "see", "sun"],
+				related: ["z"],
 			},
 			v: {
 				title: "v",
 				description: "Standard v sound.",
-				examples: ["van", "very", "vote"],
+				examples: ["van", "very", "save"],
 			},
 			w: {
 				title: "w",
 				description: "Standard w sound.",
 				examples: ["win", "way", "walk"],
+				related: ["wh"],
 			},
 			y: {
 				title: "y",
 				description:
 					"Voiced y sound. Use for the beginning of words, not the long e sound.",
-				examples: ["yes", "you", "yard"],
+				examples: ["use", "yes", "yard"],
 			},
 			z: {
 				title: "z",
-				description: "Standard z sound.",
+				description:
+					"Standard z sound. A harder, buzzing sound compared to s or a softer zh.",
 				examples: ["zoo", "zip", "zero"],
+				related: ["s", "zh"],
 			},
 		},
 	},
@@ -246,6 +251,7 @@ export const graphemeContent: Record<string, GraphemeSection> = {
 				title: "rx",
 				description: "When r follows a vowel. Softer r.",
 				examples: ["car", "star", "park"],
+				related: ["r"],
 			},
 			tx: {
 				title: "tx",
@@ -347,6 +353,7 @@ export const graphemeContent: Record<string, GraphemeSection> = {
 				title: "bl",
 				description: 'Blend combining "b" and "l".',
 				examples: ["blue", "black", "blend"],
+				related: ["b", "br"],
 			},
 			cl: {
 				title: "cl",
@@ -372,6 +379,7 @@ export const graphemeContent: Record<string, GraphemeSection> = {
 				title: "br",
 				description: 'Blend combining "b" and "r".',
 				examples: ["bread", "break", "bright"],
+				related: ["b", "bl"],
 			},
 			cr: {
 				title: "cr",
@@ -382,6 +390,7 @@ export const graphemeContent: Record<string, GraphemeSection> = {
 				title: "dr",
 				description: 'Blend combining "d" and "r".',
 				examples: ["drown", "dare", "dare"],
+				related: ["j", "zh"],
 			},
 			fr: {
 				title: "fr",
@@ -401,7 +410,7 @@ export const graphemeContent: Record<string, GraphemeSection> = {
 			tr: {
 				title: "tr",
 				description: 'Blend combining "t" and "r".',
-				examples: ["truck", "trance", "trump"],
+				examples: ["train", "true", "control"],
 			},
 			sk: {
 				title: "sk",
@@ -416,7 +425,7 @@ export const graphemeContent: Record<string, GraphemeSection> = {
 			sp: {
 				title: "sp",
 				description: 'Blend combining "s" and "p".',
-				examples: ["spill", "spike", "spill"],
+				examples: ["spill", "conspire", "spill"],
 			},
 			st: {
 				title: "st",
@@ -431,7 +440,7 @@ export const graphemeContent: Record<string, GraphemeSection> = {
 			str: {
 				title: "str",
 				description: 'Blend combining "s" and "t" and "r".',
-				examples: ["string", "stretch", "strength"],
+				examples: ["string", "backstroke", "strength"],
 			},
 			spr: {
 				title: "spr",

@@ -1,7 +1,7 @@
 "use client";
 
 import GraphemeBlock from "../base/GraphemeBlock";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Tooltip from "../base/Tooltip";
 import { AnimatePresence } from "framer-motion";
 import { graphemeContent } from "@/data/graphemeContent";
@@ -14,7 +14,7 @@ type GraphemeSection = {
 export default function GraphemeGrid({
 	sections,
 }: {
-	sections: GraphemeSection[];
+	sections: readonly GraphemeSection[];
 }) {
 	const [selected, setSelected] = useState<string | null>(null);
 	const [selectedPosition, setSelectedPosition] = useState<{
@@ -24,6 +24,7 @@ export default function GraphemeGrid({
 	const [isAnimating, setIsAnimating] = useState(false);
 	const [tooltipKey, setTooltipKey] = useState(0);
 	const [colCount, setColCount] = useState(6);
+	const gridRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const updateColCount = () => {
@@ -104,6 +105,68 @@ export default function GraphemeGrid({
 		);
 	};
 
+	const findGraphemePosition = (
+		grapheme: string
+	): { section: number; row: number } | null => {
+		for (let sectionIndex = 0; sectionIndex < sections.length; sectionIndex++) {
+			const items = sections[sectionIndex].items;
+			const itemIndex = items.indexOf(grapheme);
+			if (itemIndex !== -1) {
+				return {
+					section: sectionIndex,
+					row: Math.floor(itemIndex / colCount),
+				};
+			}
+		}
+		return null;
+	};
+
+	const scrollToRow = useCallback((sectionIndex: number, rowIndex: number) => {
+		if (!gridRef.current) {
+			console.log("No gridRef found");
+			return;
+		}
+
+		// Find the row element
+		const sectionElement = gridRef.current.children[sectionIndex];
+		console.log("Section index:", sectionIndex);
+		console.log("Section element:", sectionElement);
+
+		if (!sectionElement) {
+			console.log("No section element found");
+			return;
+		}
+
+		// Since we're using contents, we need to find the actual row
+		// Skip the header div and find the row
+		const rowElement = Array.from(sectionElement.children).filter(
+			(child) => !child.classList.contains("border-b")
+		)[rowIndex];
+
+		console.log("Row index:", rowIndex);
+		console.log("Row element:", rowElement);
+
+		if (!rowElement) {
+			console.log("No row element found");
+			return;
+		}
+
+		// Scroll the row into view with smooth animation
+		rowElement.scrollIntoView({
+			behavior: "smooth",
+			block: "center",
+		});
+	}, []);
+
+	const handleRelatedClick = (grapheme: string) => {
+		const position = findGraphemePosition(grapheme);
+		if (position) {
+			handleSelect(grapheme, position.section, position.row);
+			// Add scroll after selection
+			scrollToRow(position.section, position.row);
+		}
+	};
+
 	const renderSection = (section: GraphemeSection, sectionIndex: number) => {
 		const rows = createRows(section.items);
 
@@ -138,10 +201,11 @@ export default function GraphemeGrid({
 								selectedPosition?.section === sectionIndex &&
 								selectedPosition?.row === rowIndex && (
 									<Tooltip
-										key={tooltipKey}
+										key={`tooltip-${selected}-${sectionIndex}-${rowIndex}-${tooltipKey}`}
 										content={getGraphemeContent(selected, section.title)}
 										onAnimationStart={() => setIsAnimating(true)}
 										onAnimationComplete={() => setIsAnimating(false)}
+										onRelatedClick={handleRelatedClick}
 									/>
 								)}
 						</AnimatePresence>
@@ -152,7 +216,10 @@ export default function GraphemeGrid({
 	};
 
 	return (
-		<div className="grid grid-cols-subgrid col-span-6 md:col-span-5 border-l border-b border-border h-full overflow-y-auto">
+		<div
+			ref={gridRef}
+			className="grid grid-cols-subgrid col-span-6 md:col-span-5 border-l border-b border-border h-full overflow-y-auto"
+		>
 			{sections.map((section, index) => renderSection(section, index))}
 		</div>
 	);
