@@ -102,6 +102,7 @@ export const graphemeContent: Record<string, GraphemeSection> = {
 				title: "d",
 				description: "Standard d sound.",
 				examples: ["dog", "dad", "door"],
+				related: ["tx"],
 			},
 			f: {
 				title: "f",
@@ -156,7 +157,7 @@ export const graphemeContent: Record<string, GraphemeSection> = {
 				title: "t",
 				description: "Standard t sound.",
 				examples: ["top", "ten", "take"],
-				related: ["tx"],
+				related: ["d", "tx"],
 			},
 			s: {
 				title: "s",
@@ -258,7 +259,7 @@ export const graphemeContent: Record<string, GraphemeSection> = {
 				description:
 					"When t comes at the end of a word. Softer t. Can also be used for an -ed ending.",
 				examples: ["text", "fact", "packed"],
-				related: ["t"],
+				related: ["d", "t"],
 			},
 		},
 	},

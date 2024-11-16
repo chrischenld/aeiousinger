@@ -58,6 +58,7 @@ const config: Config = {
 				"border-strong": "var(--border-strong)",
 			},
 			gridColumnEnd: {
+				20: "20",
 				25: "25",
 			},
 			gridColumn: {

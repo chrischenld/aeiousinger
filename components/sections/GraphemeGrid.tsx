@@ -173,7 +173,7 @@ export default function GraphemeGrid({
 		return (
 			<div key={`section-${sectionIndex}`} className="contents">
 				<div className="grid grid-cols-subgrid col-span-full border-b border-border items-center py-6 px-3">
-					<h3 className="text-2xs font-bold">{section.title}</h3>
+					<h3 className="text-sm font-bold">{section.title}</h3>
 				</div>
 				{rows.map((row, rowIndex) => (
 					<div
@@ -192,6 +192,7 @@ export default function GraphemeGrid({
 									selectedPosition?.section === sectionIndex &&
 									selectedPosition?.row === rowIndex
 								}
+								className="transition-[border-bottom-color] duration-300"
 							>
 								{grapheme}
 							</GraphemeBlock>
@@ -218,6 +219,7 @@ export default function GraphemeGrid({
 	return (
 		<div
 			ref={gridRef}
+			tabIndex={-1}
 			className="grid grid-cols-subgrid col-span-6 md:col-span-5 border-l border-b border-border h-full overflow-y-auto"
 		>
 			{sections.map((section, index) => renderSection(section, index))}

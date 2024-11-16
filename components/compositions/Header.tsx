@@ -20,19 +20,17 @@ export default function Header() {
 
 	return (
 		<header
-			className={`h-12 GridLayout border-b border-border p-3 items-center ${geistMono.className}`}
+			className={`h-fit grid grid-cols-subgrid col-span-full border-b border-border items-center py-6 ${geistMono.className}`}
 		>
-			<div>
-				<h1 className="col-span-4 text-sm font-bold text-fg-muted">
-					aeiousinger
-				</h1>
-				<button
-					onClick={toggleTheme}
-					className="col-end-9 md:col-end-25 p-0 text-sm hover:underline"
-				>
-					{theme === "system" ? "system" : theme}
-				</button>
-			</div>
+			<h1 className="col-span-4 text-sm font-bold text-fg-muted px-3">
+				aeiousinger
+			</h1>
+			<button
+				onClick={toggleTheme}
+				className="col-end-9 md:col-end-20 p-0 text-sm hover:underline"
+			>
+				{theme === "system" ? "system" : theme}
+			</button>
 		</header>
 	);
 }

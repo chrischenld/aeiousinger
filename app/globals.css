@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-	--bg: theme("colors.gray.1");
 	--bg-rgb: 252, 252, 252;
+	--bg: theme("colors.gray.1");
 	--bg-strong: theme("colors.gray.2");
 	--bg-xstrong: theme("colors.gray.3");
 	--fg: theme("colors.gray.12");
@@ -54,9 +54,9 @@ body {
 	}
 }
 
-.GridLayout > * {
+/* .GridLayout > * {
 	grid-column: 1 / -1;
 	display: grid;
 	grid-template-columns: subgrid;
-	min-width: 0; /* Allow grid items to shrink below their minimum content size */
-}
+	min-width: 0;
+} */

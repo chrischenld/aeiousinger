@@ -7,7 +7,7 @@ const containerVariants = {
 	},
 	visible: {
 		scaleY: 1,
-		backgroundColor: "var(--bg)",
+		backgroundColor: "var(--bg-strong)",
 		transition: {
 			scaleY: {
 				duration: 0.35,
@@ -77,7 +77,7 @@ export default function Tooltip({
 }: TooltipProps) {
 	return (
 		<motion.div
-			className="grid grid-cols-subgrid col-span-full bg-bg border-b border-border pt-3 pb-6"
+			className="grid grid-cols-subgrid col-span-full bg-bg-strong border-b border-border pt-3 pb-6"
 			variants={containerVariants}
 			initial="hidden"
 			animate="visible"
