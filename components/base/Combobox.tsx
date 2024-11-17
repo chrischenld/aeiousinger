@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Command } from "cmdk";
 import { Check, ChevronsUpDown, Search } from "lucide-react";
 
 interface ComboboxProps {
@@ -23,170 +24,114 @@ export default function Combobox({
 	onChange,
 }: ComboboxProps) {
 	const [open, setOpen] = React.useState(false);
-	const [selectedValue, setSelectedValue] = React.useState(value);
-	const [searchQuery, setSearchQuery] = React.useState("");
-	const [highlightedIndex, setHighlightedIndex] = React.useState<number>(0);
-	const containerRef = React.useRef<HTMLDivElement>(null);
-	const searchInputRef = React.useRef<HTMLInputElement>(null);
+	const [search, setSearch] = React.useState("");
+	const inputRef = React.useRef<HTMLInputElement>(null);
+	const listRef = React.useRef<HTMLDivElement>(null);
 
-	const filteredOptions = options.filter((option) =>
-		option.label.toLowerCase().includes(searchQuery.toLowerCase())
-	);
-
-	// Only reset highlighted index when opening or when search query changes
-	React.useEffect(() => {
-		if (searchQuery !== "") {
-			setHighlightedIndex(0);
-		}
-	}, [searchQuery]);
-
-	// Focus search input when opening
+	// Focus management
 	React.useEffect(() => {
 		if (open) {
-			setTimeout(() => {
-				searchInputRef.current?.focus();
-				setHighlightedIndex(0);
+			// Use a small timeout to ensure the input is mounted
+			const timeout = setTimeout(() => {
+				inputRef.current?.focus();
 			}, 0);
+			return () => clearTimeout(timeout);
 		}
 	}, [open]);
 
-	// Close dropdown when clicking outside
-	React.useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				containerRef.current &&
-				!containerRef.current.contains(event.target as Node)
-			) {
-				setOpen(false);
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => document.removeEventListener("mousedown", handleClickOutside);
-	}, []);
-
-	// Add keyboard handler
+	// Handle keyboard events at the top level
 	const handleKeyDown = (e: React.KeyboardEvent) => {
-		if (!open) {
-			switch (e.key) {
-				case "Enter":
-				case "ArrowDown":
-					setOpen(true);
-					e.preventDefault();
-					break;
-			}
-			return;
-		}
-
-		switch (e.key) {
-			case "ArrowDown":
-				e.preventDefault();
-				setHighlightedIndex((prev) =>
-					prev < filteredOptions.length - 1 ? prev + 1 : prev
-				);
-				break;
-			case "ArrowUp":
-				e.preventDefault();
-				setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : prev));
-				break;
-			case "Enter":
-				e.preventDefault();
-				if (filteredOptions.length > 0) {
-					const selectedOption = filteredOptions[highlightedIndex];
-					setSelectedValue(selectedOption.value);
-					onChange?.(selectedOption.value);
-					setOpen(false);
-					setSearchQuery("");
-				}
-				break;
-			case "Escape":
-				setOpen(false);
-				break;
+		if (!open && (e.key === "Enter" || e.key === "ArrowDown")) {
+			setOpen(true);
+			e.preventDefault();
 		}
 	};
 
 	return (
 		<div
-			ref={containerRef}
 			className={`w-48 ${className}`}
 			onKeyDown={handleKeyDown}
+			role="combobox"
+			aria-expanded={open}
+			aria-haspopup="listbox"
 		>
 			<button
 				onClick={() => setOpen(!open)}
-				onKeyDown={handleKeyDown}
-				className={`w-full flex h-10 items-center justify-between rounded-[0.125rem] border border-border-light bg-bg px-3 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-fg-xlight focus:ring-ring`}
+				aria-label={`${placeholder}, ${
+					value
+						? options.find((opt) => opt.value === value)?.label
+						: "no selection"
+				}`}
+				className="w-full flex h-10 items-center justify-between rounded-[0.125rem] border border-border-light bg-bg px-2 text-sm"
 			>
-				{selectedValue
-					? options.find((option) => option.value === selectedValue)?.label
+				{value
+					? options.find((option) => option.value === value)?.label
 					: placeholder}
 				<ChevronsUpDown className="h-4 w-4" />
 			</button>
+
 			{open && (
-				<div className="absolute w-48 mt-1 border border-border-light bg-bg shadow-lg z-10 rounded-[0.125rem]">
-					<div className="h-10 z-20 border-b border-border-light focus-within:outline-none">
-						<div className="h-full flex items-center">
-							<input
-								ref={searchInputRef}
-								type="text"
-								placeholder={searchPlaceholder}
-								value={searchQuery}
-								onChange={(e) => setSearchQuery(e.target.value)}
-								onKeyDown={(e) => {
-									if (e.key === "Escape") {
-										setOpen(false);
-										e.stopPropagation();
-									}
-								}}
-								className="w-full h-full px-2 py-2 bg-bg focus:outline-none placeholder:text-fg-xlight"
-							/>
-							<div className="flex items-center justify-center h-full px-2 bg-bg-strong border-l border-border-light rounded-tr-[0.125rem] text-fg-xlight">
-								<Search className="h-4 w-4" />
-							</div>
+				<Command
+					className="absolute w-48 mt-1 border border-border-light bg-bg shadow-lg z-10 rounded-[0.125rem] overflow-hidden focus:outline-none"
+					shouldFilter={false}
+				>
+					<div className="flex items-center justify-between h-10 border-b border-border-light">
+						<Command.Input
+							ref={inputRef}
+							value={search}
+							onValueChange={setSearch}
+							placeholder={searchPlaceholder}
+							aria-label={searchPlaceholder}
+							className="w-full h-full px-2 py-2 bg-bg focus:outline-none placeholder:text-fg-xlight"
+						/>
+						<div className="flex items-center justify-center p-2 h-full text-fg-xlight bg-bg-strong border-l border-border-light">
+							<Search className="h-4 w-4" />
 						</div>
 					</div>
-					{filteredOptions.length > 0 ? (
-						<ul
-							role="listbox"
-							className="max-h-60 w-full overflow-auto text-sm text-fg-xlight"
-						>
-							{filteredOptions.map((option, index) => (
-								<li
+
+					<Command.List
+						ref={listRef}
+						className="max-h-64 overflow-auto focus:outline-none"
+						role="listbox"
+						aria-label={`${placeholder} options`}
+					>
+						{options
+							.filter((option) =>
+								option.label.toLowerCase().includes(search.toLowerCase())
+							)
+							.map((option) => (
+								<Command.Item
 									key={option.value}
+									value={option.value}
+									onSelect={() => {
+										onChange?.(option.value);
+										setOpen(false);
+										setSearch("");
+									}}
+									className="w-full h-10 flex items-center justify-between p-2 text-sm text-fg-xlight cursor-default select-none data-[selected=true]:bg-bg-strong data-[selected=true]:text-fg"
 									role="option"
-									aria-selected={selectedValue === option.value}
-									onMouseEnter={() => setHighlightedIndex(index)}
-									className={`w-full select-none ${
-										highlightedIndex === index
-											? "bg-bg-strong text-fg hover:bg-bg-strong hover:text-fg hover:cursor-default"
-											: ""
-									}`}
+									aria-selected={value === option.value}
 								>
-									<div
-										onClick={() => {
-											setSelectedValue(option.value);
-											onChange?.(option.value);
-											setOpen(false);
-											setSearchQuery("");
-										}}
-										className="w-full flex items-center justify-between p-2 cursor-default"
-									>
-										{option.label}
-										<Check
-											className={`h-4 w-4 ${
-												selectedValue === option.value
-													? "opacity-100"
-													: "opacity-0"
-											}`}
-										/>
-									</div>
-								</li>
+									<span>{option.label}</span>
+									{value === option.value && (
+										<Check className="h-4 w-4" aria-hidden="true" />
+									)}
+								</Command.Item>
 							))}
-						</ul>
-					) : (
-						<div className="flex items-center h-10 p-2 text-sm text-fg-light">
-							{emptyMessage}
-						</div>
-					)}
-				</div>
+
+						{search &&
+							!options.filter((option) =>
+								option.label.toLowerCase().includes(search.toLowerCase())
+							).length && (
+								<Command.Empty
+									className="p-2 text-sm text-fg-light"
+									role="status"
+								>
+									{emptyMessage}
+								</Command.Empty>
+							)}
+					</Command.List>
+				</Command>
 			)}
 		</div>
 	);
