@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Command } from "cmdk";
-import { Check, ChevronsUpDown, Search } from "lucide-react";
+import { Check, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 interface ComboboxProps {
 	options: { value: string; label: string }[];
@@ -37,7 +37,7 @@ export default function Combobox({
 	const [search, setSearch] = React.useState("");
 	const inputRef = React.useRef<HTMLInputElement>(null);
 	const containerRef = React.useRef<HTMLDivElement>(null);
-	const listRef = React.useRef<HTMLDivElement>(null);
+	// const listRef = React.useRef<HTMLDivElement>(null);
 
 	// Focus management
 	React.useEffect(() => {
