@@ -2,6 +2,7 @@
 
 import { useTheme } from "@/app/providers/ThemeProvider";
 import localFont from "next/font/local";
+import { SunMoon } from "lucide-react";
 
 const geistMono = localFont({
 	src: "../../app/fonts/GeistMonoVF.woff",
@@ -20,17 +21,19 @@ export default function Header() {
 
 	return (
 		<header
-			className={`h-fit grid grid-cols-subgrid col-span-full border-b border-border items-center py-6 ${geistMono.className}`}
+			className={`h-16 grid grid-cols-subgrid col-span-full border-b border-border items-center ${geistMono.className}`}
 		>
-			<h1 className="col-span-4 text-sm font-bold text-fg-muted px-3">
+			<h1 className="h-full grid col-span-4 text-sm font-bold text-fg-muted px-3 items-center ">
 				aeiousinger
 			</h1>
-			<button
-				onClick={toggleTheme}
-				className="col-end-9 md:col-end-20 p-0 text-sm hover:underline"
-			>
-				{theme === "system" ? "system" : theme}
-			</button>
+			<div className="h-full grid grid-cols-subgrid col-span-1 col-end-9 md:col-end-20 border-l border-border items-center">
+				<button
+					onClick={toggleTheme}
+					className="flex items-center justify-center w-full h-full col-end-9 md:col-end-20 p-0 text-sm hover:underline"
+				>
+					<SunMoon />
+				</button>
+			</div>
 		</header>
 	);
 }
