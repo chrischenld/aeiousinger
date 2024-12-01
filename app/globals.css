@@ -10,6 +10,7 @@
 	--fg: theme("colors.gray.12");
 	--fg-light: theme("colors.gray.11");
 	--fg-xlight: theme("colors.gray.10");
+	--border-2xlight: theme("colors.gray.3");
 	--border-xlight: theme("colors.gray.4");
 	--border-light: theme("colors.gray.5");
 	--border: theme("colors.gray.6");
@@ -24,6 +25,7 @@
 	--fg: theme("colors.grayDark.12");
 	--fg-light: theme("colors.grayDark.11");
 	--fg-xlight: theme("colors.grayDark.10");
+	--border-2xlight: theme("colors.grayDark.3");
 	--border-xlight: theme("colors.grayDark.4");
 	--border-light: theme("colors.grayDark.5");
 	--border: theme("colors.grayDark.6");

@@ -52,6 +52,7 @@ const config: Config = {
 				fg: "var(--fg)",
 				"fg-light": "var(--fg-light)",
 				"fg-xlight": "var(--fg-xlight)",
+				"border-2xlight": "var(--border-2xlight)",
 				"border-xlight": "var(--border-xlight)",
 				"border-light": "var(--border-light)",
 				border: "var(--border)",

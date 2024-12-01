@@ -26,7 +26,7 @@ const animationVariants = {
 
 export default function Combobox({
 	options,
-	placeholder = "Select option",
+	placeholder = "--",
 	searchPlaceholder = "Search",
 	emptyMessage = "No option found",
 	className,
@@ -94,7 +94,7 @@ export default function Combobox({
 	return (
 		<div
 			ref={containerRef}
-			className={`w-48 ${className}`}
+			className={`w-full ${className}`}
 			onKeyDown={handleKeyDown}
 			onBlur={handleBlur}
 			role="combobox"
@@ -108,7 +108,7 @@ export default function Combobox({
 						? options.find((opt) => opt.value === value)?.label
 						: "no selection"
 				}`}
-				className="w-full flex h-10 items-center justify-between rounded-[0.125rem] border border-border-light bg-bg px-2 text-sm"
+				className="w-full h-10 items-center justify-between rounded-[0.125rem] border border-border-light bg-bg text-sm"
 			>
 				{value
 					? options.find((option) => option.value === value)?.label
@@ -124,9 +124,10 @@ export default function Combobox({
 						animate="visible"
 						exit="exit"
 						transition={animationVariants.transition}
+						className="absolute z-[100]"
 					>
 						<Command
-							className="absolute w-48 mt-1 border border-border-light bg-bg shadow-lg z-10 rounded-[0.125rem] overflow-hidden focus:outline-none"
+							className="w-48 mt-1 border border-border-light bg-bg shadow-lg rounded-[0.125rem] overflow-hidden focus:outline-none"
 							shouldFilter={false}
 						>
 							<div className="flex items-center justify-between h-10 border-b border-border-light">

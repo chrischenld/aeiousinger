@@ -18,8 +18,8 @@ interface DoubleComboboxProps {
 export default function DoubleCombobox({
 	firstOptions,
 	secondOptions,
-	firstPlaceholder = "--",
-	secondPlaceholder = "--",
+	firstPlaceholder = "-",
+	secondPlaceholder = "-",
 	className,
 	firstValue = "",
 	secondValue = "",
@@ -28,9 +28,9 @@ export default function DoubleCombobox({
 }: DoubleComboboxProps) {
 	return (
 		<div
-			className={`w-32 h-fit border border-border-light rounded-[0.125rem] ${className}`}
+			className={`w-full h-fit border border-border-light rounded-[0.125rem] relative ${className}`}
 		>
-			<div className="flex h-10 relative">
+			<div className="flex h-10 ">
 				<Combobox
 					options={firstOptions}
 					value={firstValue}
