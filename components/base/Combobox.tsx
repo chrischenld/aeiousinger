@@ -108,7 +108,7 @@ export default function Combobox({
 						? options.find((opt) => opt.value === value)?.label
 						: "no selection"
 				}`}
-				className="w-full h-10 items-center justify-between rounded-[0.125rem] border border-border-light bg-bg text-sm"
+				className="w-full h-10 items-center justify-between rounded-[0.125rem] border border-border-light bg-bg text-sm truncate px-2"
 			>
 				{value
 					? options.find((option) => option.value === value)?.label

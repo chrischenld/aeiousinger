@@ -1,21 +1,55 @@
 "use client";
 
-import GraphemeBlock from "../base/GraphemeBlock";
+import ReferenceBlock from "../base/ReferenceBlock";
 import { useState, useEffect, useCallback, useRef } from "react";
 import Tooltip from "../base/Tooltip";
 import { AnimatePresence } from "framer-motion";
-import { graphemeContent } from "@/data/graphemeContent";
+import { graphemeContent, graphemeSections } from "@/data/graphemeContent";
+import { pitchContent, pitchSections } from "@/data/pitchContent";
+import { timeContent, timeSections } from "@/data/timeContent";
+import Select from "../base/Select";
 
-type GraphemeSection = {
+type ContentSection = {
 	title: string;
 	items: string[];
 };
 
-export default function GraphemeGrid({
-	sections,
-}: {
-	sections: readonly GraphemeSection[];
-}) {
+type ContentType = {
+	sections: ContentSection[];
+	content: Record<
+		string,
+		{
+			title: string;
+			description: string;
+			items: Record<
+				string,
+				{
+					title: string;
+					description: string;
+					examples?: string[];
+					related?: string[];
+				}
+			>;
+		}
+	>;
+};
+
+const contentMap: Record<string, ContentType> = {
+	phoneme: {
+		sections: graphemeSections,
+		content: graphemeContent,
+	},
+	pitch: {
+		sections: pitchSections,
+		content: pitchContent,
+	},
+	duration: {
+		sections: timeSections,
+		content: timeContent,
+	},
+};
+
+export default function ReferenceGrid() {
 	const [selected, setSelected] = useState<string | null>(null);
 	const [selectedPosition, setSelectedPosition] = useState<{
 		section: number;
@@ -25,6 +59,8 @@ export default function GraphemeGrid({
 	const [tooltipKey, setTooltipKey] = useState(0);
 	const [colCount, setColCount] = useState(6);
 	const gridRef = useRef<HTMLDivElement>(null);
+
+	const [selectedOption, setSelectedOption] = useState("phoneme");
 
 	useEffect(() => {
 		const updateColCount = () => {
@@ -95,22 +131,26 @@ export default function GraphemeGrid({
 		return rows;
 	};
 
-	const getGraphemeContent = (grapheme: string, sectionTitle: string) => {
+	const getContent = (item: string, sectionTitle: string) => {
 		const sectionKey = sectionTitle.toLowerCase();
 		return (
-			graphemeContent[sectionKey]?.items[grapheme] || {
-				title: grapheme,
-				description: `Information about "${grapheme}"`,
+			contentMap[selectedOption].content[sectionKey]?.items[item] || {
+				title: item,
+				description: `Information about "${item}"`,
 			}
 		);
 	};
 
-	const findGraphemePosition = (
-		grapheme: string
+	const findItemPosition = (
+		item: string
 	): { section: number; row: number } | null => {
-		for (let sectionIndex = 0; sectionIndex < sections.length; sectionIndex++) {
-			const items = sections[sectionIndex].items;
-			const itemIndex = items.indexOf(grapheme);
+		for (
+			let sectionIndex = 0;
+			sectionIndex < contentMap[selectedOption].sections.length;
+			sectionIndex++
+		) {
+			const items = contentMap[selectedOption].sections[sectionIndex].items;
+			const itemIndex = items.indexOf(item);
 			if (itemIndex !== -1) {
 				return {
 					section: sectionIndex,
@@ -158,30 +198,31 @@ export default function GraphemeGrid({
 		});
 	}, []);
 
-	const handleRelatedClick = (grapheme: string) => {
-		const position = findGraphemePosition(grapheme);
+	const handleRelatedClick = (item: string) => {
+		const position = findItemPosition(item);
 		if (position) {
-			handleSelect(grapheme, position.section, position.row);
-			// Add scroll after selection
+			handleSelect(item, position.section, position.row);
 			scrollToRow(position.section, position.row);
 		}
 	};
 
-	const renderSection = (section: GraphemeSection, sectionIndex: number) => {
+	const renderSection = (section: ContentSection, sectionIndex: number) => {
 		const rows = createRows(section.items);
 
 		return (
 			<div key={`section-${sectionIndex}`} className="contents">
-				<div className="grid grid-cols-subgrid col-span-full border-b border-border items-center py-6 px-3">
-					<h3 className="text-sm font-bold">{section.title}</h3>
+				<div className="grid grid-cols-subgrid col-span-full border-b border-border h-[72px]">
+					<div className="flex items-center px-3">
+						<h3 className="text-sm font-bold">{section.title}</h3>
+					</div>
 				</div>
 				{rows.map((row, rowIndex) => (
 					<div
 						key={`${section.title}-row-${rowIndex}`}
-						className="grid grid-cols-subgrid col-span-full"
+						className="grid grid-cols-subgrid col-span-full h-fit"
 					>
 						{row.map((grapheme, i) => (
-							<GraphemeBlock
+							<ReferenceBlock
 								key={`${section.title}-${grapheme || "empty"}-${i}`}
 								selectable={!!grapheme}
 								onClick={() =>
@@ -192,10 +233,10 @@ export default function GraphemeGrid({
 									selectedPosition?.section === sectionIndex &&
 									selectedPosition?.row === rowIndex
 								}
-								className="transition-[border-bottom-color] duration-300"
+								className=""
 							>
 								{grapheme}
-							</GraphemeBlock>
+							</ReferenceBlock>
 						))}
 						<AnimatePresence mode="wait">
 							{selected &&
@@ -203,7 +244,7 @@ export default function GraphemeGrid({
 								selectedPosition?.row === rowIndex && (
 									<Tooltip
 										key={`tooltip-${selected}-${sectionIndex}-${rowIndex}-${tooltipKey}`}
-										content={getGraphemeContent(selected, section.title)}
+										content={getContent(selected, section.title)}
 										onAnimationStart={() => setIsAnimating(true)}
 										onAnimationComplete={() => setIsAnimating(false)}
 										onRelatedClick={handleRelatedClick}
@@ -220,9 +261,27 @@ export default function GraphemeGrid({
 		<div
 			ref={gridRef}
 			tabIndex={-1}
-			className="grid grid-cols-subgrid col-span-6 md:col-span-5 border-l border-b border-border h-full overflow-y-auto"
+			className="grid grid-cols-subgrid col-span-6 md:col-span-5 border-l border-b border-border h-full overflow-y-auto grid-rows-[auto_1fr]"
 		>
-			{sections.map((section, index) => renderSection(section, index))}
+			<div className="h-16 grid grid-cols-subgrid col-span-full border-b border-border items-center">
+				<Select
+					options={[
+						{ value: "pitch", label: "Pitch" },
+						{ value: "duration", label: "Duration" },
+						{ value: "phoneme", label: "Phoneme" },
+					]}
+					value={selectedOption}
+					onChange={setSelectedOption}
+				/>
+			</div>
+			<div className="grid grid-cols-subgrid col-span-full grid-rows-[auto_1fr]">
+				<div className="grid grid-cols-subgrid col-span-full">
+					{contentMap[selectedOption].sections.map((section, index) =>
+						renderSection(section, index)
+					)}
+				</div>
+				<div className="grid grid-cols-subgrid col-span-full min-h-0 flex-1" />
+			</div>
 		</div>
 	);
 }

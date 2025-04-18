@@ -63,6 +63,7 @@ const config: Config = {
 				25: "25",
 			},
 			gridColumn: {
+				"span-18": "span 18 / span 18",
 				"span-19": "span 19 / span 19",
 				"span-21": "span 21 / span 21",
 			},
