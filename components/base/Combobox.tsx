@@ -97,7 +97,7 @@ export default function Combobox({
 			className={`w-full ${className}`}
 			onKeyDown={handleKeyDown}
 			onBlur={handleBlur}
-			role="combobox"
+			// role="combobox"
 			aria-expanded={open}
 			aria-haspopup="listbox"
 		>
