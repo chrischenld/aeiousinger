@@ -124,10 +124,10 @@ export default function Combobox({
 						animate="visible"
 						exit="exit"
 						transition={animationVariants.transition}
-						className="absolute z-[100]"
+						className="absolute z-100"
 					>
 						<Command
-							className="w-48 mt-1 border border-border-light bg-bg shadow-lg rounded-[0.125rem] overflow-hidden focus:outline-none"
+							className="w-48 mt-1 border border-border-light bg-bg shadow-lg rounded-[0.125rem] overflow-hidden focus:outline-hidden"
 							shouldFilter={false}
 						>
 							<div className="flex items-center justify-between h-10 border-b border-border-light">
@@ -137,7 +137,7 @@ export default function Combobox({
 									onValueChange={setSearch}
 									placeholder={searchPlaceholder}
 									aria-label={searchPlaceholder}
-									className="w-full h-full px-2 py-2 bg-bg focus:outline-none placeholder:text-fg-xlight"
+									className="w-full h-full px-2 py-2 bg-bg focus:outline-hidden placeholder:text-fg-xlight"
 								/>
 								<div className="flex items-center justify-center p-2 h-full text-fg-xlight bg-bg-strong border-l border-border-light">
 									<Search className="h-4 w-4" />
@@ -145,7 +145,7 @@ export default function Combobox({
 							</div>
 
 							<Command.List
-								className="max-h-64 overflow-auto focus:outline-none"
+								className="max-h-64 overflow-auto focus:outline-hidden"
 								role="listbox"
 								aria-label={`${placeholder} options`}
 							>

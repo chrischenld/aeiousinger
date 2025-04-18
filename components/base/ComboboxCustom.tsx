@@ -122,7 +122,7 @@ export default function ComboboxCustom({
 			</button>
 			{open && (
 				<div className="absolute w-48 mt-1 border border-border-light bg-bg shadow-lg z-10 rounded-[0.125rem]">
-					<div className="h-10 z-20 border-b border-border-light focus-within:outline-none">
+					<div className="h-10 z-20 border-b border-border-light focus-within:outline-hidden">
 						<div className="h-full flex items-center">
 							<input
 								ref={searchInputRef}
@@ -136,7 +136,7 @@ export default function ComboboxCustom({
 										e.stopPropagation();
 									}
 								}}
-								className="w-full h-full px-2 py-2 bg-bg focus:outline-none placeholder:text-fg-xlight"
+								className="w-full h-full px-2 py-2 bg-bg focus:outline-hidden placeholder:text-fg-xlight"
 							/>
 							<div className="flex items-center justify-center h-full px-2 bg-bg-strong border-l border-border-light rounded-tr-[0.125rem] text-fg-xlight">
 								<Search className="h-4 w-4" />

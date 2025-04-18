@@ -94,11 +94,11 @@ export default function Select({
 						animate="visible"
 						exit="exit"
 						transition={animationVariants.transition}
-						className="absolute z-[100]"
+						className="absolute z-100"
 					>
-						<Command className="w-48 mt-1 border border-border-light bg-bg shadow-lg rounded-[0.125rem] overflow-hidden focus:outline-none">
+						<Command className="w-48 mt-1 border border-border-light bg-bg shadow-lg rounded-[0.125rem] overflow-hidden focus:outline-hidden">
 							<Command.List
-								className="max-h-64 overflow-auto focus:outline-none"
+								className="max-h-64 overflow-auto focus:outline-hidden"
 								role="listbox"
 								aria-label={`${placeholder} options`}
 							>
