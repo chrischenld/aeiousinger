@@ -1,6 +1,6 @@
-import ReferenceGrid from "@/components/sections/ReferenceGrid";
-import Canvas from "@/components/sections/Canvas";
-import Header from "@/components/compositions/Header";
+import ReferenceGrid from "@/app/mk1/components/sections/ReferenceGrid";
+import Canvas from "@/app/mk1/components/sections/Canvas";
+import Header from "@/app/mk1/components/compositions/Header";
 
 export default function Home() {
 	return (

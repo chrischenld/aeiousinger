@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useState } from "react";
 import Combobox from "../base/Combobox";
-import DoubleCombobox from "../compositions/DoubleCombobox";
+import DoubleCombobox from "./DoubleCombobox";
 import { graphemeContent } from "@/data/graphemeContent";
 import { timeContent } from "@/data/timeContent";
 import { pitchContent } from "@/data/pitchContent";

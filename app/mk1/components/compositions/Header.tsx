@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
 import { useTheme } from "@/app/providers/ThemeProvider";
 import localFont from "next/font/local";
 import { SunMoon } from "lucide-react";
-import Select from "../base/Select";
+// import Select from "../base/Select";
 
 const geistMono = localFont({
 	src: "../../app/fonts/GeistMonoVF.woff",
