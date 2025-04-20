@@ -47,8 +47,8 @@ export default function Home() {
 		<div className="GridLayout h-screen overflow-hidden">
 			<main className="grid grid-cols-subgrid col-span-full h-screen">
 				<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-18 h-screen">
-					<div className="p-4 border-sandDark-5 border-b flex justify-between items-center col-span-full">
-						<h1 className="text-xs font-bold">Note Editor (Sidebar)</h1>
+					<div className="h-[60px] px-4 border-[var(--sandDark-5)] border-b flex justify-between items-center col-span-full">
+						<h1 className="text-xs font-bold">aeiousinger</h1>
 						<Link href="/floating" className="text-xs hover:underline">
 							floating
 						</Link>

@@ -14,6 +14,12 @@ const geistMono = localFont({
 	weight: "100 900",
 });
 
+const fragmentMono = localFont({
+	src: "./fonts/FragmentMonoRegular.woff2",
+	variable: "--font-fragment-mono",
+	weight: "400",
+});
+
 export const metadata: Metadata = {
 	title: "aeiousinger",
 	description: "aeiousinger",
@@ -27,7 +33,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${geistMono.variable} ${geistSans.variable} antialiased h-screen overflow-hidden`}
+				className={`${fragmentMono.variable} ${geistMono.variable} ${geistSans.variable} antialiased h-screen overflow-hidden`}
 			>
 				<ThemeProvider>{children}</ThemeProvider>
 			</body>

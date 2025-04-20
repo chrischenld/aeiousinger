@@ -1,35 +1,72 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+	--gray-1: #fcfcfc;
+	--gray-2: #f9f9f9;
+	--gray-3: #f0f0f0;
+	--gray-4: #e8e8e8;
+	--gray-5: #e0e0e0;
+	--gray-6: #d9d9d9;
+	--gray-7: #cecece;
+	--gray-8: #bbbbbb;
+	--gray-9: #8d8d8d;
+	--gray-10: #838383;
+	--gray-11: #646464;
+	--gray-12: #202020;
+	--grayDark-1: #111111;
+	--grayDark-2: #191919;
+	--grayDark-3: #222222;
+	--grayDark-4: #2a2a2a;
+	--grayDark-5: #313131;
+	--grayDark-6: #3a3a3a;
+	--grayDark-7: #484848;
+	--grayDark-8: #606060;
+	--grayDark-9: #6e6e6e;
+	--grayDark-10: #7b7b7b;
+	--grayDark-11: #b4b4b4;
+	--grayDark-12: #eeeeee;
+	--sandDark-1: #111110;
+	--sandDark-2: #191918;
+	--sandDark-3: #222221;
+	--sandDark-4: #2a2a28;
+	--sandDark-5: #31312e;
+	--sandDark-6: #3b3a37;
+	--sandDark-7: #494844;
+	--sandDark-8: #62605b;
+	--sandDark-9: #6f6d66;
+	--sandDark-10: #7c7b74;
+	--sandDark-11: #b5b3ad;
+	--sandDark-12: #eeeeec;
+}
 
 :root {
 	--bg-rgb: 252, 252, 252;
-	--bg: theme("colors.gray.1");
-	--bg-strong: theme("colors.gray.2");
-	--bg-xstrong: theme("colors.gray.3");
-	--fg: theme("colors.gray.12");
-	--fg-light: theme("colors.gray.11");
-	--fg-xlight: theme("colors.gray.10");
-	--border-2xlight: theme("colors.gray.3");
-	--border-xlight: theme("colors.gray.4");
-	--border-light: theme("colors.gray.5");
-	--border: theme("colors.gray.6");
-	--border-strong: theme("colors.gray.8");
+	--bg: var(--gray-1);
+	--bg-strong: var(--gray-2);
+	--bg-xstrong: var(--gray-3);
+	--fg: var(--grayDark-12);
+	--fg-light: var(--grayDark-11);
+	--fg-xlight: var(--grayDark-10);
+	--border-2xlight: var(--gray-3);
+	--border-xlight: var(--gray-4);
+	--border-light: var(--gray-5);
+	--border: var(--gray-6);
+	--border-strong: var(--gray-7);
 }
 
 .dark {
-	--bg: theme("colors.grayDark.1");
 	--bg-rgb: 17, 17, 17;
-	--bg-strong: theme("colors.grayDark.2");
-	--bg-xstrong: theme("colors.grayDark.3");
-	--fg: theme("colors.grayDark.12");
-	--fg-light: theme("colors.grayDark.11");
-	--fg-xlight: theme("colors.grayDark.10");
-	--border-2xlight: theme("colors.grayDark.3");
-	--border-xlight: theme("colors.grayDark.4");
-	--border-light: theme("colors.grayDark.5");
-	--border: theme("colors.grayDark.6");
-	--border-strong: theme("colors.grayDark.8");
+	--bg: #111111;
+	--bg-strong: #191919;
+	--bg-xstrong: #222222;
+	--fg: #eeeeee;
+	--fg-light: #b4b4b4;
+	--fg-xlight: #7b7b7b;
+	--border-2xlight: #222222;
+	--border-xlight: #2a2a2a;
+	--border-light: #313131;
+	--border: #3a3a3a;
+	--border-strong: #606060;
 }
 
 *,
@@ -39,9 +76,9 @@
 }
 
 body {
-	color: var(--fg);
-	background: var(--bg);
-	font-family: var(--font-geist-mono);
+	color: var(--sandDark-11);
+	background: var(--sandDark-1);
+	font-family: var(--font-fragment-mono), var(--font-geist-mono);
 }
 
 .GridLayout {

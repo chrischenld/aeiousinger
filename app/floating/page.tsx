@@ -60,26 +60,28 @@ export default function FloatingMenuPage() {
 		<div className="GridLayout h-screen overflow-hidden">
 			<main className="grid grid-cols-subgrid col-span-full h-screen">
 				<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full h-screen">
-					<div className="p-4 border-b flex justify-between items-center col-span-full">
-						<h1 className="text-xs">Note Editor (Floating Menu)</h1>
-						<Link href="/" className="text-blue-500 hover:underline">
-							Switch to Sidebar Version
+					<div className="p-4 border-[var(--sandDark-5)] border-b flex justify-between items-center col-span-full">
+						<h1 className="text-xs">aeiousinger</h1>
+						<Link href="/" className="text-xs hover:underline">
+							sidebar
 						</Link>
 					</div>
 					<div
-						className="p-4 overflow-y-auto"
+						className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full overflow-y-auto py-12"
 						role="application"
 						aria-label="Song Editor"
 					>
-						<div className="flex flex-wrap gap-2">
+						<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full">
 							{notes.map((note) => (
 								<div
+									className="col-span-1"
 									key={note.id}
 									ref={(el) => {
 										blockRefs.current[note.id] = el;
 									}}
 								>
 									<Block
+										className="w-full"
 										duration={note.duration}
 										pitch={note.pitch}
 										phoneme1={note.phoneme1}
@@ -90,8 +92,6 @@ export default function FloatingMenuPage() {
 								</div>
 							))}
 						</div>
-
-						{/* Floating Menu */}
 						<FloatingMenu
 							selectedBlock={selectedNote}
 							onValueChange={handleValueChange}
