@@ -4,14 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Block } from "./components/Block";
 import { SidebarMenu } from "./components/SidebarMenu";
-
-interface Note {
-	id: string;
-	duration: number;
-	pitch: number;
-	phoneme1: string;
-	phoneme2: string;
-}
+import { NoteField, NoteValue, Note } from "./components/NoteMenuComponents";
 
 export default function Home() {
 	const [notes, setNotes] = useState<Note[]>([
@@ -20,6 +13,7 @@ export default function Home() {
 		{ id: "note3", duration: 8, pitch: 3, phoneme1: "o", phoneme2: "" },
 	]);
 	const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
+	const [activeTab, setActiveTab] = useState<NoteField>("duration");
 
 	const selectedNote = notes.find((note) => note.id === selectedNoteId) || null;
 
@@ -33,14 +27,18 @@ export default function Home() {
 
 	const handleValueChange = (
 		id: string,
-		field: "duration" | "pitch" | "phoneme1" | "phoneme2",
-		value: number | string
+		field: NoteField,
+		value: NoteValue
 	) => {
 		setNotes((prevNotes) =>
 			prevNotes.map((note) =>
 				note.id === id ? { ...note, [field]: value } : note
 			)
 		);
+	};
+
+	const handleTabChange = (tab: NoteField) => {
+		setActiveTab(tab);
 	};
 
 	return (
@@ -60,15 +58,19 @@ export default function Home() {
 					>
 						<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full">
 							{notes.map((note) => (
-								<Block
-									key={note.id}
-									duration={note.duration}
-									pitch={note.pitch}
-									phoneme1={note.phoneme1}
-									phoneme2={note.phoneme2}
-									isSelected={selectedNoteId === note.id}
-									onSelect={() => handleNoteSelect(note.id)}
-								/>
+								<div className="col-span-1 relative" key={note.id}>
+									<Block
+										duration={note.duration}
+										pitch={note.pitch}
+										phoneme1={note.phoneme1}
+										phoneme2={note.phoneme2}
+										isSelected={selectedNoteId === note.id}
+										onSelect={() => handleNoteSelect(note.id)}
+										activeTab={
+											selectedNoteId === note.id ? activeTab : undefined
+										}
+									/>
+								</div>
 							))}
 						</div>
 					</div>
@@ -77,6 +79,8 @@ export default function Home() {
 					<SidebarMenu
 						selectedBlock={selectedNote}
 						onValueChange={handleValueChange}
+						activeTab={activeTab}
+						onTabChange={handleTabChange}
 					/>
 				</div>
 			</main>

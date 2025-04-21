@@ -1,82 +1,31 @@
-import React, { useState } from "react";
-import { cn } from "@/lib/utils";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-
-type NoteField = "duration" | "pitch" | "phoneme1" | "phoneme2";
-type NoteValue = number | string;
-
-// Custom styled TabsTrigger to avoid style duplication
-const StyledTabsTrigger = ({
-	value,
-	children,
-	hasValue = false,
-}: {
-	value: string;
-	children: React.ReactNode;
-	hasValue?: boolean;
-}) => (
-	<TabsTrigger
-		value={value}
-		className={cn(
-			"flex text-xs cursor-pointer text-[var(--sandDark-10)] hover:text-[var(--sandDark-11)] hover:bg-[var(--sandDark-2)] transition-all duration-200 relative",
-			"data-[state=active]:bg-[var(--sandDark-3)] data-[state=active]:text-[var(--sandDark-12)] data-[state=active]:font-medium h-full p-0"
-		)}
-	>
-		<div className="flex items-center gap-1 px-2">
-			{children}
-			{hasValue && (
-				<span className="inline-block w-1 h-1 bg-[var(--sandDark-9)] rounded-full" />
-			)}
-		</div>
-	</TabsTrigger>
-);
-
-// Create a reusable component for the option buttons
-const OptionButton = ({
-	value,
-	isSelected,
-	onClick,
-}: {
-	value: string | number;
-	isSelected: boolean;
-	onClick: () => void;
-}) => (
-	<Button
-		key={value}
-		onClick={onClick}
-		className={cn(
-			"text-xs p-2 border rounded-none text-center cursor-pointer relative transition-all duration-150",
-			isSelected
-				? "bg-[var(--sandDark-3)] border-[var(--sandDark-12)] text-[var(--sandDark-12)] ring-1 ring-[var(--sandDark-7)] ring-inset"
-				: "border-[var(--sandDark-5)] hover:border-[var(--sandDark-6)] hover:bg-[var(--sandDark-1)]"
-		)}
-		variant="outline"
-	>
-		{/* {isSelected && (
-			<span className="absolute top-1/2 right-0 w-1 h-1 bg-[var(--sandDark-8)] rounded-full transform translate-x-1/2 -translate-y-1/2" />
-		)} */}
-		{value}
-	</Button>
-);
+import React from "react";
+import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
+import {
+	NoteField,
+	NoteValue,
+	Note,
+	StyledTabsTrigger,
+	OptionButton,
+	durations,
+	pitches,
+	vowelPhonemes,
+	consonantPhonemes,
+	getNextTab,
+} from "./NoteMenuComponents";
 
 interface SidebarMenuProps {
-	selectedBlock: {
-		id: string;
-		duration: number;
-		pitch: number;
-		phoneme1: string;
-		phoneme2: string;
-	} | null;
+	selectedBlock: Note | null;
 	onValueChange: (id: string, field: NoteField, value: NoteValue) => void;
+	activeTab: NoteField;
+	onTabChange: (tab: NoteField) => void;
 }
 
 export function SidebarMenu({
 	selectedBlock,
 	onValueChange,
+	activeTab,
+	onTabChange,
 }: SidebarMenuProps) {
-	const [activeTab, setActiveTab] = useState<NoteField>("duration");
-
 	if (!selectedBlock) {
 		return (
 			<div className="border-l border-[var(--sandDark-5)] flex items-center col-span-full">
@@ -89,46 +38,16 @@ export function SidebarMenu({
 
 	const handleValueChange = (field: NoteField, value: NoteValue) => {
 		onValueChange(selectedBlock.id, field, value);
-		if (field === "duration") {
-			setActiveTab("pitch");
-		} else if (field === "pitch") {
-			setActiveTab("phoneme1");
-		} else if (field === "phoneme1") {
-			setActiveTab("phoneme2");
-		}
+		onTabChange(getNextTab(field));
 	};
-
-	// Example values - these would be replaced with real options
-	const durations = [1, 2, 4, 8, 16];
-	const pitches = Array.from({ length: 16 }, (_, i) => i);
-	const vowelPhonemes = ["a", "e", "i", "o", "u"];
-	const consonantPhonemes = [
-		"b",
-		"d",
-		"f",
-		"g",
-		"h",
-		"k",
-		"l",
-		"m",
-		"n",
-		"p",
-		"r",
-		"s",
-		"t",
-		"v",
-		"w",
-		"y",
-		"z",
-	];
 
 	return (
 		<div className="flex flex-col col-span-full border-l border-[var(--sandDark-5)] border-b border-[var(--sandDark-5)]">
 			<Tabs
 				defaultValue="duration"
 				value={activeTab}
-				onValueChange={(value) => setActiveTab(value as NoteField)}
-				className="flex-1 flex flex-col"
+				onValueChange={(value) => onTabChange(value as NoteField)}
+				className="flex-1 flex flex-col gap-0"
 			>
 				<TabsList className="w-full text-xs h-[60px] bg-transparent flex justify-between border-b border-[var(--sandDark-5)]">
 					<StyledTabsTrigger
@@ -137,6 +56,7 @@ export function SidebarMenu({
 							selectedBlock.duration !== 0 &&
 							selectedBlock.duration !== undefined
 						}
+						isSidebar={true}
 					>
 						dur
 					</StyledTabsTrigger>
@@ -145,18 +65,21 @@ export function SidebarMenu({
 						hasValue={
 							selectedBlock.pitch !== 0 && selectedBlock.pitch !== undefined
 						}
+						isSidebar={true}
 					>
 						pitch
 					</StyledTabsTrigger>
 					<StyledTabsTrigger
 						value="phoneme1"
 						hasValue={selectedBlock.phoneme1 !== ""}
+						isSidebar={true}
 					>
 						ph1
 					</StyledTabsTrigger>
 					<StyledTabsTrigger
 						value="phoneme2"
 						hasValue={selectedBlock.phoneme2 !== ""}
+						isSidebar={true}
 					>
 						ph2
 					</StyledTabsTrigger>
@@ -173,6 +96,7 @@ export function SidebarMenu({
 								value={value}
 								isSelected={selectedBlock.duration === value}
 								onClick={() => handleValueChange("duration", value)}
+								isSidebar={true}
 							/>
 						))}
 					</div>
@@ -186,6 +110,7 @@ export function SidebarMenu({
 								value={value}
 								isSelected={selectedBlock.pitch === value}
 								onClick={() => handleValueChange("pitch", value)}
+								isSidebar={true}
 							/>
 						))}
 					</div>
@@ -202,6 +127,7 @@ export function SidebarMenu({
 								value={value}
 								isSelected={selectedBlock.phoneme1 === value}
 								onClick={() => handleValueChange("phoneme1", value)}
+								isSidebar={true}
 							/>
 						))}
 					</div>
@@ -218,6 +144,7 @@ export function SidebarMenu({
 								value={value}
 								isSelected={selectedBlock.phoneme2 === value}
 								onClick={() => handleValueChange("phoneme2", value)}
+								isSidebar={true}
 							/>
 						))}
 					</div>

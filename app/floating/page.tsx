@@ -4,14 +4,7 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { Block } from "../components/Block";
 import { FloatingMenu } from "../components/FloatingMenu";
-
-interface Note {
-	id: string;
-	duration: number;
-	pitch: number;
-	phoneme1: string;
-	phoneme2: string;
-}
+import { NoteField, NoteValue, Note } from "../components/NoteMenuComponents";
 
 export default function FloatingMenuPage() {
 	const [notes, setNotes] = useState<Note[]>([
@@ -21,6 +14,7 @@ export default function FloatingMenuPage() {
 	]);
 	const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
 	const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
+	const [activeTab, setActiveTab] = useState<NoteField>("duration");
 	const blockRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
 	const selectedNote = notes.find((note) => note.id === selectedNoteId) || null;
@@ -41,14 +35,18 @@ export default function FloatingMenuPage() {
 
 	const handleValueChange = (
 		id: string,
-		field: "duration" | "pitch" | "phoneme1" | "phoneme2",
-		value: number | string
+		field: NoteField,
+		value: NoteValue
 	) => {
 		setNotes((prevNotes) =>
 			prevNotes.map((note) =>
 				note.id === id ? { ...note, [field]: value } : note
 			)
 		);
+	};
+
+	const handleTabChange = (tab: NoteField) => {
+		setActiveTab(tab);
 	};
 
 	const handleCloseMenu = () => {
@@ -74,20 +72,22 @@ export default function FloatingMenuPage() {
 						<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full">
 							{notes.map((note) => (
 								<div
-									className="col-span-1"
+									className="col-span-1 relative"
 									key={note.id}
 									ref={(el) => {
 										blockRefs.current[note.id] = el;
 									}}
 								>
 									<Block
-										className="w-full"
 										duration={note.duration}
 										pitch={note.pitch}
 										phoneme1={note.phoneme1}
 										phoneme2={note.phoneme2}
 										isSelected={selectedNoteId === note.id}
 										onSelect={() => handleNoteSelect(note.id)}
+										activeTab={
+											selectedNoteId === note.id ? activeTab : undefined
+										}
 									/>
 								</div>
 							))}
@@ -97,6 +97,8 @@ export default function FloatingMenuPage() {
 							onValueChange={handleValueChange}
 							anchorRect={anchorRect}
 							onClose={handleCloseMenu}
+							activeTab={activeTab}
+							onTabChange={handleTabChange}
 						/>
 					</div>
 				</div>
