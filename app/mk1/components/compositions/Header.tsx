@@ -7,7 +7,7 @@ import { SunMoon } from "lucide-react";
 // import Select from "../base/Select";
 
 const geistMono = localFont({
-	src: "../../../app/fonts/GeistMonoVF.woff",
+	src: "@/app/fonts/GeistMonoVF.woff",
 	variable: "--font-geist-mono",
 	weight: "100 900",
 });
