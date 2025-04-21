@@ -6,11 +6,11 @@ import localFont from "next/font/local";
 import { SunMoon } from "lucide-react";
 // import Select from "../base/Select";
 
-const geistMono = localFont({
-	src: "@/app/fonts/GeistMonoVF.woff",
-	variable: "--font-geist-mono",
-	weight: "100 900",
-});
+// const geistMono = localFont({
+// 	src: "@/app/fonts/GeistMonoVF.woff",
+// 	variable: "--font-geist-mono",
+// 	weight: "100 900",
+// });
 
 export default function Header() {
 	const { theme, setTheme } = useTheme();
@@ -23,7 +23,7 @@ export default function Header() {
 
 	return (
 		<header
-			className={`h-16 grid grid-cols-subgrid col-span-full border-b border-border items-center ${geistMono.className}`}
+			className={`h-16 grid grid-cols-subgrid col-span-full border-b border-border items-center `}
 		>
 			<h1 className="h-full grid col-span-4 text-sm font-bold text-fg-muted px-3 items-center ">
 				aeiousinger
