@@ -150,17 +150,15 @@ export function isTabFilled(note: Note, field: NoteField): boolean {
 
 	switch (field) {
 		case "duration":
-			const durationResult = note.duration !== null;
-			return durationResult;
+			return note.duration !== null;
 		case "pitch":
-			const pitchResult = note.pitch !== null;
-			return pitchResult;
+			return note.pitch !== null;
 		case "phoneme1":
-			const phoneme1Result = !!note.phoneme1 && note.phoneme1.trim() !== "";
-			return phoneme1Result;
+			// Consider it filled only if it has a non-empty string
+			return note.phoneme1 !== undefined && note.phoneme1 !== "";
 		case "phoneme2":
-			const phoneme2Result = !!note.phoneme2 && note.phoneme2.trim() !== "";
-			return phoneme2Result;
+			// Consider it filled only if it has a non-empty string
+			return note.phoneme2 !== undefined && note.phoneme2 !== "";
 		default:
 			return false;
 	}
@@ -202,6 +200,7 @@ export function getNextUnfilledTab(
 		}
 	}
 
-	// If all tabs are filled, return duration as default
-	return "duration";
+	// If all tabs are filled, return the next tab in the sequence
+	const nextIndex = (currentIndex + 1) % fields.length;
+	return fields[nextIndex];
 }

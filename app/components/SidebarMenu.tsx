@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import {
 	NoteField,
@@ -9,6 +9,7 @@ import {
 	durations,
 	pitches,
 	phonemes,
+	getNextTab,
 	getNextUnfilledTab,
 	getFirstUnfilledTab,
 } from "./NoteMenuComponents";
@@ -32,15 +33,25 @@ export function SidebarMenu({
 	const pitchNav = useGridNavigation(pitches, 4);
 	const phoneme1Nav = useGridNavigation(phonemes, 4);
 	const phoneme2Nav = useGridNavigation(phonemes, 4);
+	// Track if we're in the middle of handling a tab change
+	const isChangingTab = useRef(false);
 
-	// Effect to determine the first unfilled tab when a block is selected
+	// Effect to determine the first unfilled tab ONLY when a block is initially selected
 	useEffect(() => {
 		if (selectedBlock) {
-			// Set the first unfilled tab as active
-			const firstUnfilledTab = getFirstUnfilledTab(selectedBlock);
-			onTabChange(firstUnfilledTab);
+			// Only set the first unfilled tab when a block is first selected
+			isChangingTab.current = true;
+			try {
+				const firstUnfilledTab = getFirstUnfilledTab(selectedBlock);
+				onTabChange(firstUnfilledTab);
+			} finally {
+				// Reset the flag regardless of success/failure
+				setTimeout(() => {
+					isChangingTab.current = false;
+				}, 0);
+			}
 		}
-	}, [selectedBlock, onTabChange]);
+	}, [selectedBlock?.id]); // Only run when the selected block ID changes
 
 	if (!selectedBlock) {
 		return (
@@ -53,17 +64,51 @@ export function SidebarMenu({
 	}
 
 	const handleValueChange = (field: NoteField, value: NoteValue) => {
+		// Check if the value is actually changing
+		let isValueChanged = false;
+
+		// Type-specific comparison logic
+		if (field === "duration" || field === "pitch") {
+			isValueChanged = selectedBlock[field] !== value;
+		} else {
+			// For phonemes, handle empty string comparison correctly
+			isValueChanged = String(selectedBlock[field]) !== String(value);
+		}
+
 		// Create the updated note
 		const updatedNote = { ...selectedBlock, [field]: value };
 
-		// Calculate the next tab
-		const nextTab = getNextUnfilledTab(updatedNote, field);
-
-		// Update the note
+		// Update the note state
 		onValueChange(selectedBlock.id, field, value);
 
-		// Change to the next tab
-		onTabChange(nextTab);
+		// Only auto-advance to next tab if the value actually changed
+		if (isValueChanged) {
+			// Calculate the next tab
+			const nextTab = getNextUnfilledTab(updatedNote, field);
+
+			// Set flag to prevent overlapping tab changes
+			isChangingTab.current = true;
+
+			// Use a timeout to ensure state update completes before changing tab
+			setTimeout(() => {
+				onTabChange(nextTab);
+				// Reset the flag after a small delay
+				setTimeout(() => {
+					isChangingTab.current = false;
+				}, 50);
+			}, 0);
+		}
+	};
+
+	// Handler for manual tab changes
+	const handleManualTabChange = (value: string) => {
+		// Prevent manual tab changes when an auto change is in progress
+		if (isChangingTab.current) {
+			return;
+		}
+
+		// Handle manual tab change
+		onTabChange(value as NoteField);
 	};
 
 	return (
@@ -71,9 +116,7 @@ export function SidebarMenu({
 			<Tabs
 				defaultValue="duration"
 				value={activeTab}
-				onValueChange={(value) => {
-					onTabChange(value as NoteField);
-				}}
+				onValueChange={handleManualTabChange}
 				className="flex-1 flex flex-col gap-0"
 			>
 				<TabsList className="w-full text-xs h-[60px] bg-transparent flex justify-between border-b border-[var(--sandDark-5)]">

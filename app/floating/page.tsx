@@ -48,6 +48,7 @@ export default function FloatingMenuPage() {
 	};
 
 	const handleTabChange = (tab: NoteField) => {
+		// Always update the activeTab state
 		setActiveTab(tab);
 	};
 
