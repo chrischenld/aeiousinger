@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import {
 	NoteField,
@@ -9,7 +9,6 @@ import {
 	durations,
 	pitches,
 	phonemes,
-	getNextTab,
 	getNextUnfilledTab,
 	getFirstUnfilledTab,
 } from "./NoteMenuComponents";
@@ -33,7 +32,6 @@ export function SidebarMenu({
 	const pitchNav = useGridNavigation(pitches, 4);
 	const phoneme1Nav = useGridNavigation(phonemes, 4);
 	const phoneme2Nav = useGridNavigation(phonemes, 4);
-	const lastSelectedBlockIdRef = useRef<string | null>(null);
 
 	// Effect to determine the first unfilled tab when a block is selected
 	useEffect(() => {

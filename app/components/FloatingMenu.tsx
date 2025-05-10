@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, MutableRefObject } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import {
 	NoteField,
@@ -10,7 +10,6 @@ import {
 	durations,
 	pitches,
 	phonemes,
-	getNextTab,
 	getNextUnfilledTab,
 	getFirstUnfilledTab,
 } from "./NoteMenuComponents";
@@ -36,7 +35,6 @@ export function FloatingMenu({
 	const menuRef = useRef<HTMLDivElement>(null);
 	const firstFocusableRef = useRef<HTMLButtonElement>(null);
 	const lastFocusableRef = useRef<HTMLButtonElement | null>(null);
-	const lastSelectedBlockIdRef = useRef<string | null>(null);
 
 	// Grid navigation hooks for each tab
 	const durationNav = useGridNavigation(durations, 4);
@@ -129,9 +127,6 @@ export function FloatingMenu({
 	}, [
 		activeTab,
 		selectedBlock,
-		durations.length,
-		pitches.length,
-		phonemes.length,
 		durationNav.buttonRefs,
 		pitchNav.buttonRefs,
 		phoneme1Nav.buttonRefs,

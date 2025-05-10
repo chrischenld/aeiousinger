@@ -4,12 +4,7 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { Block } from "../components/Block";
 import { FloatingMenu } from "../components/FloatingMenu";
-import {
-	NoteField,
-	NoteValue,
-	Note,
-	getFirstUnfilledTab,
-} from "../components/NoteMenuComponents";
+import { NoteField, NoteValue, Note } from "../components/NoteMenuComponents";
 
 export default function FloatingMenuPage() {
 	const [notes, setNotes] = useState<Note[]>([
