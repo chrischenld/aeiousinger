@@ -5,8 +5,8 @@ import { NoteField } from "./NoteMenuComponents";
 
 interface BlockProps
 	extends Omit<React.ComponentProps<typeof Button>, "onClick"> {
-	duration: number;
-	pitch: number;
+	duration: number | null;
+	pitch: string | null;
 	phoneme1: string;
 	phoneme2: string;
 	isSelected: boolean;
@@ -38,7 +38,11 @@ export function Block({
 
 			<Button
 				variant="outline"
-				aria-label={`Note with pitch ${pitch}, duration ${duration}, phoneme ${phoneme1}${phoneme2}`}
+				aria-label={`Note with pitch ${
+					pitch !== null ? pitch : "unset"
+				}, duration ${duration !== null ? duration : "unset"}, phoneme ${
+					phoneme1 || "unset"
+				}${phoneme2 ? " " + phoneme2 : ""}`}
 				className={cn(
 					"flex flex-col items-center justify-center p-0 border-none bg-[var(--sandDark-1)] hover:bg-[var(--sandDark-2)] rounded-none col-span-1 w-full h-auto cursor-pointer text-xs text-[var(--sandDark-10)] overflow-hidden relative",
 					isSelected
@@ -67,7 +71,7 @@ export function Block({
 									"text-[var(--sandDark-12)] font-medium"
 							)}
 						>
-							{duration}
+							{duration !== null ? duration : "-"}
 						</span>
 					</div>
 					<div
@@ -83,7 +87,7 @@ export function Block({
 									"text-[var(--sandDark-12)] font-medium"
 							)}
 						>
-							{pitch}
+							{pitch !== null ? pitch : "-"}
 						</span>
 					</div>
 					<div

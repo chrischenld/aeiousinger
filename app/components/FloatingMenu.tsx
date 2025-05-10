@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, MutableRefObject } from "react";
 import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import {
 	NoteField,
@@ -9,10 +9,12 @@ import {
 	GridOverlay,
 	durations,
 	pitches,
-	vowelPhonemes,
-	consonantPhonemes,
+	phonemes,
 	getNextTab,
+	getNextUnfilledTab,
+	getFirstUnfilledTab,
 } from "./NoteMenuComponents";
+import { useGridNavigation } from "../hooks/useGridNavigation";
 
 interface FloatingMenuProps {
 	selectedBlock: Note | null;
@@ -32,6 +34,15 @@ export function FloatingMenu({
 	onTabChange,
 }: FloatingMenuProps) {
 	const menuRef = useRef<HTMLDivElement>(null);
+	const firstFocusableRef = useRef<HTMLButtonElement>(null);
+	const lastFocusableRef = useRef<HTMLButtonElement | null>(null);
+	const lastSelectedBlockIdRef = useRef<string | null>(null);
+
+	// Grid navigation hooks for each tab
+	const durationNav = useGridNavigation(durations, 4);
+	const pitchNav = useGridNavigation(pitches, 4);
+	const phoneme1Nav = useGridNavigation(phonemes, 4);
+	const phoneme2Nav = useGridNavigation(phonemes, 4);
 
 	// Handle positioning of the floating menu
 	const [position, setPosition] = useState({ top: 0, left: 0 });
@@ -62,6 +73,91 @@ export function FloatingMenu({
 		setPosition({ top, left });
 	}, [anchorRect, activeTab]);
 
+	// Focus management
+	useEffect(() => {
+		if (selectedBlock && menuRef.current) {
+			// Focus the first focusable element when menu opens
+			firstFocusableRef.current?.focus();
+		}
+	}, [selectedBlock]);
+
+	// Effect to determine the first unfilled tab when a block is selected
+	useEffect(() => {
+		if (selectedBlock) {
+			// Set the first unfilled tab as active
+			const firstUnfilledTab = getFirstUnfilledTab(selectedBlock);
+			onTabChange(firstUnfilledTab);
+		}
+	}, [selectedBlock, onTabChange]);
+
+	// Set lastFocusableRef based on the active tab
+	useEffect(() => {
+		// Wait for the next render to ensure refs are populated
+		const timer = setTimeout(() => {
+			if (!selectedBlock) return;
+
+			// Find the last button in the currently active tab grid
+			let lastButtonIndex = -1;
+			let currentRefs: (HTMLButtonElement | null)[] = [];
+
+			switch (activeTab) {
+				case "duration":
+					lastButtonIndex = durations.length - 1;
+					currentRefs = durationNav.buttonRefs.current;
+					break;
+				case "pitch":
+					lastButtonIndex = pitches.length - 1;
+					currentRefs = pitchNav.buttonRefs.current;
+					break;
+				case "phoneme1":
+					lastButtonIndex = phonemes.length - 1;
+					currentRefs = phoneme1Nav.buttonRefs.current;
+					break;
+				case "phoneme2":
+					lastButtonIndex = phonemes.length - 1;
+					currentRefs = phoneme2Nav.buttonRefs.current;
+					break;
+			}
+
+			// Set the last focusable reference to the last grid item button
+			if (lastButtonIndex >= 0) {
+				lastFocusableRef.current = currentRefs[lastButtonIndex];
+			}
+		}, 50); // Small delay to ensure rendering completes
+
+		return () => clearTimeout(timer);
+	}, [
+		activeTab,
+		selectedBlock,
+		durations.length,
+		pitches.length,
+		phonemes.length,
+		durationNav.buttonRefs,
+		pitchNav.buttonRefs,
+		phoneme1Nav.buttonRefs,
+		phoneme2Nav.buttonRefs,
+	]);
+
+	// Handle keyboard events for focus trapping - but allow tabbing to grid items
+	const handleKeyDown = (e: React.KeyboardEvent) => {
+		if (e.key === "Escape") {
+			onClose();
+			return;
+		}
+
+		// Only handle Tab key if we're at the edges of focusable elements
+		if (e.key === "Tab") {
+			if (e.shiftKey) {
+				// If shift + tab and on first element, move to last
+				if (document.activeElement === firstFocusableRef.current) {
+					e.preventDefault();
+					lastFocusableRef.current?.focus();
+				}
+			}
+			// Remove the forward tab handling to allow natural tab order to grid items
+		}
+	};
+
 	// Close menu when clicking outside
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -81,8 +177,17 @@ export function FloatingMenu({
 	}
 
 	const handleValueChange = (field: NoteField, value: NoteValue) => {
+		// Create the updated note
+		const updatedNote = { ...selectedBlock, [field]: value };
+
+		// Calculate the next tab
+		const nextTab = getNextUnfilledTab(updatedNote, field);
+
+		// Update the note
 		onValueChange(selectedBlock.id, field, value);
-		onTabChange(getNextTab(field));
+
+		// Change to the next tab
+		onTabChange(nextTab);
 	};
 
 	return (
@@ -94,28 +199,29 @@ export function FloatingMenu({
 				left: `${position.left}px`,
 				maxHeight: "400px",
 			}}
+			role="dialog"
+			aria-label="Note properties"
+			onKeyDown={handleKeyDown}
 		>
 			<Tabs
 				defaultValue="duration"
 				value={activeTab}
-				onValueChange={(value) => onTabChange(value as NoteField)}
+				onValueChange={(value) => {
+					onTabChange(value as NoteField);
+				}}
 				className="flex flex-col gap-0"
 			>
 				<TabsList className="h-12 w-full text-xs bg-transparent flex justify-between">
 					<StyledTabsTrigger
+						ref={firstFocusableRef}
 						value="duration"
-						hasValue={
-							selectedBlock.duration !== 0 &&
-							selectedBlock.duration !== undefined
-						}
+						hasValue={selectedBlock.duration !== null}
 					>
 						dur
 					</StyledTabsTrigger>
 					<StyledTabsTrigger
 						value="pitch"
-						hasValue={
-							selectedBlock.pitch !== 0 && selectedBlock.pitch !== undefined
-						}
+						hasValue={selectedBlock.pitch !== null}
 					>
 						pitch
 					</StyledTabsTrigger>
@@ -133,57 +239,93 @@ export function FloatingMenu({
 					</StyledTabsTrigger>
 				</TabsList>
 
-				<TabsContent value="duration" className="overflow-y-auto relative">
+				<TabsContent
+					value="duration"
+					className="overflow-y-auto relative"
+					tabIndex={-1}
+				>
 					<div className="grid grid-cols-4 relative">
 						<GridOverlay />
-						{durations.map((value) => (
+						{durations.map((value, index) => (
 							<OptionButton
 								key={value}
 								value={value}
 								isSelected={selectedBlock.duration === value}
 								onClick={() => handleValueChange("duration", value)}
+								index={index}
+								onKeyDown={durationNav.handleKeyDown}
+								ref={(el) => {
+									durationNav.buttonRefs.current[index] = el;
+								}}
 							/>
 						))}
 					</div>
 				</TabsContent>
 
-				<TabsContent value="pitch" className="overflow-y-auto relative">
+				<TabsContent
+					value="pitch"
+					className="overflow-y-auto relative"
+					tabIndex={-1}
+				>
 					<div className="grid grid-cols-4 relative">
 						<GridOverlay />
-						{pitches.map((value) => (
+						{pitches.map((value, index) => (
 							<OptionButton
 								key={value}
 								value={value}
 								isSelected={selectedBlock.pitch === value}
 								onClick={() => handleValueChange("pitch", value)}
+								index={index}
+								onKeyDown={pitchNav.handleKeyDown}
+								ref={(el) => {
+									pitchNav.buttonRefs.current[index] = el;
+								}}
 							/>
 						))}
 					</div>
 				</TabsContent>
 
-				<TabsContent value="phoneme1" className="overflow-y-auto relative">
+				<TabsContent
+					value="phoneme1"
+					className="overflow-y-auto relative"
+					tabIndex={-1}
+				>
 					<div className="grid grid-cols-4 relative">
 						<GridOverlay />
-						{vowelPhonemes.map((value) => (
+						{phonemes.map((value, index) => (
 							<OptionButton
 								key={value}
 								value={value}
 								isSelected={selectedBlock.phoneme1 === value}
 								onClick={() => handleValueChange("phoneme1", value)}
+								index={index}
+								onKeyDown={phoneme1Nav.handleKeyDown}
+								ref={(el) => {
+									phoneme1Nav.buttonRefs.current[index] = el;
+								}}
 							/>
 						))}
 					</div>
 				</TabsContent>
 
-				<TabsContent value="phoneme2" className="overflow-y-auto relative">
+				<TabsContent
+					value="phoneme2"
+					className="overflow-y-auto relative"
+					tabIndex={-1}
+				>
 					<div className="grid grid-cols-4 relative">
 						<GridOverlay />
-						{consonantPhonemes.map((value) => (
+						{phonemes.map((value, index) => (
 							<OptionButton
 								key={value}
 								value={value}
 								isSelected={selectedBlock.phoneme2 === value}
 								onClick={() => handleValueChange("phoneme2", value)}
+								index={index}
+								onKeyDown={phoneme2Nav.handleKeyDown}
+								ref={(el) => {
+									phoneme2Nav.buttonRefs.current[index] = el;
+								}}
 							/>
 						))}
 					</div>
