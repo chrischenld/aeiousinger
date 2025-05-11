@@ -98,7 +98,8 @@ export const StyledTabsTrigger = React.forwardRef<
 		ref={ref}
 		value={value}
 		className={cn(
-			"flex-1 text-xs h-full border-none bg-transparent hover:bg-[var(--app-bg-strong)] data-[state=active]:bg-[var(--app-accent-bg)] data-[state=active]:text-[var(--app-fg)]",
+			"flex-1 text-xs h-full border-none bg-transparent hover:bg-[var(--app-bg-strong)] data-[state=active]:bg-[var(--app-accent-bg)] data-[state=active]:text-[var(--app-fg)] relative",
+			"focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-fg)] focus-visible:ring-offset-0",
 			hasValue && "text-[var(--app-fg)]",
 			isSidebar && "border-r border-[var(--app-border)] last:border-r-0"
 		)}
