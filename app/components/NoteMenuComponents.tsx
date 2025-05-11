@@ -121,27 +121,22 @@ export const OptionButton = React.forwardRef<
 		index: number;
 		onKeyDown: (e: React.KeyboardEvent, index: number) => void;
 	}
->(
-	(
-		{ value, isSelected, onClick, isSidebar = false, index, onKeyDown },
-		ref
-	) => (
-		<Button
-			ref={ref}
-			onClick={onClick}
-			onKeyDown={(e) => onKeyDown(e, index)}
-			className={cn(
-				"h-12 text-xs rounded-none text-center cursor-pointer relative transition-all duration-150 p-2 ring-1 ring-inset border-none z-10",
-				isSelected
-					? "bg-[var(--app-accent-bg)] ring-[var(--app-fg)] text-[var(--app-fg)]"
-					: "ring-transparent border-transparent text-[var(--app-fg-muted)] hover:text-[var(--app-fg)] hover:ring-[var(--app-border-hover)] hover:bg-[var(--app-bg-strong)] focus-visible:ring-2 focus-visible:ring-[var(--app-fg)] focus-visible:ring-offset-0"
-			)}
-			variant="outline"
-		>
-			{value}
-		</Button>
-	)
-);
+>(({ value, isSelected, onClick, index, onKeyDown }, ref) => (
+	<Button
+		ref={ref}
+		onClick={onClick}
+		onKeyDown={(e) => onKeyDown(e, index)}
+		className={cn(
+			"h-12 text-xs rounded-none text-center cursor-pointer relative transition-all duration-150 p-2 ring-1 ring-inset border-none z-10",
+			isSelected
+				? "bg-[var(--app-accent-bg)] ring-[var(--app-fg)] text-[var(--app-fg)]"
+				: "ring-transparent border-transparent text-[var(--app-fg-muted)] hover:text-[var(--app-fg)] hover:ring-[var(--app-border-hover)] hover:bg-[var(--app-bg-strong)] focus-visible:ring-2 focus-visible:ring-[var(--app-fg)] focus-visible:ring-offset-0"
+		)}
+		variant="outline"
+	>
+		{value}
+	</Button>
+));
 
 OptionButton.displayName = "OptionButton";
 
@@ -150,7 +145,10 @@ export const GridOverlay = () => (
 	<div
 		className="absolute inset-0 pointer-events-none z-0"
 		style={{
-			backgroundImage: `linear-gradient(90deg, var(--app-border) 1px, transparent 0), linear-gradient(0deg, var(--app-border) 1px, transparent 0)`,
+			backgroundImage: `
+				linear-gradient(90deg, var(--app-border) 1px, transparent 1px),
+				linear-gradient(180deg, var(--app-border) 1px, transparent 1px)
+			`,
 			backgroundSize: `calc(100% / 4) 48px`,
 			backgroundPosition: "0 0",
 			opacity: "0.3",

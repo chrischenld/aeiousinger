@@ -108,7 +108,7 @@ export function Block({
 						</span>
 						{phoneme2 && (
 							<>
-								<span className="mx-0.5">·</span>
+								<span>·</span>
 								<span
 									className={cn(
 										activeTab === "phoneme2" &&

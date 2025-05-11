@@ -53,21 +53,39 @@ export function FloatingMenu({
 		const menuRect = menuRef.current.getBoundingClientRect();
 		const windowWidth = window.innerWidth;
 		const windowHeight = window.innerHeight;
+		const menuWidth = menuRect.width;
+		const menuHeight = menuRect.height;
+		const gap = 10; // Gap between note block and menu
 
-		// Default position is to the right of the block
-		let left = anchorRect.right + 10;
+		// First try: Position to the right of the block
+		let left = anchorRect.right + gap;
 		let top = anchorRect.top;
 
 		// Check if menu would go off right edge
-		if (left + menuRect.width > windowWidth) {
-			// Position to the left of the block instead
-			left = anchorRect.left - menuRect.width - 10;
+		if (left + menuWidth > windowWidth) {
+			// Second try: Position to the left of the block
+			left = anchorRect.left - menuWidth - gap;
+
+			// Check if menu would go off left edge
+			if (left < 0) {
+				// Third try: Position below the block
+				top = anchorRect.bottom + gap;
+
+				// Try to align with left edge of block
+				left = anchorRect.left;
+
+				// If aligning with left edge causes right overflow, adjust leftward
+				if (left + menuWidth > windowWidth) {
+					// Adjust to keep menu within right edge
+					left = Math.max(0, windowWidth - menuWidth - gap);
+				}
+			}
 		}
 
 		// Check if menu would go off bottom edge
-		if (top + menuRect.height > windowHeight) {
+		if (top + menuHeight > windowHeight) {
 			// Adjust top position to fit within viewport
-			top = windowHeight - menuRect.height - 10;
+			top = Math.max(0, windowHeight - menuHeight - gap);
 		}
 
 		setPosition({ top, left });
