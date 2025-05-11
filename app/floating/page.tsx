@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Block } from "../components/Block";
 import { FloatingMenu } from "../components/FloatingMenu";
 import { NoteField, NoteValue, Note } from "../components/NoteMenuComponents";
+import { ThemeToggle } from "../components/ui/theme-toggle";
 
 export default function FloatingMenuPage() {
 	const [notes, setNotes] = useState<Note[]>([
@@ -61,11 +62,17 @@ export default function FloatingMenuPage() {
 		<div className="GridLayout h-screen overflow-hidden">
 			<main className="grid grid-cols-subgrid col-span-full h-screen">
 				<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full h-screen">
-					<div className="p-4 border-[var(--sandDark-5)] border-b flex justify-between items-center col-span-full">
-						<h1 className="text-xs">aeiousinger</h1>
-						<Link href="/" className="text-xs hover:underline">
-							sidebar
-						</Link>
+					<div className="p-4 border-[var(--app-border)] border-b flex justify-between items-center col-span-full">
+						<h1 className="text-xs text-[var(--app-fg)]">aeiousinger</h1>
+						<div className="flex items-center gap-4">
+							<ThemeToggle />
+							<Link
+								href="/"
+								className="text-xs hover:underline text-[var(--app-fg)]"
+							>
+								sidebar
+							</Link>
+						</div>
 					</div>
 					<div
 						className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full overflow-y-auto py-12"

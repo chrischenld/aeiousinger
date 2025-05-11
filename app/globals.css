@@ -25,6 +25,18 @@
 	--grayDark-10: #7b7b7b;
 	--grayDark-11: #b4b4b4;
 	--grayDark-12: #eeeeee;
+	--sand-1: #fdfdfc;
+	--sand-2: #f9f9f8;
+	--sand-3: #f1f0ef;
+	--sand-4: #e9e8e6;
+	--sand-5: #e2e1de;
+	--sand-6: #dad9d6;
+	--sand-7: #cfceca;
+	--sand-8: #bcbbb5;
+	--sand-9: #8d8d86;
+	--sand-10: #82827c;
+	--sand-11: #63635e;
+	--sand-12: #21201c;
 	--sandDark-1: #111110;
 	--sandDark-2: #191918;
 	--sandDark-3: #222221;
@@ -40,33 +52,51 @@
 }
 
 :root {
-	--bg-rgb: 252, 252, 252;
-	--bg: var(--gray-1);
-	--bg-strong: var(--gray-2);
-	--bg-xstrong: var(--gray-3);
-	--fg: var(--grayDark-12);
-	--fg-light: var(--grayDark-11);
-	--fg-xlight: var(--grayDark-10);
-	--border-2xlight: var(--gray-3);
-	--border-xlight: var(--gray-4);
-	--border-light: var(--gray-5);
-	--border: var(--gray-6);
-	--border-strong: var(--gray-7);
+	--bg-rgb: 253, 253, 252;
+	--bg: var(--sand-1);
+	--bg-strong: var(--sand-2);
+	--bg-xstrong: var(--sand-3);
+	--fg: var(--sand-12);
+	--fg-light: var(--sand-11);
+	--fg-xlight: var(--sand-10);
+	--border-2xlight: var(--sand-3);
+	--border-xlight: var(--sand-4);
+	--border-light: var(--sand-5);
+	--border: var(--sand-6);
+	--border-strong: var(--sand-7);
+
+	/* App-specific colors */
+	--app-bg: var(--sand-1);
+	--app-fg: var(--sand-12);
+	--app-fg-muted: var(--sand-11);
+	--app-border: var(--sand-5);
+	--app-border-hover: var(--sand-8);
+	--app-accent-bg: var(--sand-3);
+	--app-accent-fg: var(--sand-12);
 }
 
 .dark {
-	--bg-rgb: 17, 17, 17;
-	--bg: #111111;
-	--bg-strong: #191919;
-	--bg-xstrong: #222222;
-	--fg: #eeeeee;
-	--fg-light: #b4b4b4;
-	--fg-xlight: #7b7b7b;
-	--border-2xlight: #222222;
-	--border-xlight: #2a2a2a;
-	--border-light: #313131;
-	--border: #3a3a3a;
-	--border-strong: #606060;
+	--bg-rgb: 17, 17, 16;
+	--bg: var(--sandDark-1);
+	--bg-strong: var(--sandDark-2);
+	--bg-xstrong: var(--sandDark-3);
+	--fg: var(--sandDark-12);
+	--fg-light: var(--sandDark-11);
+	--fg-xlight: var(--sandDark-10);
+	--border-2xlight: var(--sandDark-3);
+	--border-xlight: var(--sandDark-4);
+	--border-light: var(--sandDark-5);
+	--border: var(--sandDark-6);
+	--border-strong: var(--sandDark-7);
+
+	/* App-specific colors */
+	--app-bg: var(--sandDark-1);
+	--app-fg: var(--sandDark-12);
+	--app-fg-muted: var(--sandDark-11);
+	--app-border: var(--sandDark-5);
+	--app-border-hover: var(--sandDark-8);
+	--app-accent-bg: var(--sandDark-3);
+	--app-accent-fg: var(--sandDark-12);
 }
 
 *,
@@ -76,9 +106,15 @@
 }
 
 body {
-	color: var(--sandDark-11);
-	background: var(--sandDark-1);
+	color: var(--app-fg-muted);
+	background: var(--app-bg);
 	font-family: var(--font-fragment-mono), var(--font-geist-mono);
+}
+
+/* Dark mode body styles */
+.dark body {
+	color: var(--app-fg-muted);
+	background: var(--app-bg);
 }
 
 .GridLayout {

@@ -232,7 +232,7 @@ export function FloatingMenu({
 	return (
 		<div
 			ref={menuRef}
-			className="fixed z-50 w-84 bg-[var(--sandDark-1)] border border-[var(--sandDark-5)] rounded-[1px] shadow-lg"
+			className="fixed z-50 w-84 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-[1px] shadow-lg"
 			style={{
 				top: `${position.top}px`,
 				left: `${position.left}px`,

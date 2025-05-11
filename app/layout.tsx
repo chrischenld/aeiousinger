@@ -31,7 +31,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
 			<body
 				className={`${fragmentMono.variable} ${geistMono.variable} ${geistSans.variable} antialiased h-screen overflow-hidden`}
 			>

@@ -70,9 +70,9 @@ export const StyledTabsTrigger = React.forwardRef<
 		ref={ref}
 		value={value}
 		className={cn(
-			"flex-1 text-xs h-full border-none bg-transparent hover:bg-[var(--sandDark-2)] data-[state=active]:bg-[var(--sandDark-3)] data-[state=active]:text-[var(--sandDark-12)]",
-			hasValue && "text-[var(--sandDark-12)]",
-			isSidebar && "border-r border-[var(--sandDark-5)] last:border-r-0"
+			"flex-1 text-xs h-full border-none bg-transparent hover:bg-[var(--app-bg-strong)] data-[state=active]:bg-[var(--app-accent-bg)] data-[state=active]:text-[var(--app-fg)]",
+			hasValue && "text-[var(--app-fg)]",
+			isSidebar && "border-r border-[var(--app-border)] last:border-r-0"
 		)}
 		{...props}
 	>
@@ -105,8 +105,8 @@ export const OptionButton = React.forwardRef<
 			className={cn(
 				"h-12 text-xs rounded-none text-center cursor-pointer relative transition-all duration-150 p-2 ring-1 ring-inset border-none z-10",
 				isSelected
-					? "bg-[var(--sandDark-3)] ring-[var(--sandDark-12)] text-[var(--sandDark-12)]"
-					: "ring-transparent border-transparent text-[var(--sandDark-9)] hover:text-[var(--sandDark-11)] hover:ring-[var(--sandDark-9)] hover:bg-[var(--sandDark-2)] focus-visible:ring-1 focus-visible:ring-offset-1"
+					? "bg-[var(--app-accent-bg)] ring-[var(--app-fg)] text-[var(--app-fg)]"
+					: "ring-transparent border-transparent text-[var(--app-fg-muted)] hover:text-[var(--app-fg)] hover:ring-[var(--app-border-hover)] hover:bg-[var(--app-bg-strong)] focus-visible:ring-2 focus-visible:ring-[var(--app-fg)] focus-visible:ring-offset-0"
 			)}
 			variant="outline"
 		>
@@ -122,7 +122,7 @@ export const GridOverlay = () => (
 	<div
 		className="absolute inset-0 pointer-events-none z-0"
 		style={{
-			backgroundImage: `linear-gradient(90deg, var(--sandDark-4) 1px, transparent 0), linear-gradient(0deg, var(--sandDark-4) 1px, transparent 0)`,
+			backgroundImage: `linear-gradient(90deg, var(--app-border) 1px, transparent 0), linear-gradient(0deg, var(--app-border) 1px, transparent 0)`,
 			backgroundSize: `calc(100% / 4) 48px`,
 			backgroundPosition: "0 0",
 			opacity: "0.3",

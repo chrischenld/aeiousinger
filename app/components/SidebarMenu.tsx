@@ -55,8 +55,8 @@ export function SidebarMenu({
 
 	if (!selectedBlock) {
 		return (
-			<div className="border-l border-[var(--sandDark-5)] flex items-center col-span-full">
-				<p className="h-[60px] p-4 w-full text-xs text-center text-[var(--sandDark-10)]">
+			<div className="border-l border-[var(--app-border)] flex items-center col-span-full">
+				<p className="h-[60px] p-4 w-full text-xs text-center text-[var(--app-fg-muted)]">
 					No note selected
 				</p>
 			</div>
@@ -112,14 +112,14 @@ export function SidebarMenu({
 	};
 
 	return (
-		<div className="flex flex-col col-span-full border-l border-[var(--sandDark-5)] border-b border-[var(--sandDark-5)]">
+		<div className="flex flex-col col-span-full border-l border-[var(--app-border)] border-b border-[var(--app-border)]">
 			<Tabs
 				defaultValue="duration"
 				value={activeTab}
 				onValueChange={handleManualTabChange}
 				className="flex-1 flex flex-col gap-0"
 			>
-				<TabsList className="w-full text-xs h-[60px] bg-transparent flex justify-between border-b border-[var(--sandDark-5)]">
+				<TabsList className="w-full text-xs h-[60px] bg-transparent flex justify-between border-b border-[var(--app-border)]">
 					<StyledTabsTrigger
 						value="duration"
 						hasValue={selectedBlock.duration !== null}

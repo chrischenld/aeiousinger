@@ -31,7 +31,7 @@ export function Block({
 			{/* Using an actual element with higher z-index guarantees it works across all browsers */}
 			{isSelected && (
 				<div
-					className="absolute inset-0 ring-1 ring-[var(--sandDark-12)] pointer-events-none z-10"
+					className="absolute inset-0 ring-1 ring-[var(--app-fg)] pointer-events-none z-10"
 					aria-hidden="true"
 				/>
 			)}
@@ -44,11 +44,11 @@ export function Block({
 					phoneme1 || "unset"
 				}${phoneme2 ? " " + phoneme2 : ""}`}
 				className={cn(
-					"flex flex-col items-center justify-center p-0 border-none bg-[var(--sandDark-1)] hover:bg-[var(--sandDark-2)] rounded-none col-span-1 w-full h-auto cursor-pointer text-xs text-[var(--sandDark-10)] overflow-hidden relative",
+					"flex flex-col items-center justify-center p-0 border-none bg-[var(--app-bg)] hover:bg-[var(--app-bg-strong)] rounded-none col-span-1 w-full h-auto cursor-pointer text-xs text-[var(--app-fg-muted)] overflow-hidden relative",
 					isSelected
-						? "bg-[var(--sandDark-2)]"
-						: "ring-1 ring-inset ring-[var(--sandDark-5)] hover:ring-[var(--sandDark-8)]",
-					"focus-visible:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-[var(--sandDark-12)] ",
+						? "bg-[var(--app-bg-strong)]"
+						: "ring-1 ring-inset ring-[var(--app-border)] hover:ring-[var(--app-border-hover)]",
+					"focus-visible:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-[var(--app-fg)]",
 					className
 				)}
 				onClick={onSelect}
@@ -61,14 +61,16 @@ export function Block({
 					<div
 						className={cn(
 							"h-8 flex flex-row items-center justify-center w-full",
-							isSelected && activeTab === "duration" && "bg-[var(--sandDark-3)]"
+							isSelected &&
+								activeTab === "duration" &&
+								"bg-[var(--app-accent-bg)]"
 						)}
 					>
 						<span
 							className={cn(
 								activeTab === "duration" &&
 									isSelected &&
-									"text-[var(--sandDark-12)] font-medium"
+									"text-[var(--app-accent-fg)] font-medium"
 							)}
 						>
 							{duration !== null ? duration : "-"}
@@ -77,14 +79,14 @@ export function Block({
 					<div
 						className={cn(
 							"h-8 flex flex-row items-center justify-center w-full",
-							isSelected && activeTab === "pitch" && "bg-[var(--sandDark-3)]"
+							isSelected && activeTab === "pitch" && "bg-[var(--app-accent-bg)]"
 						)}
 					>
 						<span
 							className={cn(
 								activeTab === "pitch" &&
 									isSelected &&
-									"text-[var(--sandDark-12)] font-medium"
+									"text-[var(--app-accent-fg)] font-medium"
 							)}
 						>
 							{pitch !== null ? pitch : "-"}
@@ -95,14 +97,14 @@ export function Block({
 							"h-8 flex flex-row items-center justify-center w-full",
 							isSelected &&
 								(activeTab === "phoneme1" || activeTab === "phoneme2") &&
-								"bg-[var(--sandDark-3)]"
+								"bg-[var(--app-accent-bg)]"
 						)}
 					>
 						<span
 							className={cn(
 								activeTab === "phoneme1" &&
 									isSelected &&
-									"text-[var(--sandDark-12)] font-medium"
+									"text-[var(--app-accent-fg)] font-medium"
 							)}
 						>
 							{phoneme1}
@@ -114,7 +116,7 @@ export function Block({
 									className={cn(
 										activeTab === "phoneme2" &&
 											isSelected &&
-											"text-[var(--sandDark-12)] font-medium"
+											"text-[var(--app-accent-fg)] font-medium"
 									)}
 								>
 									{phoneme2}
