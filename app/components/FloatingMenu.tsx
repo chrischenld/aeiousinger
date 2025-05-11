@@ -264,13 +264,13 @@ export function FloatingMenu({
 					</StyledTabsTrigger>
 					<StyledTabsTrigger
 						value="phoneme1"
-						hasValue={selectedBlock.phoneme1 !== ""}
+						hasValue={selectedBlock.phoneme1.length > 0}
 					>
 						ph1
 					</StyledTabsTrigger>
 					<StyledTabsTrigger
 						value="phoneme2"
-						hasValue={selectedBlock.phoneme2 !== ""}
+						hasValue={selectedBlock.phoneme2.length > 0}
 					>
 						ph2
 					</StyledTabsTrigger>

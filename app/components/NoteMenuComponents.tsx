@@ -4,18 +4,45 @@ import { TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 
 export type NoteField = "duration" | "pitch" | "phoneme1" | "phoneme2";
-export type NoteValue = number | string;
+export type NoteValue = string | null;
 
 export interface Note {
 	id: string;
-	duration: number | null;
+	duration: string | null;
 	pitch: string | null;
-	phoneme1: string;
-	phoneme2: string;
+	phoneme1: string; // Can be empty string or any phoneme (including nonePhoneme "-")
+	phoneme2: string; // Can be empty string or any phoneme (including nonePhoneme "-")
 }
 
 // Shared data constants
-export const durations = [1, 2, 4, 8, 16, 0];
+export const regularDurations = [
+	"1",
+	"1/2",
+	"1/4",
+	"1/8",
+	"1/16",
+	"1/32",
+	"1/64",
+	"2",
+	"4",
+	"8",
+];
+export const dottedDurations = [
+	"1·",
+	"1/2·",
+	"1/4·",
+	"1/8·",
+	"1/16·",
+	"1/32·",
+	"1/64·",
+	"2·",
+];
+export const tripletDurations = ["1tr", "1/2tr", "1/4tr", "1/8tr", "1/16tr"];
+export const durations = [
+	...regularDurations,
+	...dottedDurations,
+	...tripletDurations,
+];
 export const pitches = [
 	"A♭1",
 	"A1",
@@ -34,6 +61,7 @@ export const pitches = [
 	"G♯1",
 	"A2",
 ];
+export const nonePhoneme = "_";
 export const vowelPhonemes = ["a", "e", "i", "o", "u"];
 export const consonantPhonemes = [
 	"b",
@@ -54,7 +82,7 @@ export const consonantPhonemes = [
 	"y",
 	"z",
 ];
-export const phonemes = [...vowelPhonemes, ...consonantPhonemes];
+export const phonemes = [nonePhoneme, ...consonantPhonemes, ...vowelPhonemes];
 
 // Custom styled TabsTrigger to avoid style duplication
 export const StyledTabsTrigger = React.forwardRef<
@@ -154,11 +182,11 @@ export function isTabFilled(note: Note, field: NoteField): boolean {
 		case "pitch":
 			return note.pitch !== null;
 		case "phoneme1":
-			// Consider it filled only if it has a non-empty string
-			return note.phoneme1 !== undefined && note.phoneme1 !== "";
+			// Consider it filled if it has any content (including nonePhoneme)
+			return note.phoneme1 !== undefined && note.phoneme1.length > 0;
 		case "phoneme2":
-			// Consider it filled only if it has a non-empty string
-			return note.phoneme2 !== undefined && note.phoneme2 !== "";
+			// Consider it filled if it has any content (including nonePhoneme)
+			return note.phoneme2 !== undefined && note.phoneme2.length > 0;
 		default:
 			return false;
 	}

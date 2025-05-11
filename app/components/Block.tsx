@@ -1,14 +1,11 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { NoteField } from "./NoteMenuComponents";
+import { NoteField, Note } from "./NoteMenuComponents";
 
 interface BlockProps
-	extends Omit<React.ComponentProps<typeof Button>, "onClick"> {
-	duration: number | null;
-	pitch: string | null;
-	phoneme1: string;
-	phoneme2: string;
+	extends Omit<React.ComponentProps<typeof Button>, "onClick">,
+		Pick<Note, "duration" | "pitch" | "phoneme1" | "phoneme2"> {
 	isSelected: boolean;
 	onSelect: () => void;
 	activeTab?: NoteField;

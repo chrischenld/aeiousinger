@@ -14,9 +14,9 @@ import { ThemeToggle } from "./components/ui/theme-toggle";
 
 export default function Home() {
 	const [notes, setNotes] = useState<Note[]>([
-		{ id: "note1", duration: 4, pitch: "A1", phoneme1: "a", phoneme2: "h" },
-		{ id: "note2", duration: 2, pitch: "D1", phoneme1: "e", phoneme2: "l" },
-		{ id: "note3", duration: 8, pitch: "F1", phoneme1: "o", phoneme2: "" },
+		{ id: "note1", duration: "1/4", pitch: "A1", phoneme1: "a", phoneme2: "h" },
+		{ id: "note2", duration: "1/2", pitch: "D1", phoneme1: "e", phoneme2: "l" },
+		{ id: "note3", duration: "1/8", pitch: "F1", phoneme1: "o", phoneme2: "" },
 	]);
 	const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
 	const [activeTab, setActiveTab] = useState<NoteField>("duration");
