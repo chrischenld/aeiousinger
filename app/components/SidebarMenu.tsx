@@ -6,10 +6,10 @@ import {
 	Note,
 	StyledTabsTrigger,
 	OptionButton,
+	GridOverlay,
 	durations,
 	pitches,
 	phonemes,
-	getNextTab,
 	getNextUnfilledTab,
 	getFirstUnfilledTab,
 } from "./NoteMenuComponents";
@@ -51,12 +51,13 @@ export function SidebarMenu({
 				}, 0);
 			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedBlock?.id]); // Only run when the selected block ID changes
 
 	if (!selectedBlock) {
 		return (
-			<div className="border-l border-[var(--app-border)] flex items-center col-span-full">
-				<p className="h-[60px] p-4 w-full text-xs text-center text-[var(--app-fg-muted)]">
+			<div className="border-l border-[var(--app-border)] flex items-center justify-center col-span-full h-full">
+				<p className="p-4 text-xs text-center text-[var(--app-fg-muted)]">
 					No note selected
 				</p>
 			</div>
@@ -152,10 +153,11 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="duration"
-					className="text-xs flex-1 overflow-y-auto"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px]"
 					tabIndex={-1}
 				>
-					<div className="grid grid-cols-4">
+					<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
+						<GridOverlay />
 						{durations.map((value, index) => (
 							<OptionButton
 								key={value}
@@ -175,10 +177,11 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="pitch"
-					className="text-xs flex-1 overflow-y-auto"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px]"
 					tabIndex={-1}
 				>
-					<div className="grid grid-cols-4">
+					<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
+						<GridOverlay />
 						{pitches.map((value, index) => (
 							<OptionButton
 								key={value}
@@ -198,10 +201,11 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="phoneme1"
-					className="text-xs flex-1 overflow-y-auto"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px]"
 					tabIndex={-1}
 				>
-					<div className="grid grid-cols-4">
+					<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
+						<GridOverlay />
 						{phonemes.map((value, index) => (
 							<OptionButton
 								key={value}
@@ -221,10 +225,11 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="phoneme2"
-					className="text-xs flex-1 overflow-y-auto"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px]"
 					tabIndex={-1}
 				>
-					<div className="grid grid-cols-4">
+					<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
+						<GridOverlay />
 						{phonemes.map((value, index) => (
 							<OptionButton
 								key={value}

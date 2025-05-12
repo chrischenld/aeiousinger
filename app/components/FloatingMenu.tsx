@@ -114,6 +114,7 @@ export function FloatingMenu({
 				}, 0);
 			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedBlock?.id]); // Only run when the selected block ID changes
 
 	// Set lastFocusableRef based on the active tab

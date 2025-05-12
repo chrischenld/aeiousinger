@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme {
+:root {
 	--gray-1: #fcfcfc;
 	--gray-2: #f9f9f9;
 	--gray-3: #f0f0f0;
@@ -49,9 +49,8 @@
 	--sandDark-10: #7c7b74;
 	--sandDark-11: #b5b3ad;
 	--sandDark-12: #eeeeec;
-}
 
-:root {
+	/* Normal theme variables */
 	--bg-rgb: 253, 253, 252;
 	--bg: var(--sand-1);
 	--bg-strong: var(--sand-2);
@@ -78,6 +77,9 @@
 	--grid-cols-mobile: 8;
 	--grid-cols-tablet: 16;
 	--grid-cols-desktop: 24;
+	--grid-cols-xlarge: 32;
+	/* --grid-cols-xlarge: 40; */
+	--grid-cols-2xlarge: 40;
 }
 
 .dark {
@@ -134,9 +136,21 @@ body {
 	}
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
 	.GridLayout {
 		grid-template-columns: repeat(var(--grid-cols-desktop), minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 1280px) {
+	.GridLayout {
+		grid-template-columns: repeat(var(--grid-cols-xlarge), minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 1536px) {
+	.GridLayout {
+		grid-template-columns: repeat(var(--grid-cols-2xlarge), minmax(0, 1fr));
 	}
 }
 

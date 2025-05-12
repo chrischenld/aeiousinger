@@ -11,7 +11,7 @@ const config: Config = {
 	],
 	theme: {
 		screens: {
-			sm: "640px",
+			sm: "384px",
 			md: "768px",
 			lg: "1024px",
 			xl: "1280px",
@@ -123,6 +123,10 @@ const config: Config = {
 				"span-18": "span 18 / span 18",
 				"span-19": "span 19 / span 19",
 				"span-21": "span 21 / span 21",
+				"span-24": "span 24 / span 24",
+				"span-32": "span 32 / span 32",
+				"span-40": "span 40 / span 40",
+				"span-48": "span 48 / span 48",
 			},
 			fontSize: {
 				"2xs": "0.625rem",
