@@ -14,12 +14,16 @@ import {
 	getFirstUnfilledTab,
 } from "./NoteMenuComponents";
 import { useGridNavigation } from "../hooks/useGridNavigation";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface SidebarMenuProps {
 	selectedBlock: Note | null;
 	onValueChange: (id: string, field: NoteField, value: NoteValue) => void;
 	activeTab: NoteField;
 	onTabChange: (tab: NoteField) => void;
+	className?: string;
+	onDelete?: () => void;
 }
 
 export function SidebarMenu({
@@ -27,6 +31,8 @@ export function SidebarMenu({
 	onValueChange,
 	activeTab,
 	onTabChange,
+	className,
+	onDelete,
 }: SidebarMenuProps) {
 	// Initialize grid navigation hooks
 	const durationNav = useGridNavigation(durations, 4);
@@ -35,6 +41,22 @@ export function SidebarMenu({
 	const phoneme2Nav = useGridNavigation(phonemes, 4);
 	// Track if we're in the middle of handling a tab change
 	const isChangingTab = useRef(false);
+	const menuRef = useRef<HTMLDivElement>(null);
+
+	const handleKeyDown = (e: React.KeyboardEvent) => {
+		console.log("SidebarMenu keyDown:", {
+			key: e.key,
+			hasDeleteHandler: !!onDelete,
+			activeElement: document.activeElement?.tagName,
+			menuElement: menuRef.current?.tagName,
+		});
+
+		if ((e.key === "Delete" || e.key === "Backspace") && onDelete) {
+			console.log("SidebarMenu delete triggered");
+			e.preventDefault();
+			onDelete();
+		}
+	};
 
 	// Effect to determine the first unfilled tab ONLY when a block is initially selected
 	useEffect(() => {
@@ -113,7 +135,15 @@ export function SidebarMenu({
 	};
 
 	return (
-		<div className="flex flex-col col-span-full border-l border-[var(--app-border)] border-b border-[var(--app-border)]">
+		<div
+			ref={menuRef}
+			className={cn(
+				"flex flex-col col-span-full border-b border-[var(--app-border)]",
+				className
+			)}
+			onKeyDown={handleKeyDown}
+			tabIndex={-1}
+		>
 			<Tabs
 				defaultValue="duration"
 				value={activeTab}
@@ -246,6 +276,19 @@ export function SidebarMenu({
 						))}
 					</div>
 				</TabsContent>
+
+				{onDelete && (
+					<div className="border-t border-[var(--app-border)] p-2 mt-auto">
+						<Button
+							variant="ghost"
+							size="sm"
+							className="w-full text-xs text-[var(--app-fg-muted)] hover:text-[var(--app-fg)] cursor-pointer"
+							onClick={onDelete}
+						>
+							Delete Note
+						</Button>
+					</div>
+				)}
 			</Tabs>
 		</div>
 	);

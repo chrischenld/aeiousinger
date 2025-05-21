@@ -8,6 +8,7 @@ interface BlockProps
 		Pick<Note, "duration" | "pitch" | "phoneme1" | "phoneme2"> {
 	isSelected: boolean;
 	onSelect: () => void;
+	onDelete?: () => void;
 	activeTab?: NoteField;
 }
 
@@ -18,10 +19,36 @@ export function Block({
 	phoneme2,
 	isSelected,
 	onSelect,
+	onDelete,
 	activeTab,
 	className,
 	...props
 }: BlockProps) {
+	const handleKeyDown = (e: React.KeyboardEvent) => {
+		console.log("Block keyDown:", {
+			key: e.key,
+			isSelected,
+			hasDeleteHandler: !!onDelete,
+			activeElement: document.activeElement?.tagName,
+			buttonElement: e.currentTarget.tagName,
+			isFocused: document.activeElement === e.currentTarget,
+		});
+
+		// Handle delete when focused (regardless of selection state)
+		if (onDelete && (e.key === "Delete" || e.key === "Backspace")) {
+			console.log("Block delete triggered");
+			e.preventDefault();
+			onDelete();
+			return;
+		}
+
+		// Handle selection (which opens menu) with Enter/Space
+		if (e.key === "Enter" || e.key === " ") {
+			e.preventDefault();
+			onSelect();
+		}
+	};
+
 	return (
 		<>
 			{/* The pseudo-element solution for rings has issues with focus in some browsers */}
@@ -49,6 +76,7 @@ export function Block({
 					className
 				)}
 				onClick={onSelect}
+				onKeyDown={handleKeyDown}
 				data-selected={isSelected}
 				data-duration={duration}
 				data-pitch={pitch}

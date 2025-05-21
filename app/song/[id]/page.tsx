@@ -1,0 +1,303 @@
+"use client";
+
+import { useState, useRef, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { Block } from "../../components/Block";
+import { SidebarMenu } from "../../components/SidebarMenu";
+import { FloatingMenu } from "../../components/FloatingMenu";
+import {
+	NoteField,
+	NoteValue,
+	Note,
+} from "../../components/NoteMenuComponents";
+import { ThemeToggle } from "../../components/ui/theme-toggle";
+import { Button } from "@/components/ui/button";
+import { useSongs } from "../../context/SongsContext";
+
+export default function SongEditor() {
+	const router = useRouter();
+	const { id } = useParams();
+	// Ensure id is a string and handle undefined case
+	const songId = id ? (Array.isArray(id) ? id[0] : id) : "";
+
+	const { getSong, updateSong, addNoteToSong, removeNoteFromSong } = useSongs();
+	const song = getSong(songId);
+
+	// Initialize all hooks unconditionally
+	// Added state for menu type preference
+	const [useFloatingMenu, setUseFloatingMenu] = useState<boolean>(true);
+	// Use a ref to track if we need to initialize notes from song
+	const initializedRef = useRef(false);
+	const [notes, setNotes] = useState<Note[]>([]);
+	const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
+	const [activeTab, setActiveTab] = useState<NoteField>("duration");
+	const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
+	const blockRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+	// Redirect to dashboard if song not found
+	useEffect(() => {
+		if (!song) {
+			router.push("/dashboard");
+		}
+	}, [song, router]);
+
+	// Initialize notes from song data once
+	useEffect(() => {
+		if (song && !initializedRef.current) {
+			setNotes(song.notes);
+			initializedRef.current = true;
+		}
+	}, [song]);
+
+	// Effect to save changes to the song - add a debounce
+	const notesRef = useRef(notes);
+	useEffect(() => {
+		notesRef.current = notes;
+	}, [notes]);
+
+	// Use a separate effect for saving with debounce
+	useEffect(() => {
+		if (!song || !initializedRef.current) return;
+
+		const saveTimeout = setTimeout(() => {
+			updateSong(songId, { notes: notesRef.current });
+		}, 500); // 500ms debounce
+
+		return () => clearTimeout(saveTimeout);
+	}, [notes, songId, updateSong, song]);
+
+	// If song is not found, show loading state
+	if (!song) {
+		return (
+			<div className="GridLayout h-screen overflow-hidden flex items-center justify-center">
+				<p>Loading...</p>
+			</div>
+		);
+	}
+
+	const selectedNote = notes.find((note) => note.id === selectedNoteId) || null;
+
+	const handleNoteSelect = (id: string) => {
+		// If the clicked note is already selected, deselect it
+		if (selectedNoteId === id) {
+			setSelectedNoteId(null);
+			setAnchorRect(null);
+		} else {
+			setSelectedNoteId(id);
+
+			// Only get position for FloatingMenu
+			if (useFloatingMenu && blockRefs.current[id]) {
+				setAnchorRect(blockRefs.current[id]?.getBoundingClientRect() || null);
+			}
+		}
+	};
+
+	const handleValueChange = (
+		id: string,
+		field: NoteField,
+		value: NoteValue
+	) => {
+		setNotes((prevNotes) =>
+			prevNotes.map((note) =>
+				note.id === id ? { ...note, [field]: value } : note
+			)
+		);
+	};
+
+	const handleTabChange = (tab: NoteField) => {
+		setActiveTab(tab);
+	};
+
+	const handleCloseMenu = () => {
+		setSelectedNoteId(null);
+		setAnchorRect(null);
+	};
+
+	// Toggle between floating and sidebar menu
+	const toggleMenuType = () => {
+		setUseFloatingMenu(!useFloatingMenu);
+		// Clear selection when switching menu types
+		setSelectedNoteId(null);
+		setAnchorRect(null);
+	};
+
+	// Determine the column spans based on menu type and responsive breakpoints
+	// Full width for floating menu, or appropriate columns for sidebar layout
+	const mainContentColSpan = useFloatingMenu
+		? "col-span-full"
+		: "col-span-full md:col-span-12 lg:col-span-16 xl:col-span-24 2xl:col-span-32";
+
+	// Sidebar size is responsive - keep it at 4 columns from md to xl, then 8 columns
+	const sidebarColSpan = "col-span-full md:col-span-4 lg:col-span-8";
+
+	const handleAddNote = () => {
+		console.log("Adding note to song:", songId);
+
+		// Call the context method and get the new note
+		const newNote = addNoteToSong(songId);
+
+		if (newNote) {
+			console.log("New note created:", newNote);
+			// Add the new note directly to the current notes array
+			setNotes((currentNotes) => [...currentNotes, newNote]);
+		} else {
+			console.error("Failed to create new note");
+
+			// Fallback - get the fresh song data after the update
+			const updatedSong = getSong(songId);
+			if (updatedSong) {
+				console.log("Updated song notes (fallback):", updatedSong.notes);
+				// Update local state with the updated notes
+				setNotes(updatedSong.notes);
+			}
+		}
+	};
+
+	const handleRemoveNote = (noteId: string) => {
+		console.log("Removing note:", noteId);
+
+		// Clear selection if the note being removed is selected
+		if (selectedNoteId === noteId) {
+			setSelectedNoteId(null);
+			setAnchorRect(null);
+		}
+
+		// Call the context method
+		const success = removeNoteFromSong(songId, noteId);
+
+		if (success) {
+			console.log("Note removed successfully, updating local state");
+			// Directly update the local state by filtering out the removed note
+			setNotes((currentNotes) =>
+				currentNotes.filter((note) => note.id !== noteId)
+			);
+		} else {
+			console.error("Failed to remove note");
+
+			// Fallback - get the fresh song data after the update
+			const updatedSong = getSong(songId);
+			if (updatedSong) {
+				console.log(
+					"Updated song notes after remove (fallback):",
+					updatedSong.notes
+				);
+				// Update local state with the updated notes
+				setNotes(updatedSong.notes);
+			}
+		}
+	};
+
+	return (
+		<div className="GridLayout h-screen overflow-hidden">
+			<main className="grid grid-cols-subgrid col-span-full h-screen md:grid-rows-1 grid-rows-[1fr_auto]">
+				<div
+					className={`grid grid-cols-subgrid grid-rows-[auto_1fr] ${mainContentColSpan} h-full`}
+				>
+					<div className="h-[60px] px-4 border-[var(--app-border)] border-b flex justify-between items-center col-span-full">
+						<div className="flex items-center gap-4">
+							<h1 className="text-xs font-bold text-[var(--app-fg)]">
+								{song.title}
+							</h1>
+						</div>
+						<div className="flex items-center gap-4">
+							<Link href="/dashboard">
+								<p className="text-xs cursor-pointer">Dashboard</p>
+							</Link>
+							<Button
+								onClick={toggleMenuType}
+								variant="ghost"
+								size="sm"
+								className="text-xs cursor-pointer"
+							>
+								{useFloatingMenu ? "Floating" : "Sidebar"}
+							</Button>
+							<ThemeToggle />
+						</div>
+					</div>
+					<div
+						className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full overflow-y-auto py-12"
+						role="application"
+						aria-label="Song Editor"
+					>
+						<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full">
+							<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full gap-y-8">
+								{notes.map((note) => (
+									<div
+										className="col-span-1 relative group"
+										key={note.id}
+										ref={(el) => {
+											blockRefs.current[note.id] = el;
+										}}
+									>
+										<Block
+											duration={note.duration}
+											pitch={note.pitch}
+											phoneme1={note.phoneme1}
+											phoneme2={note.phoneme2}
+											isSelected={selectedNoteId === note.id}
+											onSelect={() => handleNoteSelect(note.id)}
+											onDelete={
+												notes.length > 1
+													? () => handleRemoveNote(note.id)
+													: undefined
+											}
+											activeTab={
+												selectedNoteId === note.id ? activeTab : undefined
+											}
+										/>
+									</div>
+								))}
+								<Button
+									onClick={handleAddNote}
+									variant="outline"
+									size="sm"
+									className="col-span-1 h-24 items-center cursor-pointer"
+								>
+									<p>+</p>
+								</Button>
+							</div>
+						</div>
+
+						{/* Render FloatingMenu conditionally */}
+						{useFloatingMenu && (
+							<FloatingMenu
+								selectedBlock={selectedNote}
+								onValueChange={handleValueChange}
+								anchorRect={anchorRect}
+								onClose={handleCloseMenu}
+								activeTab={activeTab}
+								onTabChange={handleTabChange}
+								onDelete={
+									notes.length > 1 && selectedNoteId
+										? () => handleRemoveNote(selectedNoteId)
+										: undefined
+								}
+							/>
+						)}
+					</div>
+				</div>
+
+				{/* Render SidebarMenu conditionally */}
+				{!useFloatingMenu && (
+					<div
+						className={`grid grid-cols-subgrid ${sidebarColSpan} h-[300px] border-t md:border-l border-[var(--app-border)] md:h-screen md:border-t-0`}
+					>
+						<SidebarMenu
+							selectedBlock={selectedNote}
+							onValueChange={handleValueChange}
+							activeTab={activeTab}
+							onTabChange={handleTabChange}
+							className="md:border-l"
+							onDelete={
+								notes.length > 1 && selectedNoteId
+									? () => handleRemoveNote(selectedNoteId)
+									: undefined
+							}
+						/>
+					</div>
+				)}
+			</main>
+		</div>
+	);
+}

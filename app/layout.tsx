@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "./providers/ThemeProvider";
+import { SongsProvider } from "./context/SongsContext";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -35,7 +36,9 @@ export default function RootLayout({
 			<body
 				className={`${fragmentMono.variable} ${geistMono.variable} ${geistSans.variable} antialiased h-screen overflow-hidden`}
 			>
-				<ThemeProvider>{children}</ThemeProvider>
+				<ThemeProvider>
+					<SongsProvider>{children}</SongsProvider>
+				</ThemeProvider>
 			</body>
 		</html>
 	);

@@ -14,6 +14,7 @@ import {
 	getFirstUnfilledTab,
 } from "./NoteMenuComponents";
 import { useGridNavigation } from "../hooks/useGridNavigation";
+import { Button } from "@/components/ui/button";
 
 interface FloatingMenuProps {
 	selectedBlock: Note | null;
@@ -22,6 +23,7 @@ interface FloatingMenuProps {
 	onClose: () => void;
 	activeTab: NoteField;
 	onTabChange: (tab: NoteField) => void;
+	onDelete?: () => void;
 }
 
 export function FloatingMenu({
@@ -31,6 +33,7 @@ export function FloatingMenu({
 	onClose,
 	activeTab,
 	onTabChange,
+	onDelete,
 }: FloatingMenuProps) {
 	const menuRef = useRef<HTMLDivElement>(null);
 	const firstFocusableRef = useRef<HTMLButtonElement>(null);
@@ -164,8 +167,22 @@ export function FloatingMenu({
 
 	// Handle keyboard events for focus trapping - but allow tabbing to grid items
 	const handleKeyDown = (e: React.KeyboardEvent) => {
+		console.log("FloatingMenu keyDown:", {
+			key: e.key,
+			hasDeleteHandler: !!onDelete,
+			activeElement: document.activeElement?.tagName,
+			menuElement: menuRef.current?.tagName,
+		});
+
 		if (e.key === "Escape") {
 			onClose();
+			return;
+		}
+
+		if ((e.key === "Delete" || e.key === "Backspace") && onDelete) {
+			console.log("FloatingMenu delete triggered");
+			e.preventDefault();
+			onDelete();
 			return;
 		}
 
@@ -386,6 +403,19 @@ export function FloatingMenu({
 						))}
 					</div>
 				</TabsContent>
+
+				{onDelete && (
+					<div className="border-t border-[var(--app-border)] p-2">
+						<Button
+							variant="ghost"
+							size="sm"
+							className="w-full text-xs text-[var(--app-fg-muted)] hover:text-[var(--app-fg)] cursor-pointer"
+							onClick={onDelete}
+						>
+							Delete Note
+						</Button>
+					</div>
+				)}
 			</Tabs>
 		</div>
 	);
