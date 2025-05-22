@@ -138,7 +138,7 @@ export function SidebarMenu({
 		<div
 			ref={menuRef}
 			className={cn(
-				"flex flex-col col-span-full border-b border-[var(--app-border)] h-full",
+				"flex flex-col col-span-full border-b border-[var(--app-border)]",
 				className
 			)}
 			onKeyDown={handleKeyDown}
@@ -183,7 +183,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="duration"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px] pb-12"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full pb-12"
 					tabIndex={-1}
 				>
 					<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">

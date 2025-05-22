@@ -302,14 +302,14 @@ export default function SongEditor() {
 				{/* Render SidebarMenu conditionally */}
 				{!useFloatingMenu && (
 					<div
-						className={`grid grid-cols-subgrid ${sidebarColSpan} h-[300px] border-t md:border-l border-[var(--app-border)] md:h-screen-dvh md:border-t-0 fixed-bottom-dvh bg-[var(--app-bg)] pb-safe`}
+						className={`grid grid-cols-subgrid ${sidebarColSpan} h-[300px] md:h-full border-t border-[var(--app-border)] md:h-screen-dvh md:border-t-0 fixed bottom-0 w-full md:static md:bottom-auto md:w-auto bg-[var(--app-bg)] pb-safe md:pb-0 z-20`}
 					>
 						<SidebarMenu
 							selectedBlock={selectedNote}
 							onValueChange={handleValueChange}
 							activeTab={activeTab}
 							onTabChange={handleTabChange}
-							className="md:border-l"
+							className="md:ring-1 ring-[var(--app-border)]"
 							onDelete={
 								notes.length > 1 && selectedNoteId
 									? () => handleRemoveNote(selectedNoteId)
