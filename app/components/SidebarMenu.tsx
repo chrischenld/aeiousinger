@@ -278,7 +278,7 @@ export function SidebarMenu({
 				</TabsContent>
 
 				{onDelete && (
-					<div className="border-t border-[var(--app-border)] p-2 mt-auto sticky bottom-0 bg-[var(--app-bg)] z-10">
+					<div className="border-t border-[var(--app-border)] p-2 mt-auto sticky bottom-safe bg-[var(--app-bg)] z-10 pb-safe-2">
 						<Button
 							variant="default"
 							size="sm"

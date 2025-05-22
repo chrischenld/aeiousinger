@@ -18,6 +18,20 @@ const config: Config = {
 			"2xl": "1536px",
 		},
 		extend: {
+			spacing: {
+				"safe-bottom": "env(safe-area-inset-bottom, 0px)",
+				"safe-top": "env(safe-area-inset-top, 0px)",
+				"safe-left": "env(safe-area-inset-left, 0px)",
+				"safe-right": "env(safe-area-inset-right, 0px)",
+			},
+			padding: {
+				"safe-bottom": "env(safe-area-inset-bottom, 0px)",
+				"safe-top": "env(safe-area-inset-top, 0px)",
+				"safe-left": "env(safe-area-inset-left, 0px)",
+				"safe-right": "env(safe-area-inset-right, 0px)",
+				"safe-bottom-2": "calc(0.5rem + env(safe-area-inset-bottom, 0px))",
+				"safe-bottom-4": "calc(1rem + env(safe-area-inset-bottom, 0px))",
+			},
 			colors: {
 				gray: {
 					"1": "#fcfcfc",

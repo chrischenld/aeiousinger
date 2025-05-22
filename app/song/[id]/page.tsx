@@ -235,12 +235,11 @@ export default function SongEditor() {
 					</div>
 
 					<div
-						className={`grid grid-cols-subgrid col-span-full overflow-y-auto ${
-							!useFloatingMenu ? "md:pb-0 pb-[300px]" : ""
+						className={`grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full h-content overflow-y-auto ${
+							!useFloatingMenu ? "pb-sidebar-safe md:pb-0" : ""
 						}`}
 						role="application"
 						aria-label="Song Editor"
-						style={{ height: "calc(100vh - 60px)" }}
 					>
 						<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full">
 							<div className="grid grid-cols-subgrid col-span-full gap-y-8 py-12">
@@ -303,7 +302,7 @@ export default function SongEditor() {
 				{/* Render SidebarMenu conditionally */}
 				{!useFloatingMenu && (
 					<div
-						className={`grid grid-cols-subgrid ${sidebarColSpan} h-[300px] border-t md:border-l border-[var(--app-border)] md:h-screen md:border-t-0 sticky bottom-0 bg-[var(--app-bg)]`}
+						className={`grid grid-cols-subgrid ${sidebarColSpan} h-[300px] border-t md:border-l border-[var(--app-border)] md:h-screen md:border-t-0 sticky bottom-safe bg-[var(--app-bg)] pb-safe`}
 					>
 						<SidebarMenu
 							selectedBlock={selectedNote}

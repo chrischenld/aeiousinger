@@ -160,3 +160,32 @@ body {
 	grid-template-columns: subgrid;
 	min-width: 0;
 } */
+
+/* Safe area utilities */
+.bottom-safe {
+	bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pb-safe {
+	padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pb-safe-2 {
+	padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+.mb-safe {
+	margin-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.h-screen-safe {
+	height: calc(100vh - env(safe-area-inset-bottom, 0px));
+}
+
+.h-content {
+	height: calc(100vh - 60px);
+}
+
+.pb-sidebar-safe {
+	padding-bottom: calc(300px + env(safe-area-inset-bottom, 0px));
+}
