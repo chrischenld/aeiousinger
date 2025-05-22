@@ -21,7 +21,7 @@ export default function Dashboard() {
 				<div
 					className={`grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full h-full`}
 				>
-					<div className="h-[60px] px-4 border-[var(--app-border)] border-b flex justify-between items-center col-span-full">
+					<div className="h-[60px] px-4 border-[var(--app-border)] border-t border-b flex justify-between items-center col-span-full">
 						<h1 className="text-xs font-bold text-[var(--app-fg)]">
 							aeiousinger
 						</h1>

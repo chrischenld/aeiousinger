@@ -199,7 +199,7 @@ export default function SongEditor() {
 				<div
 					className={`grid grid-cols-subgrid grid-rows-[auto_1fr] ${mainContentColSpan} h-full`}
 				>
-					<div className="grid grid-cols-subgrid col-span-full h-[60px] border-[var(--app-border)] border-b col-span-full">
+					<div className="grid grid-cols-subgrid col-span-full h-[60px] border-[var(--app-border)] border-t border-b col-span-full">
 						<div
 							className={`grid grid-cols-subgrid ${songNameColSpan} items-center`}
 						>
@@ -234,12 +234,12 @@ export default function SongEditor() {
 						</div>
 					</div>
 					<div
-						className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full overflow-y-auto py-12"
+						className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full h-full overflow-y-auto"
 						role="application"
 						aria-label="Song Editor"
 					>
-						<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full">
-							<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full gap-y-8">
+						<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full min-h-full">
+							<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full gap-y-8 py-12">
 								{notes.map((note) => (
 									<div
 										className="col-span-1 relative group"
@@ -299,7 +299,7 @@ export default function SongEditor() {
 				{/* Render SidebarMenu conditionally */}
 				{!useFloatingMenu && (
 					<div
-						className={`grid grid-cols-subgrid ${sidebarColSpan} h-[300px] border-t md:border-l border-[var(--app-border)] md:h-screen md:border-t-0`}
+						className={`grid grid-cols-subgrid ${sidebarColSpan} h-[300px] border-t md:border-l border-[var(--app-border)] md:h-screen md:border-t-0 sticky bottom-0 bg-[var(--app-bg)]`}
 					>
 						<SidebarMenu
 							selectedBlock={selectedNote}

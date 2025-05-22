@@ -138,7 +138,7 @@ export function SidebarMenu({
 		<div
 			ref={menuRef}
 			className={cn(
-				"flex flex-col col-span-full border-b border-[var(--app-border)]",
+				"flex flex-col col-span-full border-b border-[var(--app-border)] h-full",
 				className
 			)}
 			onKeyDown={handleKeyDown}
@@ -150,7 +150,7 @@ export function SidebarMenu({
 				onValueChange={handleManualTabChange}
 				className="flex-1 flex flex-col gap-0"
 			>
-				<TabsList className="w-full text-xs h-[60px] bg-transparent flex justify-between border-b border-[var(--app-border)]">
+				<TabsList className="w-full text-xs h-[60px] bg-transparent flex justify-between border-b border-[var(--app-border)] sticky top-0 bg-[var(--app-bg)]">
 					<StyledTabsTrigger
 						value="duration"
 						hasValue={selectedBlock.duration !== null}
@@ -183,7 +183,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="duration"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px]"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] pb-12"
 					tabIndex={-1}
 				>
 					<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
@@ -207,7 +207,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="pitch"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px]"
+					className="text-xs flex-1 overflow-y-auto"
 					tabIndex={-1}
 				>
 					<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
@@ -231,7 +231,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="phoneme1"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px]"
+					className="text-xs flex-1 overflow-y-auto"
 					tabIndex={-1}
 				>
 					<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
@@ -255,7 +255,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="phoneme2"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px]"
+					className="text-xs flex-1 overflow-y-auto"
 					tabIndex={-1}
 				>
 					<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
@@ -278,11 +278,11 @@ export function SidebarMenu({
 				</TabsContent>
 
 				{onDelete && (
-					<div className="border-t border-[var(--app-border)] p-2 mt-auto">
+					<div className="border-t border-[var(--app-border)] p-2 mt-auto sticky bottom-0 bg-[var(--app-bg)] z-10">
 						<Button
-							variant="ghost"
+							variant="default"
 							size="sm"
-							className="w-full text-xs text-[var(--app-fg-muted)] hover:text-[var(--app-fg)] cursor-pointer"
+							className="w-full text-xs bg-[var(--app-bg-muted)] text-[var(--app-fg-muted)] hover:text-[var(--app-fg)] cursor-pointer"
 							onClick={onDelete}
 						>
 							Delete Note
