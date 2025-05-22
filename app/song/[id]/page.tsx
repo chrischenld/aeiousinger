@@ -14,6 +14,7 @@ import {
 import { ThemeToggle } from "../../components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useSongs } from "../../context/SongsContext";
+import { ArrowLeftFromLine, PanelRight, PanelTop } from "lucide-react";
 
 export default function SongEditor() {
 	const router = useRouter();
@@ -131,6 +132,10 @@ export default function SongEditor() {
 	// Sidebar size is responsive - keep it at 4 columns from md to xl, then 8 columns
 	const sidebarColSpan = "col-span-full md:col-span-4 lg:col-span-8";
 
+	const songNameColSpan = useFloatingMenu
+		? "col-span-5 md:col-span-10 lg:col-span-18 xl:col-span-26 2xl:col-span-34"
+		: "col-span-5 md:col-span-6 lg:col-span-10 xl:col-span-18 2xl:col-span-26";
+
 	const handleAddNote = () => {
 		console.log("Adding note to song:", songId);
 
@@ -194,25 +199,38 @@ export default function SongEditor() {
 				<div
 					className={`grid grid-cols-subgrid grid-rows-[auto_1fr] ${mainContentColSpan} h-full`}
 				>
-					<div className="h-[60px] px-4 border-[var(--app-border)] border-b flex justify-between items-center col-span-full">
-						<div className="flex items-center gap-4">
-							<h1 className="text-xs font-bold text-[var(--app-fg)]">
+					<div className="grid grid-cols-subgrid col-span-full h-[60px] border-[var(--app-border)] border-b col-span-full">
+						<div
+							className={`grid grid-cols-subgrid ${songNameColSpan} items-center`}
+						>
+							<h1 className="col-span-full text-xs font-bold text-[var(--app-fg)] px-2">
 								{song.title}
 							</h1>
 						</div>
-						<div className="flex items-center gap-4">
-							<Link href="/dashboard">
-								<p className="text-xs cursor-pointer">Dashboard</p>
+						<div className="grid grid-cols-subgrid col-span-1 md:col-span-2 border-l border-[var(--app-border)]">
+							<Link
+								href="/dashboard"
+								className="flex items-center justify-center text-xs cursor-pointer col-span-full"
+							>
+								<ArrowLeftFromLine className="w-4 h-4" />
 							</Link>
+						</div>
+						<div className="grid grid-cols-subgrid col-span-1 md:col-span-2 border-l border-[var(--app-border)]">
 							<Button
 								onClick={toggleMenuType}
 								variant="ghost"
 								size="sm"
-								className="text-xs cursor-pointer"
+								className="text-xs col-span-1 md:col-span-2 cursor-pointer h-full"
 							>
-								{useFloatingMenu ? "Floating" : "Sidebar"}
+								{useFloatingMenu ? (
+									<PanelTop className="w-4 h-4" />
+								) : (
+									<PanelRight className="w-4 h-4" />
+								)}
 							</Button>
-							<ThemeToggle />
+						</div>
+						<div className="grid grid-cols-subgrid col-span-1 md:col-span-2 border-l border-[var(--app-border)]">
+							<ThemeToggle className="flex items-center justify-center text-xs col-span-full" />
 						</div>
 					</div>
 					<div
