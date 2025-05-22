@@ -194,8 +194,8 @@ export default function SongEditor() {
 	};
 
 	return (
-		<div className="GridLayout h-screen overflow-hidden">
-			<main className="grid grid-cols-subgrid col-span-full h-screen md:grid-rows-1 grid-rows-[1fr_auto]">
+		<div className="GridLayout h-screen-dvh overflow-hidden">
+			<main className="grid grid-cols-subgrid col-span-full h-screen-dvh md:grid-rows-1 grid-rows-[1fr_auto]">
 				<div
 					className={`grid grid-cols-subgrid grid-rows-[60px_1fr] ${mainContentColSpan} h-full`}
 				>
@@ -235,7 +235,7 @@ export default function SongEditor() {
 					</div>
 
 					<div
-						className={`grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full h-content overflow-y-auto ${
+						className={`grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full h-dvh-content overflow-y-auto ${
 							!useFloatingMenu ? "pb-sidebar-safe md:pb-0" : ""
 						}`}
 						role="application"
@@ -302,7 +302,7 @@ export default function SongEditor() {
 				{/* Render SidebarMenu conditionally */}
 				{!useFloatingMenu && (
 					<div
-						className={`grid grid-cols-subgrid ${sidebarColSpan} h-[300px] border-t md:border-l border-[var(--app-border)] md:h-screen md:border-t-0 sticky bottom-safe bg-[var(--app-bg)] pb-safe`}
+						className={`grid grid-cols-subgrid ${sidebarColSpan} h-[300px] border-t md:border-l border-[var(--app-border)] md:h-screen-dvh md:border-t-0 fixed-bottom-dvh bg-[var(--app-bg)] pb-safe`}
 					>
 						<SidebarMenu
 							selectedBlock={selectedNote}

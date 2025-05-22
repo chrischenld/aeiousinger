@@ -186,6 +186,31 @@ body {
 	height: calc(100vh - 60px);
 }
 
+.h-dvh-content {
+	height: calc(100dvh - 60px);
+}
+
 .pb-sidebar-safe {
 	padding-bottom: calc(300px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Dynamic viewport height utilities */
+.h-screen-dvh {
+	height: 100dvh;
+}
+
+.min-h-screen-dvh {
+	min-height: 100dvh;
+}
+
+.bottom-0-dvh {
+	bottom: 0;
+	position: sticky;
+	position: -webkit-sticky;
+}
+
+.fixed-bottom-dvh {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
 }

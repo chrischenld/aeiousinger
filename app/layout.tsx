@@ -40,7 +40,7 @@ export default function RootLayout({
 				/>
 			</head>
 			<body
-				className={`${fragmentMono.variable} ${geistMono.variable} ${geistSans.variable} antialiased h-screen overflow-hidden`}
+				className={`${fragmentMono.variable} ${geistMono.variable} ${geistSans.variable} antialiased min-h-screen-dvh overflow-hidden`}
 			>
 				<ThemeProvider>
 					<SongsProvider>{children}</SongsProvider>
