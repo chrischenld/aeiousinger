@@ -197,9 +197,9 @@ export default function SongEditor() {
 		<div className="GridLayout h-screen overflow-hidden">
 			<main className="grid grid-cols-subgrid col-span-full h-screen md:grid-rows-1 grid-rows-[1fr_auto]">
 				<div
-					className={`grid grid-cols-subgrid grid-rows-[auto_1fr] ${mainContentColSpan} h-full`}
+					className={`grid grid-cols-subgrid grid-rows-[60px_1fr] ${mainContentColSpan} h-full`}
 				>
-					<div className="grid grid-cols-subgrid col-span-full h-[60px] border-[var(--app-border)] border-t border-b col-span-full">
+					<div className="grid grid-cols-subgrid col-span-full h-[60px] border-[var(--app-border)] border-t border-b col-span-full sticky top-0 bg-[var(--app-bg)] z-10">
 						<div
 							className={`grid grid-cols-subgrid ${songNameColSpan} items-center`}
 						>
@@ -233,13 +233,17 @@ export default function SongEditor() {
 							<ThemeToggle className="flex items-center justify-center text-xs col-span-full" />
 						</div>
 					</div>
+
 					<div
-						className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full h-full overflow-y-auto"
+						className={`grid grid-cols-subgrid col-span-full overflow-y-auto ${
+							!useFloatingMenu ? "md:pb-0 pb-[300px]" : ""
+						}`}
 						role="application"
 						aria-label="Song Editor"
+						style={{ height: "calc(100vh - 60px)" }}
 					>
-						<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full min-h-full">
-							<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full gap-y-8 py-12">
+						<div className="grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full">
+							<div className="grid grid-cols-subgrid col-span-full gap-y-8 py-12">
 								{notes.map((note) => (
 									<div
 										className="col-span-1 relative group"

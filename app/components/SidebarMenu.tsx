@@ -207,7 +207,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="pitch"
-					className="text-xs flex-1 overflow-y-auto"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] pb-12"
 					tabIndex={-1}
 				>
 					<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
@@ -231,7 +231,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="phoneme1"
-					className="text-xs flex-1 overflow-y-auto"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] pb-12"
 					tabIndex={-1}
 				>
 					<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
@@ -255,7 +255,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="phoneme2"
-					className="text-xs flex-1 overflow-y-auto"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] pb-12"
 					tabIndex={-1}
 				>
 					<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
