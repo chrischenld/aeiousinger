@@ -13,6 +13,7 @@ import {
 } from "../../components/NoteMenuComponents";
 import { ThemeToggle } from "../../components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useSongs } from "../../context/SongsContext";
 import { ArrowLeftFromLine, PanelRight, PanelTop } from "lucide-react";
 
@@ -36,6 +37,11 @@ export default function SongEditor() {
 	const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
 	const blockRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
+	// State for title editing
+	const [isEditingTitle, setIsEditingTitle] = useState(false);
+	const [titleValue, setTitleValue] = useState("");
+	const titleInputRef = useRef<HTMLInputElement>(null);
+
 	// Redirect to dashboard if song not found
 	useEffect(() => {
 		if (!song) {
@@ -47,9 +53,25 @@ export default function SongEditor() {
 	useEffect(() => {
 		if (song && !initializedRef.current) {
 			setNotes(song.notes);
+			setTitleValue(song.title); // Initialize title value
 			initializedRef.current = true;
 		}
 	}, [song]);
+
+	// Update title value when song title changes
+	useEffect(() => {
+		if (song && !isEditingTitle) {
+			setTitleValue(song.title);
+		}
+	}, [song?.title, isEditingTitle]);
+
+	// Effect to focus input when editing starts
+	useEffect(() => {
+		if (isEditingTitle && titleInputRef.current) {
+			titleInputRef.current.focus();
+			titleInputRef.current.select();
+		}
+	}, [isEditingTitle]);
 
 	// Effect to save changes to the song - add a debounce
 	const notesRef = useRef(notes);
@@ -193,19 +215,69 @@ export default function SongEditor() {
 		}
 	};
 
+	// Handler to start editing title
+	const handleTitleClick = () => {
+		if (!isEditingTitle) {
+			setIsEditingTitle(true);
+		}
+	};
+
+	// Handler to save title changes
+	const handleTitleSave = () => {
+		if (song && titleValue.trim() !== song.title) {
+			updateSong(songId, { title: titleValue.trim() });
+		}
+		setIsEditingTitle(false);
+	};
+
+	// Handler for title input changes
+	const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setTitleValue(e.target.value);
+	};
+
+	// Handler for title input key events
+	const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") {
+			handleTitleSave();
+		} else if (e.key === "Escape") {
+			setTitleValue(song?.title || "");
+			setIsEditingTitle(false);
+		}
+	};
+
+	// Handler for title input blur
+	const handleTitleBlur = () => {
+		handleTitleSave();
+	};
+
 	return (
 		<div className="GridLayout h-screen-dvh overflow-hidden">
 			<main className="grid grid-cols-subgrid col-span-full h-screen-dvh md:grid-rows-1 grid-rows-[1fr_auto]">
 				<div
 					className={`grid grid-cols-subgrid grid-rows-[60px_1fr] ${mainContentColSpan} h-full`}
 				>
-					<div className="grid grid-cols-subgrid col-span-full h-[60px] border-[var(--app-border)] border-t border-b col-span-full sticky top-0 bg-[var(--app-bg)] z-10">
+					<div className="grid grid-cols-subgrid col-span-full h-[60px] border-[var(--app-border)] border-l border-t border-b col-span-full sticky top-0 bg-[var(--app-bg)] z-10">
 						<div
 							className={`grid grid-cols-subgrid ${songNameColSpan} items-center`}
 						>
-							<h1 className="col-span-full text-xs font-bold text-[var(--app-fg)] px-2">
-								{song.title}
-							</h1>
+							<div
+								className="h-full col-span-full text-xs font-bold text-[var(--app-fg)] cursor-pointer flex items-center"
+								onClick={handleTitleClick}
+							>
+								{isEditingTitle ? (
+									<Input
+										type="text"
+										value={titleValue}
+										onChange={handleTitleChange}
+										onKeyDown={handleTitleKeyDown}
+										onBlur={handleTitleBlur}
+										ref={titleInputRef}
+										className="w-full h-full bg-transparent focus-visible:border-none shadow-none focus-visible:ring-2 focus-visible:ring-[var(--app-fg)] focus-visible:ring-inset text-xs font-bold text-[var(--app-fg)] px-2 py-0 min-h-0"
+									/>
+								) : (
+									<h1 className="px-2">{song.title}</h1>
+								)}
+							</div>
 						</div>
 						<div className="grid grid-cols-subgrid col-span-1 md:col-span-2 border-l border-[var(--app-border)]">
 							<Link
