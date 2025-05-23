@@ -4,6 +4,7 @@ import { ThemeToggle } from "../components/ui/theme-toggle";
 import Link from "next/link";
 import { useSongs } from "../context/SongsContext";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
 	const { songs, addSong } = useSongs();
@@ -12,63 +13,62 @@ export default function Dashboard() {
 	// Function to create a new song and navigate to it
 	const handleCreateNewSong = () => {
 		const newSongId = addSong();
-		router.push(`/song/${newSongId}`);
+		// router.push(`/song/${newSongId}`);
 	};
 
+	const headerColSpan =
+		"col-span-7 md:col-span-14 lg:col-span-22 xl:col-span-30 2xl:col-span-38";
+
+	const dashboardBlockSpan = "col-span-8 md:col-span-2";
+
 	return (
-		<div className="GridLayout h-screen overflow-hidden">
-			<main className="grid grid-cols-subgrid col-span-full h-screen">
+		<div className="GridLayout h-screen-dvh overflow-hidden">
+			<main className="grid grid-cols-subgrid col-span-full h-screen-dvh md:grid-rows-1 grid-rows-[1fr_auto]">
 				<div
-					className={`grid grid-cols-subgrid grid-rows-[auto_1fr] col-span-full h-full`}
+					className={`grid grid-cols-subgrid grid-rows-[60px_1fr] col-span-full h-full`}
 				>
-					<div className="h-[60px] px-4 border-[var(--app-border)] border-t border-b flex justify-between items-center col-span-full">
-						<h1 className="text-xs font-bold text-[var(--app-fg)]">
-							aeiousinger
-						</h1>
-						<div className="flex items-center gap-4">
-							<ThemeToggle />
+					<div className="grid grid-cols-subgrid col-span-full h-[60px] border-[var(--app-border)] border-l border-t border-b col-span-full sticky top-0 bg-[var(--app-bg)] z-10">
+						<div className={`grid grid-cols-subgrid ${headerColSpan}`}>
+							<h1 className="w-full h-full flex items-center px-2 text-xs font-bold text-[var(--app-fg)]">
+								aeiousinger
+							</h1>
+						</div>
+						<div className="grid grid-cols-subgrid col-span-1 md:col-span-2 border-l border-[var(--app-border)]">
+							<ThemeToggle className="flex items-center justify-center text-xs col-span-full" />
 						</div>
 					</div>
-					<div className="grid grid-cols-subgrid col-span-full gap-4 overflow-y-auto">
-						<div className="col-span-full">
-							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-12">
-								{songs.map((song) => (
-									<Link
-										key={song.id}
-										href={`/song/${song.id}`}
-										className="block"
-									>
-										<div className="flex flex-col border border-[var(--app-border)] p-4 hover:border-[var(--app-border-hover)] transition-colors">
-											<p className="font-medium text-xs text-[var(--app-fg)]">
-												{song.title}
-											</p>
-											<p className="text-xs text-[var(--app-fg-muted)]">
-												{new Date(song.updatedAt).toLocaleDateString()}
-											</p>
-											<div className="flex space-x-1">
-												{/* {song.notes.slice(0, 5).map((note, i) => (
-													<div
-														key={i}
-														className="w-5 h-5 bg-[var(--app-accent-bg)] rounded-sm flex items-center justify-center"
-													>
-														<span className="text-[8px]">
-															{note.pitch?.charAt(0) || "-"}
-														</span>
-													</div>
-												))} */}
-											</div>
-										</div>
-									</Link>
-								))}
-
-								{/* Button to create a new song */}
-								<button
-									onClick={handleCreateNewSong}
-									className="border border-[var(--app-border)] p-4 hover:border-[var(--app-border-hover)] transition-colors flex items-center justify-center cursor-pointer"
+					<div className="grid grid-cols-subgrid col-span-full grid-rows-[auto_1fr] col-span-full h-dvh-content overflow-y-auto">
+						<div className="grid grid-cols-subgrid col-span-full gap-y-8 py-8">
+							{songs.map((song) => (
+								<Link
+									key={song.id}
+									href={`/song/${song.id}`}
+									className={`flex flex-col items-center justify-center px-2 ${dashboardBlockSpan} h-24 font-medium text-xs text-[var(--app-fg-muted)] overflow-hidden relative ring-1 ring-inset ring-[var(--app-border)] hover:ring-[var(--app-border-hover)] focus-visible:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-[var(--app-fg)] transition-colors`}
 								>
-									<p className="text-xs text-[var(--app-fg)]">+ New Song</p>
-								</button>
-							</div>
+									{song.title}
+									{/* <p className="text-xs text-[var(--app-fg-muted)]">
+										{new Date(song.updatedAt).toLocaleDateString()}
+									</p>
+									<div className="flex space-x-1">
+										{song.notes.slice(0, 5).map((note, i) => (
+											<div
+												key={i}
+												className="w-5 h-5 bg-[var(--app-accent-bg)] rounded-sm flex items-center justify-center"
+											>
+												<span className="text-[8px]">
+													{note.pitch?.charAt(0) || "-"}
+												</span>
+											</div>
+										))}
+									</div> */}
+								</Link>
+							))}
+							<Button
+								onClick={handleCreateNewSong}
+								className={`flex flex-col justify-center px-2 ${dashboardBlockSpan} h-24 font-medium text-xs text-[var(--app-fg-muted)] overflow-hidden relative ring-1 ring-inset ring-[var(--app-border)] hover:ring-[var(--app-border-hover)] focus-visible:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-[var(--app-fg)] transition-colors`}
+							>
+								+
+							</Button>
 						</div>
 					</div>
 				</div>

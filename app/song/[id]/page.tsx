@@ -151,12 +151,12 @@ export default function SongEditor() {
 		? "col-span-full"
 		: "col-span-full md:col-span-12 lg:col-span-16 xl:col-span-24 2xl:col-span-32";
 
-	// Sidebar size is responsive - keep it at 4 columns from md to xl, then 8 columns
-	const sidebarColSpan = "col-span-full md:col-span-4 lg:col-span-8";
-
 	const songNameColSpan = useFloatingMenu
 		? "col-span-5 md:col-span-10 lg:col-span-18 xl:col-span-26 2xl:col-span-34"
 		: "col-span-5 md:col-span-6 lg:col-span-10 xl:col-span-18 2xl:col-span-26";
+
+	// Sidebar size is responsive - keep it at 4 columns from md to xl, then 8 columns
+	const sidebarColSpan = "col-span-full md:col-span-4 lg:col-span-8";
 
 	const handleAddNote = () => {
 		console.log("Adding note to song:", songId);
