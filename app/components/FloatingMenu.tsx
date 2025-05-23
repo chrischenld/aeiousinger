@@ -367,11 +367,10 @@ export function FloatingMenu({
 	return (
 		<div
 			ref={menuRef}
-			className="fixed z-50 w-84 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-[1px] shadow-lg"
+			className="fixed z-50 w-84 bg-[var(--app-bg)] border border-[var(--app-border)] rounded-[1px] shadow-lg max-h-[500px]"
 			style={{
 				top: `${position.top}px`,
 				left: `${position.left}px`,
-				maxHeight: "400px",
 			}}
 			role="dialog"
 			aria-label="Note properties"
@@ -413,7 +412,7 @@ export function FloatingMenu({
 
 				<TabsContent
 					value="duration"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-[384px] md:h-full"
 					tabIndex={-1}
 				>
 					<div className="h-12 p-[2px] border-b border-[var(--app-border)]">
@@ -483,7 +482,7 @@ export function FloatingMenu({
 
 				<TabsContent
 					value="pitch"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-[384px] md:h-full"
 					tabIndex={-1}
 				>
 					<div className="h-12 p-[2px] border-b border-[var(--app-border)]">
@@ -550,7 +549,7 @@ export function FloatingMenu({
 
 				<TabsContent
 					value="phoneme1"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-[384px] md:h-full"
 					tabIndex={-1}
 				>
 					<div className="h-12 p-[2px] border-b border-[var(--app-border)]">
@@ -619,7 +618,7 @@ export function FloatingMenu({
 
 				<TabsContent
 					value="phoneme2"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-[384px] md:h-full"
 					tabIndex={-1}
 				>
 					<div className="h-12 p-[2px] border-b border-[var(--app-border)]">
@@ -691,10 +690,10 @@ export function FloatingMenu({
 						<Button
 							variant="ghost"
 							size="sm"
-							className="w-full text-xs text-[var(--app-fg-muted)] hover:text-[var(--app-fg)] cursor-pointer"
+							className="w-full text-xs text-[var(--app-fg-muted)] hover:text-[var(--app-fg)] cursor-pointer bottom-0 sticky"
 							onClick={onDelete}
 						>
-							Delete Note
+							delete note
 						</Button>
 					</div>
 				)}
