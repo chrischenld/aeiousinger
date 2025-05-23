@@ -271,9 +271,7 @@ export default function SongEditor() {
 								))}
 								<Button
 									onClick={handleAddNote}
-									variant="outline"
-									size="sm"
-									className="col-span-1 h-24 items-center cursor-pointer"
+									className="col-span-1 h-24 items-center cursor-pointer  border-none bg-[var(--app-bg)] hover:bg-[var(--app-bg-strong)] rounded-none col-span-1 w-full h-auto cursor-pointer text-xs text-[var(--app-fg-muted)] overflow-hidden ring-1 ring-inset ring-[var(--app-border)] hover:ring-[var(--app-border-hover)] focus-visible:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-[var(--app-fg)]"
 								>
 									<p>+</p>
 								</Button>
