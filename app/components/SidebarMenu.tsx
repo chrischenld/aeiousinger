@@ -282,7 +282,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="duration"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full pb-12"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full pb-12 relative"
 					tabIndex={-1}
 				>
 					<div className="h-12 p-[2px] border-b border-[var(--app-border)]">
@@ -293,9 +293,17 @@ export function SidebarMenu({
 						/>
 					</div>
 
+					{/* Full height grid overlay - responsive behavior */}
+					<div className="absolute inset-0 top-12 pointer-events-none z-0 md:block hidden">
+						<GridOverlay />
+					</div>
+
 					{shouldShowSearchResults("duration") ? (
-						// Search results list view
-						<div className="flex flex-col">
+						// Search results grid view (preserving grid layout)
+						<div className="grid grid-cols-4 relative z-10">
+							<div className="absolute inset-0 pointer-events-none z-0 md:hidden">
+								<GridOverlay />
+							</div>
 							{getFilteredItems("duration").map((value, index) => (
 								<OptionButton
 									key={value}
@@ -304,36 +312,25 @@ export function SidebarMenu({
 									onClick={() =>
 										handleValueChange("duration", value as NoteValue)
 									}
-									isSidebar={true}
 									index={index}
-									onKeyDown={(e) => {
-										// Simple up/down navigation for search results
-										if (
-											e.key === "ArrowDown" &&
-											index < getFilteredItems("duration").length - 1
-										) {
-											e.preventDefault();
-											// Focus next item
-										} else if (e.key === "ArrowUp" && index > 0) {
-											e.preventDefault();
-											// Focus previous item
-										}
-									}}
+									onKeyDown={durationNav.handleKeyDown}
 									ref={(el) => {
-										// We'll need to manage refs differently for search results
+										durationNav.buttonRefs.current[index] = el;
 									}}
 								/>
 							))}
 							{getFilteredItems("duration").length === 0 && (
-								<div className="p-4 text-center text-[var(--app-fg-muted)]">
+								<div className="col-span-4 p-4 text-center text-[var(--app-fg-muted)]">
 									No results found
 								</div>
 							)}
 						</div>
 					) : (
 						// Grid view (existing)
-						<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
-							<GridOverlay />
+						<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)] z-10">
+							<div className="absolute inset-0 pointer-events-none z-0 md:hidden">
+								<GridOverlay />
+							</div>
 							{durations.map((value, index) => (
 								<OptionButton
 									key={value}
@@ -354,7 +351,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="pitch"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px] pb-12"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full pb-12 relative"
 					tabIndex={-1}
 				>
 					<div className="h-12 p-[2px] border-b border-[var(--app-border)]">
@@ -365,43 +362,42 @@ export function SidebarMenu({
 						/>
 					</div>
 
+					{/* Full height grid overlay - responsive behavior */}
+					<div className="absolute inset-0 top-12 pointer-events-none z-0 md:block hidden">
+						<GridOverlay />
+					</div>
+
 					{shouldShowSearchResults("pitch") ? (
-						// Search results list view
-						<div className="flex flex-col">
+						// Search results grid view (preserving grid layout)
+						<div className="grid grid-cols-4 relative z-10">
+							<div className="absolute inset-0 pointer-events-none z-0 md:hidden">
+								<GridOverlay />
+							</div>
 							{getFilteredItems("pitch").map((value, index) => (
 								<OptionButton
 									key={value}
 									value={value}
 									isSelected={selectedBlock.pitch === value}
 									onClick={() => handleValueChange("pitch", value as NoteValue)}
-									isSidebar={true}
 									index={index}
-									onKeyDown={(e) => {
-										// Simple up/down navigation for search results
-										if (
-											e.key === "ArrowDown" &&
-											index < getFilteredItems("pitch").length - 1
-										) {
-											e.preventDefault();
-										} else if (e.key === "ArrowUp" && index > 0) {
-											e.preventDefault();
-										}
-									}}
+									onKeyDown={pitchNav.handleKeyDown}
 									ref={(el) => {
-										// We'll need to manage refs differently for search results
+										pitchNav.buttonRefs.current[index] = el;
 									}}
 								/>
 							))}
 							{getFilteredItems("pitch").length === 0 && (
-								<div className="p-4 text-center text-[var(--app-fg-muted)]">
+								<div className="col-span-4 p-4 text-center text-[var(--app-fg-muted)]">
 									No results found
 								</div>
 							)}
 						</div>
 					) : (
 						// Grid view (existing)
-						<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
-							<GridOverlay />
+						<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)] z-10">
+							<div className="absolute inset-0 pointer-events-none z-0 md:hidden">
+								<GridOverlay />
+							</div>
 							{pitches.map((value, index) => (
 								<OptionButton
 									key={value}
@@ -422,7 +418,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="phoneme1"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px] pb-12"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full pb-12 relative"
 					tabIndex={-1}
 				>
 					<div className="h-12 p-[2px] border-b border-[var(--app-border)]">
@@ -433,9 +429,17 @@ export function SidebarMenu({
 						/>
 					</div>
 
+					{/* Full height grid overlay - responsive behavior */}
+					<div className="absolute inset-0 top-12 pointer-events-none z-0 md:block hidden">
+						<GridOverlay />
+					</div>
+
 					{shouldShowSearchResults("phoneme1") ? (
-						// Search results list view
-						<div className="flex flex-col">
+						// Search results grid view (preserving grid layout)
+						<div className="grid grid-cols-4 relative z-10">
+							<div className="absolute inset-0 pointer-events-none z-0 md:hidden">
+								<GridOverlay />
+							</div>
 							{getFilteredItems("phoneme1").map((value, index) => (
 								<OptionButton
 									key={value}
@@ -444,34 +448,25 @@ export function SidebarMenu({
 									onClick={() =>
 										handleValueChange("phoneme1", value as NoteValue)
 									}
-									isSidebar={true}
 									index={index}
-									onKeyDown={(e) => {
-										// Simple up/down navigation for search results
-										if (
-											e.key === "ArrowDown" &&
-											index < getFilteredItems("phoneme1").length - 1
-										) {
-											e.preventDefault();
-										} else if (e.key === "ArrowUp" && index > 0) {
-											e.preventDefault();
-										}
-									}}
+									onKeyDown={phoneme1Nav.handleKeyDown}
 									ref={(el) => {
-										// We'll need to manage refs differently for search results
+										phoneme1Nav.buttonRefs.current[index] = el;
 									}}
 								/>
 							))}
 							{getFilteredItems("phoneme1").length === 0 && (
-								<div className="p-4 text-center text-[var(--app-fg-muted)]">
+								<div className="col-span-4 p-4 text-center text-[var(--app-fg-muted)]">
 									No results found
 								</div>
 							)}
 						</div>
 					) : (
 						// Grid view (existing)
-						<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
-							<GridOverlay />
+						<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)] z-10">
+							<div className="absolute inset-0 pointer-events-none z-0 md:hidden">
+								<GridOverlay />
+							</div>
 							{phonemes.map((value, index) => (
 								<OptionButton
 									key={value}
@@ -492,7 +487,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="phoneme2"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px] pb-12"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full pb-12 relative"
 					tabIndex={-1}
 				>
 					<div className="h-12 p-[2px] border-b border-[var(--app-border)]">
@@ -503,9 +498,17 @@ export function SidebarMenu({
 						/>
 					</div>
 
+					{/* Full height grid overlay - responsive behavior */}
+					<div className="absolute inset-0 top-12 pointer-events-none z-0 md:block hidden">
+						<GridOverlay />
+					</div>
+
 					{shouldShowSearchResults("phoneme2") ? (
-						// Search results list view
-						<div className="flex flex-col">
+						// Search results grid view (preserving grid layout)
+						<div className="grid grid-cols-4 relative z-10">
+							<div className="absolute inset-0 pointer-events-none z-0 md:hidden">
+								<GridOverlay />
+							</div>
 							{getFilteredItems("phoneme2").map((value, index) => (
 								<OptionButton
 									key={value}
@@ -514,34 +517,25 @@ export function SidebarMenu({
 									onClick={() =>
 										handleValueChange("phoneme2", value as NoteValue)
 									}
-									isSidebar={true}
 									index={index}
-									onKeyDown={(e) => {
-										// Simple up/down navigation for search results
-										if (
-											e.key === "ArrowDown" &&
-											index < getFilteredItems("phoneme2").length - 1
-										) {
-											e.preventDefault();
-										} else if (e.key === "ArrowUp" && index > 0) {
-											e.preventDefault();
-										}
-									}}
+									onKeyDown={phoneme2Nav.handleKeyDown}
 									ref={(el) => {
-										// We'll need to manage refs differently for search results
+										phoneme2Nav.buttonRefs.current[index] = el;
 									}}
 								/>
 							))}
 							{getFilteredItems("phoneme2").length === 0 && (
-								<div className="p-4 text-center text-[var(--app-fg-muted)]">
+								<div className="col-span-4 p-4 text-center text-[var(--app-fg-muted)]">
 									No results found
 								</div>
 							)}
 						</div>
 					) : (
 						// Grid view (existing)
-						<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)]">
-							<GridOverlay />
+						<div className="grid grid-cols-4 relative border-b border-[var(--border-2xlight)] z-10">
+							<div className="absolute inset-0 pointer-events-none z-0 md:hidden">
+								<GridOverlay />
+							</div>
 							{phonemes.map((value, index) => (
 								<OptionButton
 									key={value}

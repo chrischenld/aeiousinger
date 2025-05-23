@@ -63,7 +63,7 @@ export default function SongEditor() {
 		if (song && !isEditingTitle) {
 			setTitleValue(song.title);
 		}
-	}, [song?.title, isEditingTitle]);
+	}, [song, isEditingTitle]);
 
 	// Effect to focus input when editing starts
 	useEffect(() => {

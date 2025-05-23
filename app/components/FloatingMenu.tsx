@@ -424,8 +424,9 @@ export function FloatingMenu({
 					</div>
 
 					{shouldShowSearchResults("duration") ? (
-						// Search results list view
-						<div className="flex flex-col">
+						// Search results grid view (preserving grid layout)
+						<div className="grid grid-cols-4 relative">
+							<GridOverlay />
 							{getFilteredItems("duration").map((value, index) => (
 								<OptionButton
 									key={value}
@@ -434,28 +435,15 @@ export function FloatingMenu({
 									onClick={() =>
 										handleValueChange("duration", value as NoteValue)
 									}
-									isSidebar={true}
 									index={index}
-									onKeyDown={(e) => {
-										// Simple up/down navigation for search results
-										if (
-											e.key === "ArrowDown" &&
-											index < getFilteredItems("duration").length - 1
-										) {
-											e.preventDefault();
-											// Focus next item
-										} else if (e.key === "ArrowUp" && index > 0) {
-											e.preventDefault();
-											// Focus previous item
-										}
-									}}
+									onKeyDown={durationNav.handleKeyDown}
 									ref={(el) => {
-										// We'll need to manage refs differently for search results
+										durationNav.buttonRefs.current[index] = el;
 									}}
 								/>
 							))}
 							{getFilteredItems("duration").length === 0 && (
-								<div className="p-4 text-center text-[var(--app-fg-muted)]">
+								<div className="col-span-4 p-4 text-center text-[var(--app-fg-muted)]">
 									No results found
 								</div>
 							)}
@@ -494,8 +482,9 @@ export function FloatingMenu({
 					</div>
 
 					{shouldShowSearchResults("pitch") ? (
-						// Search results list view
-						<div className="flex flex-col">
+						// Search results grid view (preserving grid layout)
+						<div className="grid grid-cols-4 relative">
+							<GridOverlay />
 							{getFilteredItems("pitch").map((value, index) => (
 								<OptionButton
 									key={value}
@@ -503,26 +492,14 @@ export function FloatingMenu({
 									isSelected={selectedBlock.pitch === value}
 									onClick={() => handleValueChange("pitch", value as NoteValue)}
 									index={index}
-									onKeyDown={(e) => {
-										// Simple up/down navigation for search results
-										if (
-											e.key === "ArrowDown" &&
-											index < getFilteredItems("pitch").length - 1
-										) {
-											e.preventDefault();
-											// Focus next item
-										} else if (e.key === "ArrowUp" && index > 0) {
-											e.preventDefault();
-											// Focus previous item
-										}
-									}}
+									onKeyDown={pitchNav.handleKeyDown}
 									ref={(el) => {
-										// We'll need to manage refs differently for search results
+										pitchNav.buttonRefs.current[index] = el;
 									}}
 								/>
 							))}
 							{getFilteredItems("pitch").length === 0 && (
-								<div className="p-4 text-center text-[var(--app-fg-muted)]">
+								<div className="col-span-4 p-4 text-center text-[var(--app-fg-muted)]">
 									No results found
 								</div>
 							)}
@@ -561,8 +538,9 @@ export function FloatingMenu({
 					</div>
 
 					{shouldShowSearchResults("phoneme1") ? (
-						// Search results list view
-						<div className="flex flex-col">
+						// Search results grid view (preserving grid layout)
+						<div className="grid grid-cols-4 relative">
+							<GridOverlay />
 							{getFilteredItems("phoneme1").map((value, index) => (
 								<OptionButton
 									key={value}
@@ -572,26 +550,14 @@ export function FloatingMenu({
 										handleValueChange("phoneme1", value as NoteValue)
 									}
 									index={index}
-									onKeyDown={(e) => {
-										// Simple up/down navigation for search results
-										if (
-											e.key === "ArrowDown" &&
-											index < getFilteredItems("phoneme1").length - 1
-										) {
-											e.preventDefault();
-											// Focus next item
-										} else if (e.key === "ArrowUp" && index > 0) {
-											e.preventDefault();
-											// Focus previous item
-										}
-									}}
+									onKeyDown={phoneme1Nav.handleKeyDown}
 									ref={(el) => {
-										// We'll need to manage refs differently for search results
+										phoneme1Nav.buttonRefs.current[index] = el;
 									}}
 								/>
 							))}
 							{getFilteredItems("phoneme1").length === 0 && (
-								<div className="p-4 text-center text-[var(--app-fg-muted)]">
+								<div className="col-span-4 p-4 text-center text-[var(--app-fg-muted)]">
 									No results found
 								</div>
 							)}
@@ -630,8 +596,9 @@ export function FloatingMenu({
 					</div>
 
 					{shouldShowSearchResults("phoneme2") ? (
-						// Search results list view
-						<div className="flex flex-col">
+						// Search results grid view (preserving grid layout)
+						<div className="grid grid-cols-4 relative">
+							<GridOverlay />
 							{getFilteredItems("phoneme2").map((value, index) => (
 								<OptionButton
 									key={value}
@@ -641,26 +608,14 @@ export function FloatingMenu({
 										handleValueChange("phoneme2", value as NoteValue)
 									}
 									index={index}
-									onKeyDown={(e) => {
-										// Simple up/down navigation for search results
-										if (
-											e.key === "ArrowDown" &&
-											index < getFilteredItems("phoneme2").length - 1
-										) {
-											e.preventDefault();
-											// Focus next item
-										} else if (e.key === "ArrowUp" && index > 0) {
-											e.preventDefault();
-											// Focus previous item
-										}
-									}}
+									onKeyDown={phoneme2Nav.handleKeyDown}
 									ref={(el) => {
-										// We'll need to manage refs differently for search results
+										phoneme2Nav.buttonRefs.current[index] = el;
 									}}
 								/>
 							))}
 							{getFilteredItems("phoneme2").length === 0 && (
-								<div className="p-4 text-center text-[var(--app-fg-muted)]">
+								<div className="col-span-4 p-4 text-center text-[var(--app-fg-muted)]">
 									No results found
 								</div>
 							)}
