@@ -32,11 +32,17 @@ export function Block({
 			activeElement: document.activeElement?.tagName,
 			buttonElement: e.currentTarget.tagName,
 			isFocused: document.activeElement === e.currentTarget,
+			metaKey: e.metaKey,
+			ctrlKey: e.ctrlKey,
 		});
 
-		// Handle delete when focused (regardless of selection state)
-		if (onDelete && (e.key === "Delete" || e.key === "Backspace")) {
-			console.log("Block delete triggered");
+		// Handle delete when focused (regardless of selection state) with Cmd+Delete or Cmd+Backspace
+		if (
+			onDelete &&
+			(e.key === "Delete" || e.key === "Backspace") &&
+			(e.metaKey || e.ctrlKey)
+		) {
+			console.log("Block delete triggered with modifier key");
 			e.preventDefault();
 			onDelete();
 			return;

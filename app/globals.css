@@ -72,6 +72,7 @@
 	--app-border-hover: var(--sand-8);
 	--app-accent-bg: var(--sand-3);
 	--app-accent-fg: var(--sand-12);
+	--app-accent-border: var(--sand-12);
 
 	/* Grid system variables */
 	--grid-cols-mobile: 8;
@@ -104,6 +105,7 @@
 	--app-border-hover: var(--sandDark-8);
 	--app-accent-bg: var(--sandDark-3);
 	--app-accent-fg: var(--sandDark-12);
+	--app-accent-border: var(--sandDark-12);
 }
 
 *,
