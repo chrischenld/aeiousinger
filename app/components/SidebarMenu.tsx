@@ -282,7 +282,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="duration"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full pb-12 relative"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-[calc(100dvh-110px)] pb-12 relative"
 					tabIndex={-1}
 				>
 					<div className="h-12 p-[2px] border-b border-[var(--app-border)]">
@@ -351,7 +351,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="pitch"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full pb-12 relative"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-[calc(100dvh-110px)] pb-12 md:pb-0 relative"
 					tabIndex={-1}
 				>
 					<div className="h-12 p-[2px] border-b border-[var(--app-border)]">
@@ -418,7 +418,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="phoneme1"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full pb-12 relative"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-[calc(100dvh-110px)] pb-12 relative"
 					tabIndex={-1}
 				>
 					<div className="h-12 p-[2px] border-b border-[var(--app-border)]">
@@ -487,7 +487,7 @@ export function SidebarMenu({
 
 				<TabsContent
 					value="phoneme2"
-					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-none md:h-full pb-12 relative"
+					className="text-xs flex-1 overflow-y-auto max-h-[240px] md:max-h-[calc(100dvh-110px)] pb-12 relative"
 					tabIndex={-1}
 				>
 					<div className="h-12 p-[2px] border-b border-[var(--app-border)]">

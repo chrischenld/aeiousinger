@@ -112,6 +112,20 @@ export const pitches = [
 	"G5",
 	"G♯5",
 	"A6",
+	"A♯6",
+	"B6",
+	"B♯6",
+	"C6",
+	"C♯6",
+	"D6",
+	"D♯6",
+	"E6",
+	"F6",
+	"F♯6",
+	"G6",
+	"G♯6",
+	"A7",
+	"A♯7",
 ];
 export const nonePhoneme = "_";
 export const vowelPhonemes = ["a", "e", "i", "o", "u"];
