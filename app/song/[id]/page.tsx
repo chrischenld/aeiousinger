@@ -294,16 +294,18 @@ export default function SongEditor() {
 			}
 
 			// Validate notes structure
-			const validNotes = importedSong.notes.every(
-				(note: any) =>
-					note &&
-					typeof note === "object" &&
-					typeof note.id === "string" &&
-					(note.duration === null || typeof note.duration === "string") &&
-					(note.pitch === null || typeof note.pitch === "string") &&
-					typeof note.phoneme1 === "string" &&
-					typeof note.phoneme2 === "string"
-			);
+			const validNotes = importedSong.notes.every((note: unknown) => {
+				if (!note || typeof note !== "object") return false;
+
+				const noteObj = note as Record<string, unknown>;
+				return (
+					typeof noteObj.id === "string" &&
+					(noteObj.duration === null || typeof noteObj.duration === "string") &&
+					(noteObj.pitch === null || typeof noteObj.pitch === "string") &&
+					typeof noteObj.phoneme1 === "string" &&
+					typeof noteObj.phoneme2 === "string"
+				);
+			});
 
 			if (!validNotes) {
 				console.error("Invalid JSON: Notes have invalid structure");
