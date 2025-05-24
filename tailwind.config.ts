@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import animate from "tailwindcss-animate";
 
 const config: Config = {
 	content: [
@@ -134,6 +133,7 @@ const config: Config = {
 				"25": "25",
 			},
 			gridColumn: {
+				"span-16": "span 16 / span 16",
 				"span-18": "span 18 / span 18",
 				"span-19": "span 19 / span 19",
 				"span-21": "span 21 / span 21",
@@ -191,7 +191,7 @@ const config: Config = {
 			},
 		},
 	},
-	plugins: [animate],
+	plugins: [],
 	darkMode: "class",
 };
 export default config;
