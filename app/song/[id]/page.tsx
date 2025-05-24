@@ -213,6 +213,8 @@ export default function SongEditor() {
 			setNotes((currentNotes) =>
 				currentNotes.filter((note) => note.id !== noteId)
 			);
+			// Show success toast
+			toast("note deleted");
 		} else {
 			console.error("Failed to remove note");
 

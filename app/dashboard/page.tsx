@@ -3,17 +3,14 @@
 import { ThemeToggle } from "../components/ui/theme-toggle";
 import Link from "next/link";
 import { useSongs } from "../context/SongsContext";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
 	const { songs, addSong } = useSongs();
-	const router = useRouter();
 
 	// Function to create a new song and navigate to it
 	const handleCreateNewSong = () => {
 		const newSongId = addSong();
-		// router.push(`/song/${newSongId}`);
 	};
 
 	const headerColSpan =
