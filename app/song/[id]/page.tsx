@@ -15,6 +15,7 @@ import { ThemeToggle } from "../../components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSongs } from "../../context/SongsContext";
+import { toast } from "sonner";
 import {
 	ArrowLeftFromLine,
 	Download,
@@ -270,8 +271,10 @@ export default function SongEditor() {
 		try {
 			const songJson = JSON.stringify(song, null, 2);
 			await navigator.clipboard.writeText(songJson);
+			toast("JSON copied to clipboard");
 		} catch (error) {
 			console.error("Failed to copy to clipboard:", error);
+			toast.error("Failed to copy to clipboard");
 		}
 	};
 
@@ -431,9 +434,11 @@ export default function SongEditor() {
 
 			// Copy to clipboard
 			await navigator.clipboard.writeText(exportString);
+			toast("song code copied to clipboard");
 			console.log("Song exported successfully:", exportString);
 		} catch (error) {
 			console.error("Failed to export song:", error);
+			toast.error("Failed to export song");
 		}
 	};
 

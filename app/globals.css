@@ -217,3 +217,63 @@ body {
 	bottom: 0;
 	width: 100%;
 }
+
+/* Toast styling - Override Sonner defaults */
+[data-sonner-toaster] {
+	font-family: var(--font-fragment-mono), var(--font-geist-mono) !important;
+}
+
+[data-sonner-toast] {
+	border-radius: 0 !important;
+	font-size: 12px !important;
+	padding: 12px 16px !important;
+	border: 1px solid var(--app-border) !important;
+	background: var(--app-bg) !important;
+	color: var(--app-fg) !important;
+	backdrop-filter: blur(8px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Override default Sonner styles with higher specificity */
+[data-sonner-toast][data-styled="true"] {
+	background: var(--app-bg) !important;
+	color: var(--app-fg) !important;
+	border: 1px solid var(--app-border) !important;
+	border-radius: 0 !important;
+}
+
+[data-sonner-toast][data-type="success"] {
+	background: var(--app-bg) !important;
+	color: var(--app-fg) !important;
+	border-color: var(--app-border) !important;
+}
+
+[data-sonner-toast][data-type="error"] {
+	background: var(--app-bg) !important;
+	color: var(--app-fg) !important;
+	border-color: var(--app-border) !important;
+}
+
+/* More specific selectors to override Sonner's default styles */
+.toaster [data-sonner-toast] {
+	border-radius: 0 !important;
+	background: var(--app-bg) !important;
+	color: var(--app-fg) !important;
+	border: 1px solid var(--app-border) !important;
+}
+
+.toaster [data-sonner-toast] > div {
+	background: transparent !important;
+}
+
+/* Override any inline styles */
+[data-sonner-toast] * {
+	border-radius: 0 !important;
+}
+
+/* Toast positioning for mobile safe areas */
+@media (max-width: 768px) {
+	[data-sonner-toaster] {
+		bottom: calc(env(safe-area-inset-bottom, 0px) + 16px) !important;
+	}
+}
