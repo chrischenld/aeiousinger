@@ -27,6 +27,11 @@ import {
 	PopoverTrigger,
 	PopoverContent,
 } from "@/components/ui/popover";
+import ToolbarItem from "@/app/components/ToolbarItem";
+
+// Common focus styles for toolbar items
+const focusStyles =
+	"ring-1 ring-inset ring-[var(--app-border)] hover:ring-[var(--app-border-hover)] focus-visible:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-[var(--app-fg)]";
 
 export default function SongEditor() {
 	const router = useRouter();
@@ -450,9 +455,9 @@ export default function SongEditor() {
 				<div
 					className={`grid grid-cols-subgrid grid-rows-[60px_1fr] ${mainContentColSpan} h-full`}
 				>
-					<div className="grid grid-cols-subgrid col-span-full h-[60px] border-[var(--app-border)] border-l border-t border-b col-span-full sticky top-0 bg-[var(--app-bg)] z-10">
-						<div
-							className={`grid grid-cols-subgrid ${songNameColSpan} items-center`}
+					<div className="grid grid-cols-subgrid col-span-full h-[60px] ring-1 ring-[var(--app-border)] ring-inset col-span-full sticky top-0 bg-[var(--app-bg)] z-10">
+						<ToolbarItem
+							className={`grid grid-cols-subgrid ${songNameColSpan} items-center ring-1 ring-[var(--app-border)] ring-inset`}
 						>
 							<div
 								className="h-full col-span-full text-xs font-bold text-[var(--app-fg)] cursor-pointer flex items-center"
@@ -472,18 +477,20 @@ export default function SongEditor() {
 									<h1 className="px-2">{song.title}</h1>
 								)}
 							</div>
-						</div>
-						<div className="grid grid-cols-subgrid col-span-1 md:col-span-2 border-l border-[var(--app-border)]">
+						</ToolbarItem>
+						<ToolbarItem>
 							<Link
 								href="/dashboard"
-								className="flex items-center justify-center text-xs cursor-pointer col-span-full"
+								className={`flex items-center justify-center text-xs cursor-pointer col-span-full ${focusStyles}`}
 							>
 								<ArrowLeftFromLine className="w-4 h-4" />
 							</Link>
-						</div>
-						<div className="grid grid-cols-subgrid col-span-1 md:col-span-2 border-l border-[var(--app-border)]">
+						</ToolbarItem>
+						<ToolbarItem>
 							<Popover>
-								<PopoverTrigger className="col-span-full flex cursor-pointer w-full h-full items-center justify-center">
+								<PopoverTrigger
+									className={`col-span-full flex cursor-pointer w-full h-full items-center justify-center ${focusStyles}`}
+								>
 									<Download className="w-4 h-4" />
 								</PopoverTrigger>
 								<PopoverContent
@@ -519,13 +526,11 @@ export default function SongEditor() {
 									</Button>
 								</PopoverContent>
 							</Popover>
-						</div>
-						<div className="grid grid-cols-subgrid col-span-1 md:col-span-2 border-l border-[var(--app-border)]">
+						</ToolbarItem>
+						<ToolbarItem>
 							<Button
 								onClick={toggleMenuType}
-								variant="ghost"
-								size="sm"
-								className="text-xs col-span-1 md:col-span-2 cursor-pointer h-full"
+								className={`text-xs col-span-1 md:col-span-2 cursor-pointer h-full rounded-none ${focusStyles}`}
 							>
 								{useFloatingMenu ? (
 									<PanelTop className="w-4 h-4" />
@@ -533,10 +538,12 @@ export default function SongEditor() {
 									<PanelRight className="w-4 h-4" />
 								)}
 							</Button>
-						</div>
-						<div className="grid grid-cols-subgrid col-span-1 md:col-span-2 border-l border-[var(--app-border)]">
-							<ThemeToggle className="flex items-center justify-center text-xs col-span-full" />
-						</div>
+						</ToolbarItem>
+						<ToolbarItem>
+							<ThemeToggle
+								className={`flex items-center justify-center text-xs col-span-full rounded-none ${focusStyles}`}
+							/>
+						</ToolbarItem>
 					</div>
 
 					<div
