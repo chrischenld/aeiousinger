@@ -51,6 +51,31 @@
 	--sandDark-11: #b5b3ad;
 	--sandDark-12: #eeeeec;
 
+	--red-1: #fffcfc;
+	--red-2: #fff7f7;
+	--red-3: #feebec;
+	--red-4: #ffdbdc;
+	--red-5: #ffcdce;
+	--red-6: #fdbdbe;
+	--red-7: #f4a9aa;
+	--red-8: #eb8e90;
+	--red-9: #e5484d;
+	--red-10: #dc3e42;
+	--red-11: #ce2c31;
+	--red-12: #641723;
+	--redDark-1: #191111;
+	--redDark-2: #201314;
+	--redDark-3: #3b1219;
+	--redDark-4: #500f1c;
+	--redDark-5: #611623;
+	--redDark-6: #72232d;
+	--redDark-7: #8c333a;
+	--redDark-8: #b54548;
+	--redDark-9: #e5484d;
+	--redDark-10: #ec5d5e;
+	--redDark-11: #ff9592;
+	--redDark-12: #ffd1d9;
+
 	/* Normal theme variables */
 	--bg-rgb: 253, 253, 252;
 	--bg: var(--sand-1);
@@ -71,6 +96,7 @@
 	--app-fg-muted: var(--sand-11);
 	--app-border: var(--sand-5);
 	--app-border-hover: var(--sand-8);
+	--app-border-error: var(--red-10);
 	--app-accent-bg: var(--sand-3);
 	--app-accent-fg: var(--sand-12);
 	--app-accent-border: var(--sand-12);
@@ -104,6 +130,7 @@
 	--app-fg-muted: var(--sandDark-11);
 	--app-border: var(--sandDark-5);
 	--app-border-hover: var(--sandDark-8);
+	--app-border-error: var(--redDark-10);
 	--app-accent-bg: var(--sandDark-3);
 	--app-accent-fg: var(--sandDark-12);
 	--app-accent-border: var(--sandDark-12);

@@ -60,6 +60,7 @@ export default function SongEditor() {
 
 	// State for JSON import
 	const [importJsonValue, setImportJsonValue] = useState("");
+	const [importJsonError, setImportJsonError] = useState<string | null>(null);
 
 	// Redirect to dashboard if song not found
 	useEffect(() => {
@@ -289,17 +290,26 @@ export default function SongEditor() {
 	const handleImportJson = () => {
 		if (!song || !importJsonValue.trim()) return;
 
+		// Clear any previous errors
+		setImportJsonError(null);
+
 		try {
 			const importedSong = JSON.parse(importJsonValue.trim());
 
 			// Validate that the imported data has the required structure
 			if (!importedSong || typeof importedSong !== "object") {
 				console.error("Invalid JSON: Not an object");
+				setImportJsonError("Invalid JSON: Not an object");
+				toast.error("Invalid JSON: Not an object");
 				return;
 			}
 
 			if (!importedSong.title || !Array.isArray(importedSong.notes)) {
 				console.error("Invalid JSON: Missing required fields (title, notes)");
+				setImportJsonError(
+					"Invalid JSON: Missing required fields (title, notes)"
+				);
+				toast.error("Invalid JSON: Missing required fields (title, notes)");
 				return;
 			}
 
@@ -319,6 +329,8 @@ export default function SongEditor() {
 
 			if (!validNotes) {
 				console.error("Invalid JSON: Notes have invalid structure");
+				setImportJsonError("Invalid JSON: Notes have invalid structure");
+				toast.error("invalid json. notes have invalid structure");
 				return;
 			}
 
@@ -336,12 +348,16 @@ export default function SongEditor() {
 			setNotes(updatedSong.notes);
 			setTitleValue(updatedSong.title);
 
-			// Clear the import input
+			// Clear the import input and any errors
 			setImportJsonValue("");
+			setImportJsonError(null);
 
 			console.log("Song imported successfully");
+			toast("Song imported successfully");
 		} catch (error) {
 			console.error("Failed to import JSON:", error);
+			setImportJsonError("Failed to parse JSON");
+			toast.error("failed to import song");
 		}
 	};
 
@@ -502,9 +518,16 @@ export default function SongEditor() {
 									<Input
 										type="text"
 										className="col-span-3 h-12"
-										placeholder={`{"id": "1", "title": "Song 1", "notes": [{"id": "1", "duration": 1, "pitch": "C", "phoneme1": "C", "phoneme2": "C"}]}`}
+										placeholder={`{"id": "1", "title": "Song 1", "notes": [{"id": "1"`}
 										value={importJsonValue}
-										onChange={(e) => setImportJsonValue(e.target.value)}
+										onChange={(e) => {
+											setImportJsonValue(e.target.value);
+											// Clear error when user starts typing
+											if (importJsonError) {
+												setImportJsonError(null);
+											}
+										}}
+										aria-invalid={!!importJsonError}
 									/>
 									<Button
 										className="col-span-1 cursor-pointer h-12 text-xs border-l border-[var(--border-2xlight)]"
