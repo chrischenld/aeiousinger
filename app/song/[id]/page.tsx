@@ -426,8 +426,18 @@ export default function SongEditor() {
 		if (accidental === "♯") semitone += 1;
 		if (accidental === "♭") semitone -= 1;
 
-		// Calculate absolute semitone (C4 = 25, so C1 = 1)
-		const absoluteSemitone = octave * 12 + semitone - 47; // -47 to make C4 = 25
+		// Handle octave numbering: A and B of octave N are actually
+		// in the semitone range of octave N-1
+		// A3, B3 are lower than C3, D3, etc.
+		let adjustedOctave = octave;
+		if (note === "A" || note === "B") {
+			adjustedOctave = octave - 1;
+		}
+
+		// Calculate absolute semitone (C4 = 25)
+		// C4 = adjusted octave 4, note C (0) = 4 * 12 + 0 = 48
+		// To make C4 = 25, we need: 48 - 23 = 25
+		const absoluteSemitone = adjustedOctave * 12 + semitone - 23;
 
 		return absoluteSemitone;
 	};
