@@ -16,12 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSongs } from "../../context/SongsContext";
 import { toast } from "sonner";
-import {
-	ArrowLeftFromLine,
-	Download,
-	PanelRight,
-	PanelTop,
-} from "lucide-react";
+import { CornerLeftUp, Download, PanelRight, PanelTop } from "lucide-react";
 import {
 	Popover,
 	PopoverTrigger,
@@ -61,6 +56,9 @@ export default function SongEditor() {
 	// State for JSON import
 	const [importJsonValue, setImportJsonValue] = useState("");
 	const [importJsonError, setImportJsonError] = useState<string | null>(null);
+
+	// State for tempo (BPM for quarter note)
+	const [tempo, setTempo] = useState<number>(120);
 
 	// Redirect to dashboard if song not found
 	useEffect(() => {
@@ -172,8 +170,8 @@ export default function SongEditor() {
 		: "col-span-full md:col-span-12 lg:col-span-16 xl:col-span-24 2xl:col-span-32";
 
 	const songNameColSpan = useFloatingMenu
-		? "col-span-4 md:col-span-8 lg:col-span-16 xl:col-span-24 2xl:col-span-32"
-		: "col-span-4 md:col-span-4 lg:col-span-8 xl:col-span-16 2xl:col-span-24";
+		? "col-span-3 md:col-span-8 lg:col-span-16 xl:col-span-24 2xl:col-span-32"
+		: "col-span-3 md:col-span-3 lg:col-span-8 xl:col-span-16 2xl:col-span-24";
 
 	// Sidebar size is responsive - keep it at 4 columns from md to xl, then 8 columns
 	const sidebarColSpan = "col-span-full md:col-span-4 lg:col-span-8";
@@ -363,26 +361,29 @@ export default function SongEditor() {
 
 	// Helper function to convert duration string to milliseconds
 	const durationToMs = (duration: string | null): number => {
-		if (!duration) return 600; // Default duration
+		if (!duration) return 60000 / tempo; // Default duration (quarter note in ms)
 
 		// Remove dots and triplet markers for base calculation
 		const baseDuration = duration.replace(/[·tr]/g, "");
 
-		// Base note values in ms (assuming 120 BPM, quarter note = 500ms)
-		const baseMs: Record<string, number> = {
-			"1": 2000, // Whole note
-			"1/2": 1000, // Half note
-			"1/4": 500, // Quarter note
-			"1/8": 250, // Eighth note
-			"1/16": 125, // Sixteenth note
-			"1/32": 62.5, // Thirty-second note
-			"1/64": 31.25, // Sixty-fourth note
-			"2": 4000, // Double whole note
-			"4": 8000, // Quadruple whole note
-			"8": 16000, // Octuple whole note
+		// Calculate quarter note duration in ms based on tempo
+		const quarterNoteMs = 60000 / tempo; // 60,000ms per minute / BPM
+
+		// Base note values as multipliers of quarter note duration
+		const baseMultipliers: Record<string, number> = {
+			"1": 4, // Whole note = 4 quarter notes
+			"1/2": 2, // Half note = 2 quarter notes
+			"1/4": 1, // Quarter note = 1 quarter note
+			"1/8": 0.5, // Eighth note = 0.5 quarter notes
+			"1/16": 0.25, // Sixteenth note = 0.25 quarter notes
+			"1/32": 0.125, // Thirty-second note = 0.125 quarter notes
+			"1/64": 0.0625, // Sixty-fourth note = 0.0625 quarter notes
+			"2": 8, // Double whole note = 8 quarter notes
+			"4": 16, // Quadruple whole note = 16 quarter notes
+			"8": 32, // Octuple whole note = 32 quarter notes
 		};
 
-		let ms = baseMs[baseDuration] || 500; // Default to quarter note
+		let ms = quarterNoteMs * (baseMultipliers[baseDuration] || 1); // Default to quarter note
 
 		// Apply dotted duration (adds 50% to the duration)
 		if (duration.includes("·")) {
@@ -494,13 +495,21 @@ export default function SongEditor() {
 								)}
 							</div>
 						</ToolbarItem>
-						<ToolbarItem>
-							<Link
-								href="/dashboard"
-								className={`flex items-center justify-center text-xs cursor-pointer col-span-full ${focusStyles}`}
-							>
-								<ArrowLeftFromLine className="w-4 h-4" />
-							</Link>
+						<ToolbarItem className="relative col-span-2">
+							<span className="absolute left-2 top-1/2 transform -translate-y-1/2 text-xs text-[var(--app-fg-muted)] pointer-events-none">
+								♩
+							</span>
+							<Input
+								className={`col-span-full h-full pl-2 pr-2 text-right ring-0 shadow-none ${focusStyles}`}
+								value={tempo}
+								onChange={(e) => {
+									const newTempo = parseInt(e.target.value) || 120;
+									setTempo(newTempo);
+								}}
+								type="number"
+								min="1"
+								max="999"
+							/>
 						</ToolbarItem>
 						<ToolbarItem>
 							<Popover>
@@ -563,10 +572,18 @@ export default function SongEditor() {
 							</Button>
 						</ToolbarItem>
 						<ToolbarItem>
+							<Link
+								href="/dashboard"
+								className={`flex items-center justify-center text-xs cursor-pointer col-span-full ${focusStyles}`}
+							>
+								<CornerLeftUp className="w-4 h-4" />
+							</Link>
+						</ToolbarItem>
+						{/* <ToolbarItem>
 							<ThemeToggle
 								className={`flex items-center justify-center text-xs col-span-full rounded-none ${focusStyles}`}
 							/>
-						</ToolbarItem>
+						</ToolbarItem> */}
 					</div>
 
 					<div

@@ -18,4 +18,31 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
 	);
 }
 
-export { Input };
+interface InputWithSuffixProps extends React.ComponentProps<"input"> {
+	suffix: React.ReactNode;
+	containerClassName?: string;
+}
+
+function InputWithSuffix({
+	suffix,
+	className,
+	containerClassName,
+	...props
+}: InputWithSuffixProps) {
+	return (
+		<div className={cn("relative flex items-center", containerClassName)}>
+			<Input
+				className={cn(
+					"pr-2", // Add padding-right to make space for suffix
+					className
+				)}
+				{...props}
+			/>
+			<div className="absolute right-2 flex items-center justify-center text-[var(--app-fg-muted)] pointer-events-none">
+				{suffix}
+			</div>
+		</div>
+	);
+}
+
+export { Input, InputWithSuffix };
