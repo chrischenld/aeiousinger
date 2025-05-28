@@ -2,6 +2,13 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { getTooltipContent, formatTooltipText } from "@/data/tooltipContent";
+import { useTooltips } from "@/app/contexts/TooltipContext";
 
 export type NoteField = "duration" | "pitch" | "phoneme1" | "phoneme2";
 export type NoteValue = string | null;
@@ -262,23 +269,55 @@ export const OptionButton = React.forwardRef<
 		isSidebar?: boolean;
 		index: number;
 		onKeyDown: (e: React.KeyboardEvent, index: number) => void;
+		contentType: "durations" | "pitches" | "phonemes";
 	}
->(({ value, isSelected, onClick, index, onKeyDown }, ref) => (
-	<Button
-		ref={ref}
-		onClick={onClick}
-		onKeyDown={(e) => onKeyDown(e, index)}
-		className={cn(
-			"h-12 text-xs rounded-none text-center cursor-pointer relative transition-all duration-150 p-2 ring-1 ring-inset border-none z-10",
-			isSelected
-				? "bg-[var(--app-accent-bg)] ring-[var(--app-fg)] text-[var(--app-fg)]"
-				: "ring-transparent border-transparent text-[var(--app-fg-muted)] hover:text-[var(--app-fg)] hover:ring-[var(--app-border-hover)] hover:bg-[var(--app-bg-strong)] focus-visible:ring-2 focus-visible:ring-[var(--app-fg)] focus-visible:ring-offset-0"
-		)}
-		variant="outline"
-	>
-		{value}
-	</Button>
-));
+>(({ value, isSelected, onClick, index, onKeyDown, contentType }, ref) => {
+	const { showTooltips } = useTooltips();
+	const tooltipData = getTooltipContent(contentType, value);
+	const tooltipContent = tooltipData
+		? formatTooltipText(tooltipData)
+		: undefined;
+
+	const buttonElement = (
+		<Button
+			ref={ref}
+			onClick={onClick}
+			onKeyDown={(e) => onKeyDown(e, index)}
+			className={cn(
+				"h-12 text-xs rounded-none text-center cursor-pointer relative transition-all duration-150 p-2 ring-1 ring-inset border-none z-10",
+				isSelected
+					? "bg-[var(--app-accent-bg)] ring-[var(--app-fg)] text-[var(--app-fg)]"
+					: "ring-transparent border-transparent text-[var(--app-fg-muted)] hover:text-[var(--app-fg)] hover:ring-[var(--app-border-hover)] hover:bg-[var(--app-bg-strong)] focus-visible:ring-2 focus-visible:ring-[var(--app-fg)] focus-visible:ring-offset-0"
+			)}
+			variant="outline"
+		>
+			{value}
+		</Button>
+	);
+
+	if (showTooltips && tooltipContent) {
+		return (
+			<Tooltip>
+				<TooltipTrigger asChild>{buttonElement}</TooltipTrigger>
+				<TooltipContent>
+					<div>
+						<span>{tooltipContent.description}</span>
+						{tooltipContent.examples && tooltipContent.examples.length > 0 && (
+							<>
+								<span>. </span>
+								<span className="italic">
+									{tooltipContent.examples.join(", ")}.
+								</span>
+							</>
+						)}
+					</div>
+				</TooltipContent>
+			</Tooltip>
+		);
+	}
+
+	return buttonElement;
+});
 
 OptionButton.displayName = "OptionButton";
 

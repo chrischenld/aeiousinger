@@ -3,10 +3,17 @@
 import { ThemeToggle } from "./components/ui/theme-toggle";
 import Link from "next/link";
 import { useSongs } from "./context/SongsContext";
+import { useTooltips } from "./contexts/TooltipContext";
 import { Button } from "@/components/ui/button";
+import ToolbarItem from "@/app/components/ToolbarItem";
+import { Captions, CaptionsOff } from "lucide-react";
+
+const focusStyles =
+	"ring-1 ring-inset ring-[var(--app-border)] hover:ring-[var(--app-border-hover)] focus-visible:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-[var(--app-fg)]";
 
 export default function Home() {
 	const { songs, addSong } = useSongs();
+	const { showTooltips, toggleTooltips } = useTooltips();
 
 	// Function to create a new song and navigate to it
 	const handleCreateNewSong = () => {
@@ -14,7 +21,7 @@ export default function Home() {
 	};
 
 	const headerColSpan =
-		"col-span-7 md:col-span-14 lg:col-span-22 xl:col-span-30 2xl:col-span-38";
+		"col-span-6 md:col-span-12 lg:col-span-20 xl:col-span-28 2xl:col-span-36";
 
 	const dashboardBlockSpan = "col-span-8 md:col-span-2";
 
@@ -25,14 +32,29 @@ export default function Home() {
 					className={`grid grid-cols-subgrid grid-rows-[60px_1fr] col-span-full h-full`}
 				>
 					<div className="grid grid-cols-subgrid col-span-full h-[60px] border-[var(--app-border)] border-l border-t border-b col-span-full sticky top-0 bg-[var(--app-bg)] z-10">
-						<div className={`grid grid-cols-subgrid ${headerColSpan}`}>
+						<ToolbarItem className={`grid grid-cols-subgrid ${headerColSpan}`}>
 							<h1 className="w-full h-full flex items-center px-2 text-xs font-bold text-[var(--app-fg)]">
 								aeiousinger
 							</h1>
-						</div>
-						<div className="grid grid-cols-subgrid col-span-1 md:col-span-2 border-l border-[var(--app-border)]">
-							<ThemeToggle className="flex items-center justify-center text-xs col-span-full" />
-						</div>
+						</ToolbarItem>
+						<ToolbarItem>
+							<Button
+								className={`col-span-full h-full ${focusStyles} cursor-pointer`}
+								onClick={toggleTooltips}
+								title={showTooltips ? "Hide tooltips" : "Show tooltips"}
+							>
+								{showTooltips ? (
+									<Captions className="w-4 h-4" />
+								) : (
+									<CaptionsOff className="w-4 h-4" />
+								)}
+							</Button>
+						</ToolbarItem>
+						<ToolbarItem>
+							<ThemeToggle
+								className={`flex items-center justify-center text-xs col-span-full ${focusStyles}`}
+							/>
+						</ToolbarItem>
 					</div>
 					<div className="grid grid-cols-subgrid col-span-full grid-rows-[auto_1fr] col-span-full h-dvh-content overflow-y-auto">
 						<div className="grid grid-cols-subgrid col-span-full gap-y-8 py-8">

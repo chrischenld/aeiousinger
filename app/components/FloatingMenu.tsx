@@ -230,15 +230,6 @@ export function FloatingMenu({
 
 	// Handle keyboard events for focus trapping - but allow tabbing to grid items
 	const handleKeyDown = (e: React.KeyboardEvent) => {
-		console.log("FloatingMenu keyDown:", {
-			key: e.key,
-			hasDeleteHandler: !!onDelete,
-			activeElement: document.activeElement?.tagName,
-			menuElement: menuRef.current?.tagName,
-			metaKey: e.metaKey,
-			ctrlKey: e.ctrlKey,
-		});
-
 		if (e.key === "Escape") {
 			onClose();
 			return;
@@ -250,7 +241,6 @@ export function FloatingMenu({
 			(e.metaKey || e.ctrlKey) &&
 			onDelete
 		) {
-			console.log("FloatingMenu delete triggered with modifier key");
 			e.preventDefault();
 			onDelete();
 			return;
@@ -440,6 +430,7 @@ export function FloatingMenu({
 									ref={(el) => {
 										durationNav.buttonRefs.current[index] = el;
 									}}
+									contentType="durations"
 								/>
 							))}
 							{getFilteredItems("duration").length === 0 && (
@@ -462,6 +453,7 @@ export function FloatingMenu({
 									ref={(el) => {
 										durationNav.buttonRefs.current[index] = el;
 									}}
+									contentType="durations"
 								/>
 							))}
 						</div>
@@ -496,6 +488,7 @@ export function FloatingMenu({
 									ref={(el) => {
 										pitchNav.buttonRefs.current[index] = el;
 									}}
+									contentType="pitches"
 								/>
 							))}
 							{getFilteredItems("pitch").length === 0 && (
@@ -518,6 +511,7 @@ export function FloatingMenu({
 									ref={(el) => {
 										pitchNav.buttonRefs.current[index] = el;
 									}}
+									contentType="pitches"
 								/>
 							))}
 						</div>
@@ -554,6 +548,7 @@ export function FloatingMenu({
 									ref={(el) => {
 										phoneme1Nav.buttonRefs.current[index] = el;
 									}}
+									contentType="phonemes"
 								/>
 							))}
 							{getFilteredItems("phoneme1").length === 0 && (
@@ -576,6 +571,7 @@ export function FloatingMenu({
 									ref={(el) => {
 										phoneme1Nav.buttonRefs.current[index] = el;
 									}}
+									contentType="phonemes"
 								/>
 							))}
 						</div>
@@ -612,6 +608,7 @@ export function FloatingMenu({
 									ref={(el) => {
 										phoneme2Nav.buttonRefs.current[index] = el;
 									}}
+									contentType="phonemes"
 								/>
 							))}
 							{getFilteredItems("phoneme2").length === 0 && (
@@ -634,6 +631,7 @@ export function FloatingMenu({
 									ref={(el) => {
 										phoneme2Nav.buttonRefs.current[index] = el;
 									}}
+									contentType="phonemes"
 								/>
 							))}
 						</div>

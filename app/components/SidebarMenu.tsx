@@ -307,6 +307,7 @@ export function SidebarMenu({
 									ref={(el) => {
 										durationNav.buttonRefs.current[index] = el;
 									}}
+									contentType="durations"
 								/>
 							))}
 							{getFilteredItems("duration").length === 0 && (
@@ -333,6 +334,7 @@ export function SidebarMenu({
 									ref={(el) => {
 										durationNav.buttonRefs.current[index] = el;
 									}}
+									contentType="durations"
 								/>
 							))}
 						</div>
@@ -374,6 +376,7 @@ export function SidebarMenu({
 									ref={(el) => {
 										pitchNav.buttonRefs.current[index] = el;
 									}}
+									contentType="pitches"
 								/>
 							))}
 							{getFilteredItems("pitch").length === 0 && (
@@ -400,6 +403,7 @@ export function SidebarMenu({
 									ref={(el) => {
 										pitchNav.buttonRefs.current[index] = el;
 									}}
+									contentType="pitches"
 								/>
 							))}
 						</div>
@@ -443,6 +447,7 @@ export function SidebarMenu({
 									ref={(el) => {
 										phoneme1Nav.buttonRefs.current[index] = el;
 									}}
+									contentType="phonemes"
 								/>
 							))}
 							{getFilteredItems("phoneme1").length === 0 && (
@@ -469,6 +474,7 @@ export function SidebarMenu({
 									ref={(el) => {
 										phoneme1Nav.buttonRefs.current[index] = el;
 									}}
+									contentType="phonemes"
 								/>
 							))}
 						</div>
@@ -512,6 +518,7 @@ export function SidebarMenu({
 									ref={(el) => {
 										phoneme2Nav.buttonRefs.current[index] = el;
 									}}
+									contentType="phonemes"
 								/>
 							))}
 							{getFilteredItems("phoneme2").length === 0 && (
@@ -538,6 +545,7 @@ export function SidebarMenu({
 									ref={(el) => {
 										phoneme2Nav.buttonRefs.current[index] = el;
 									}}
+									contentType="phonemes"
 								/>
 							))}
 						</div>

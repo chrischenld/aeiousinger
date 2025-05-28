@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { SongsProvider } from "./context/SongsContext";
+import { TooltipProvider } from "./contexts/TooltipContext";
 import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = localFont({
@@ -44,7 +45,9 @@ export default function RootLayout({
 				className={`${fragmentMono.variable} ${geistMono.variable} ${geistSans.variable} antialiased min-h-screen-dvh overflow-hidden`}
 			>
 				<ThemeProvider>
-					<SongsProvider>{children}</SongsProvider>
+					<SongsProvider>
+						<TooltipProvider>{children}</TooltipProvider>
+					</SongsProvider>
 					<Toaster />
 				</ThemeProvider>
 			</body>
