@@ -218,8 +218,8 @@ export default function SongEditor() {
 		: "col-span-full md:col-span-12 lg:col-span-16 xl:col-span-24 2xl:col-span-32";
 
 	const songNameColSpan = useFloatingMenu
-		? "col-span-3 md:col-span-8 lg:col-span-16 xl:col-span-24 2xl:col-span-32"
-		: "col-span-3 md:col-span-3 lg:col-span-8 xl:col-span-16 2xl:col-span-24";
+		? "col-span-4 md:col-span-8 lg:col-span-16 xl:col-span-24 2xl:col-span-32"
+		: "col-span-4 md:col-span-4 lg:col-span-8 xl:col-span-16 2xl:col-span-24";
 
 	// Sidebar size is responsive - keep it at 4 columns from md to xl, then 8 columns
 	const sidebarColSpan = "col-span-full md:col-span-4 lg:col-span-8";
@@ -587,7 +587,7 @@ export default function SongEditor() {
 								)}
 							</div>
 						</ToolbarItem>
-						<ToolbarItem className="relative col-span-2">
+						<ToolbarItem className="relative">
 							<span className="absolute left-2 top-1/2 transform -translate-y-1/2 text-xs text-[var(--app-fg-muted)] pointer-events-none">
 								♩
 							</span>
