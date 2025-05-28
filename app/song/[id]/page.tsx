@@ -11,7 +11,6 @@ import {
 	NoteValue,
 	Note,
 } from "../../components/NoteMenuComponents";
-import { ThemeToggle } from "../../components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSongs } from "../../context/SongsContext";
@@ -225,22 +224,16 @@ export default function SongEditor() {
 	const sidebarColSpan = "col-span-full md:col-span-4 lg:col-span-8";
 
 	const handleAddNote = () => {
-		console.log("Adding note to song:", songId);
-
 		// Call the context method and get the new note
 		const newNote = addNoteToSong(songId);
 
 		if (newNote) {
-			console.log("New note created:", newNote);
 			// Add the new note directly to the current notes array
 			setNotes((currentNotes) => [...currentNotes, newNote]);
 		} else {
-			console.error("Failed to create new note");
-
 			// Fallback - get the fresh song data after the update
 			const updatedSong = getSong(songId);
 			if (updatedSong) {
-				console.log("Updated song notes (fallback):", updatedSong.notes);
 				// Update local state with the updated notes
 				setNotes(updatedSong.notes);
 			}
@@ -248,8 +241,6 @@ export default function SongEditor() {
 	};
 
 	const handleRemoveNote = (noteId: string) => {
-		console.log("Removing note:", noteId);
-
 		// Clear selection if the note being removed is selected
 		if (selectedNoteId === noteId) {
 			setSelectedNoteId(null);
@@ -260,7 +251,6 @@ export default function SongEditor() {
 		const success = removeNoteFromSong(songId, noteId);
 
 		if (success) {
-			console.log("Note removed successfully, updating local state");
 			// Directly update the local state by filtering out the removed note
 			setNotes((currentNotes) =>
 				currentNotes.filter((note) => note.id !== noteId)
@@ -268,15 +258,9 @@ export default function SongEditor() {
 			// Show success toast
 			toast("note deleted");
 		} else {
-			console.error("Failed to remove note");
-
 			// Fallback - get the fresh song data after the update
 			const updatedSong = getSong(songId);
 			if (updatedSong) {
-				console.log(
-					"Updated song notes after remove (fallback):",
-					updatedSong.notes
-				);
 				// Update local state with the updated notes
 				setNotes(updatedSong.notes);
 			}
@@ -424,7 +408,6 @@ export default function SongEditor() {
 		setPendingImportData(null);
 		setShowImportDialog(false);
 
-		console.log("Song imported successfully");
 		toast("Song imported successfully");
 	};
 
@@ -551,7 +534,6 @@ export default function SongEditor() {
 			// Copy to clipboard
 			await navigator.clipboard.writeText(exportString);
 			toast("song code copied to clipboard");
-			console.log("Song exported successfully:", exportString);
 		} catch (error) {
 			console.error("Failed to export song:", error);
 			toast.error("Failed to export song");

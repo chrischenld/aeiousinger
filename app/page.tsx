@@ -10,7 +10,7 @@ export default function Home() {
 
 	// Function to create a new song and navigate to it
 	const handleCreateNewSong = () => {
-		const newSongId = addSong();
+		addSong();
 	};
 
 	const headerColSpan =
