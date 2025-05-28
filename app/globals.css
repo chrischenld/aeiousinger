@@ -94,12 +94,14 @@
 	--app-bg: var(--sand-1);
 	--app-fg: var(--sand-12);
 	--app-fg-muted: var(--sand-11);
+	--app-fg-onInverse: var(--sand-1);
 	--app-border: var(--sand-5);
 	--app-border-hover: var(--sand-8);
 	--app-border-error: var(--red-10);
 	--app-accent-bg: var(--sand-3);
 	--app-accent-fg: var(--sand-12);
 	--app-accent-border: var(--sand-12);
+	--app-bg-inverse: var(--sand-12);
 
 	/* Grid system variables */
 	--grid-cols-mobile: 8;
@@ -128,12 +130,14 @@
 	--app-bg: var(--sandDark-1);
 	--app-fg: var(--sandDark-12);
 	--app-fg-muted: var(--sandDark-11);
+	--app-fg-onInverse: var(--sandDark-1);
 	--app-border: var(--sandDark-5);
 	--app-border-hover: var(--sandDark-8);
 	--app-border-error: var(--redDark-10);
 	--app-accent-bg: var(--sandDark-3);
 	--app-accent-fg: var(--sandDark-12);
 	--app-accent-border: var(--sandDark-12);
+	--app-bg-inverse: var(--sandDark-12);
 }
 
 *,

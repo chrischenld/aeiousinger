@@ -23,6 +23,16 @@ import {
 	PopoverContent,
 } from "@/components/ui/popover";
 import ToolbarItem from "@/app/components/ToolbarItem";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 // Common focus styles for toolbar items
 const focusStyles =
@@ -56,6 +66,12 @@ export default function SongEditor() {
 	// State for JSON import
 	const [importJsonValue, setImportJsonValue] = useState("");
 	const [importJsonError, setImportJsonError] = useState<string | null>(null);
+	const [showImportDialog, setShowImportDialog] = useState(false);
+	const [pendingImportData, setPendingImportData] = useState<{
+		title: string;
+		notes: Note[];
+		[key: string]: unknown;
+	} | null>(null);
 
 	// State for tempo (BPM for quarter note)
 	const [tempo, setTempo] = useState<number>(120);
@@ -116,6 +132,38 @@ export default function SongEditor() {
 			</div>
 		);
 	}
+
+	// Helper function to check if the current song has meaningful data
+	const hasMeaningfulData = () => {
+		if (!song) return false;
+
+		// Check if title is not default
+		if (
+			song.title &&
+			song.title.trim() !== "" &&
+			!song.title.startsWith("Untitled")
+		) {
+			return true;
+		}
+
+		// Check if any notes have been modified from defaults
+		return notes.some((note) => {
+			// Check if note has duration or pitch set
+			if (note.duration !== null || note.pitch !== null) {
+				return true;
+			}
+
+			// Check if phonemes are not default placeholders
+			if (
+				(note.phoneme1 !== "_" && note.phoneme1 !== "") ||
+				(note.phoneme2 !== "_" && note.phoneme2 !== "")
+			) {
+				return true;
+			}
+
+			return false;
+		});
+	};
 
 	const selectedNote = notes.find((note) => note.id === selectedNoteId) || null;
 
@@ -332,31 +380,65 @@ export default function SongEditor() {
 				return;
 			}
 
-			// Create the updated song, preserving the current song's ID
-			const updatedSong = {
-				...importedSong,
-				id: song.id, // Force keep the current song's ID
-				updatedAt: Date.now(), // Update the timestamp
-			};
-
-			// Update the song in context
-			updateSong(songId, updatedSong);
-
-			// Update local state
-			setNotes(updatedSong.notes);
-			setTitleValue(updatedSong.title);
-
-			// Clear the import input and any errors
-			setImportJsonValue("");
-			setImportJsonError(null);
-
-			console.log("Song imported successfully");
-			toast("Song imported successfully");
+			// Check if current song has meaningful data
+			if (hasMeaningfulData()) {
+				// Store the validated import data and show confirmation dialog
+				setPendingImportData(importedSong);
+				setShowImportDialog(true);
+			} else {
+				// Directly import if no meaningful data would be lost
+				performImport(importedSong);
+			}
 		} catch (error) {
 			console.error("Failed to import JSON:", error);
 			setImportJsonError("Failed to parse JSON");
 			toast.error("failed to import song");
 		}
+	};
+
+	// Function to actually perform the import
+	const performImport = (importedSong: {
+		title: string;
+		notes: Note[];
+		[key: string]: unknown;
+	}) => {
+		if (!song) return;
+
+		// Create the updated song, preserving the current song's ID
+		const updatedSong = {
+			...importedSong,
+			id: song.id, // Force keep the current song's ID
+			updatedAt: Date.now(), // Update the timestamp
+		};
+
+		// Update the song in context
+		updateSong(songId, updatedSong);
+
+		// Update local state
+		setNotes(updatedSong.notes);
+		setTitleValue(updatedSong.title);
+
+		// Clear the import input and any errors
+		setImportJsonValue("");
+		setImportJsonError(null);
+		setPendingImportData(null);
+		setShowImportDialog(false);
+
+		console.log("Song imported successfully");
+		toast("Song imported successfully");
+	};
+
+	// Handler for confirming import in dialog
+	const handleConfirmImport = () => {
+		if (pendingImportData) {
+			performImport(pendingImportData);
+		}
+	};
+
+	// Handler for canceling import
+	const handleCancelImport = () => {
+		setPendingImportData(null);
+		setShowImportDialog(false);
 	};
 
 	// Helper function to convert duration string to milliseconds
@@ -679,6 +761,29 @@ export default function SongEditor() {
 					</div>
 				)}
 			</main>
+
+			{showImportDialog && (
+				<AlertDialog open={showImportDialog} onOpenChange={handleCancelImport}>
+					<AlertDialogContent className="sm:max-w-[425px]">
+						<AlertDialogHeader>
+							<AlertDialogTitle>Confirm Import</AlertDialogTitle>
+							<AlertDialogDescription>
+								This will overwrite your current song &quot;{song.title}&quot;
+								and all its notes. This action cannot be undone. Are you sure
+								you want to continue?
+							</AlertDialogDescription>
+						</AlertDialogHeader>
+						<AlertDialogFooter>
+							<AlertDialogCancel onClick={handleCancelImport}>
+								Cancel
+							</AlertDialogCancel>
+							<AlertDialogAction onClick={handleConfirmImport}>
+								Confirm
+							</AlertDialogAction>
+						</AlertDialogFooter>
+					</AlertDialogContent>
+				</AlertDialog>
+			)}
 		</div>
 	);
 }
