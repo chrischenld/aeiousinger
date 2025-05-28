@@ -76,10 +76,10 @@ export default function SongEditor() {
 	// State for tempo (BPM for quarter note)
 	const [tempo, setTempo] = useState<number>(120);
 
-	// Redirect to dashboard if song not found
+	// Redirect to home/dashboard if song not found
 	useEffect(() => {
 		if (!song) {
-			router.push("/dashboard");
+			router.push("/");
 		}
 	}, [song, router]);
 
@@ -665,7 +665,7 @@ export default function SongEditor() {
 						</ToolbarItem>
 						<ToolbarItem>
 							<Link
-								href="/dashboard"
+								href="/"
 								className={`flex items-center justify-center text-xs cursor-pointer col-span-full ${focusStyles}`}
 							>
 								<CornerLeftUp className="w-4 h-4" />
