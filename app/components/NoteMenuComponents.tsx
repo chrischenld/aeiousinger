@@ -153,27 +153,77 @@ export const pitches = [
 	"B♭7",
 ];
 export const nonePhoneme = "_";
-export const vowelPhonemes = ["a", "e", "i", "o", "u"];
+export const vowelPhonemes = [
+	"ey",
+	"iy",
+	"ay",
+	"ow",
+	"uw",
+	"ae",
+	"eh",
+	"ih",
+	"aa",
+	"ah",
+	"uh",
+	"oy",
+	"ao",
+];
 export const consonantPhonemes = [
 	"b",
 	"d",
 	"f",
 	"g",
-	"h",
+	"hx",
+	"j",
 	"k",
-	"l",
 	"m",
 	"n",
 	"p",
 	"r",
-	"s",
 	"t",
+	"s",
 	"v",
 	"w",
 	"y",
 	"z",
+	"ch",
+	"gh",
+	"ng",
+	"ph",
+	"sh",
+	"th",
+	"wh",
+	"zh",
+	"rx",
+	"tx",
 ];
-export const phonemes = [nonePhoneme, ...consonantPhonemes, ...vowelPhonemes];
+export const blendPhoemes = [
+	"bl",
+	"cl",
+	"fl",
+	"gl",
+	"pl",
+	"br",
+	"cr",
+	"dr",
+	"fr",
+	"gr",
+	"pr",
+	"tr",
+	"sk",
+	"sl",
+	"sp",
+	"st",
+	"sw",
+	"spr",
+	"str",
+];
+export const phonemes = [
+	nonePhoneme,
+	...consonantPhonemes,
+	...vowelPhonemes,
+	...blendPhoemes,
+];
 
 // Custom styled TabsTrigger to avoid style duplication
 export const StyledTabsTrigger = React.forwardRef<

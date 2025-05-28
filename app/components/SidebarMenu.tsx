@@ -107,22 +107,12 @@ export function SidebarMenu({
 	});
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
-		console.log("SidebarMenu keyDown:", {
-			key: e.key,
-			hasDeleteHandler: !!onDelete,
-			activeElement: document.activeElement?.tagName,
-			menuElement: menuRef.current?.tagName,
-			metaKey: e.metaKey,
-			ctrlKey: e.ctrlKey,
-		});
-
 		// Handle delete only with Cmd+Delete or Cmd+Backspace (Ctrl on Windows/Linux)
 		if (
 			(e.key === "Delete" || e.key === "Backspace") &&
 			(e.metaKey || e.ctrlKey) &&
 			onDelete
 		) {
-			console.log("SidebarMenu delete triggered with modifier key");
 			e.preventDefault();
 			onDelete();
 		}
